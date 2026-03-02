@@ -9,12 +9,31 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
+    "@prisma/client": "^7.4.2",
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-table": "^8.21.3",
+    "date-fns-tz": "^3.2.0",
+    "framer-motion": "^12.34.4",
+    "grapesjs": "^0.22.14",
     "next": "16.1.6",
+    "next-auth": "^4.24.13",
+    "nodemailer": "^7.0.13",
+    "prisma": "^7.4.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-big-calendar": "^1.19.4",
+    "react-dom": "19.2.3",
+    "react-email": "^5.2.9",
+    "react-hook-form": "^7.71.2",
+    "react-player": "^3.4.0",
+    "react-signature-canvas": "^1.1.0-alpha.2",
+    "recharts": "^3.7.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/nodemailer": "^7.0.11",
+    "@types/react-big-calendar": "^1.16.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4"
