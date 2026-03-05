@@ -1,14 +1,227 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+}
+        
+enum Role {
+  ADMIN
+  KREATOR
+  UCZESTNIK
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(UCZESTNIK) //Role: admin, kreator, uczestnik
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  //Relacje NextAuth
+  accounts      Account[]
+  sessions      Session[]
+
+  //Relacje biznesowe
+  organizedMeetings Meeting[]  @relation("MeetingOrganizer")
+  enrollments       Enrollment[] //Zapisy na kursy
+  certificates      Certificate[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+//MODUŁ A & B: CRM, LEADY, LEJKI SPRZEDAŻY
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+model Lead {
+  id          String     @id @default(cuid())
+  firstName   String
+  lastName    String?
+  email       String     @unique
+  phone       String?
+  status      LeadStatus @default(NEW) //Statusy leadów i pipeline
+  score       Int        @default(0)   //Lead scoring
+  source      String?    //Z jakiego lejka/formularza pochodzi
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  //Relacje
+  tags        Tag[]      @relation("LeadTags")
+  notes       Note[]
+  documents   Document[]
+  meetings    Meeting[]
+  messages    Message[]
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  leads Lead[] @relation("LeadTags")
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model LandingPage {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique //Do publikowania na domenie
+  htmlData  String?  @db.Text //Wygenerowany kod przez GrapesJS
+  cssData   String?  @db.Text
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//MODUŁ C: KOMUNIKACJA (Email, SMS)
+
+model Message {
+  id        String   @id @default(cuid())
+  subject   String?
+  body      String   @db.Text
+  type      String   //np. 'EMAIL'
+  direction String   //'INBOUND' (od leada), 'OUTBOUND' (do leada)
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+//MODUŁ D: KURSY I PORTAL CZŁONKOWSKI
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  price       Float?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  modules     Module[]
+  enrollments Enrollment[]
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  title       String
+  order       Int      // Kolejność modułów
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  title       String
+  videoUrl    String?  //Hostowanie wideo
+  content     String?  @db.Text
+  order       Int
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress    Int      @default(0) // Procent ukończenia
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  issuedAt    DateTime @default(now())
+}
+
+// ======================================================
+// MODUŁ E: DOKUMENTY I E-SIGNING
+// ======================================================
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  fileUrl     String   // Ścieżka do zapisanego pliku PDF/HTML
+  isSigned    Boolean  @default(false)
+  signature   String?  @db.Text // Plik graficzny z react-signature-canvas (base64)
+  signedAt    DateTime?
+  
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+}
+
+// MODUŁ F: KALENDARZ I SPOTKANIA
+
+model Meeting {
+  id          String   @id @default(cuid())
+  title       String
+  startTime   DateTime // Format UTC
+  endTime     DateTime
+  meetLink    String?  // Wirtualny pokój, np. Zoom/Meet
+
+  organizerId String
+  organizer   User     @relation("MeetingOrganizer", fields: [organizerId], references: [id])
+  
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id])
+
+  createdAt   DateTime @default(now())
 }
