@@ -1,0 +1,27 @@
+name: Deploy to Livehost
+
+on:
+  push:
+    branches:
+      - main # Uruchomi się dopiero po akceptacji PR i złączeniu z main!
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Łączenie z serwerem i deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd /var/www/pzpp_projekt_1
+            git pull origin main
+            npm install
+            npx prisma generate
+            npx prisma migrate deploy
+            npm run build
+            pm2 restart pzpp_projekt_1
