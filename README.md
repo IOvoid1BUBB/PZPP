@@ -6,10 +6,10 @@ Poniżej znajduje się oficjalna struktura plików dla naszej platformy marketin
 
 Nasza aplikacja opiera się na nowoczesnym, darmowym stacku full-stack (JavaScript/TypeScript):
 
-* **Framework Główny:** Next.js (z App Routerem). Serwuje zarówno interfejs użytkownika, jak i obsługuje komunikację backendową (API/Server Actions).
-* **Frontend:** React.js z wykorzystaniem TailwindCSS do budowy nowoczesnego i responsywnego interfejsu.
-* **Komunikacja z API i Stan Aplikacji:** React Query (TanStack Query) do dynamicznych komponentów (np. kalendarz, kreator).
-  > **Dlaczego React Query, a nie Redux?** Ponieważ nasza aplikacja opiera się na ciągłym pobieraniu i aktualizowaniu danych z serwera (leady, spotkania, statystyki). React Query to tzw. *server-state manager* – automatycznie cache'uje zapytania, odświeża dane w tle, zarządza stanami ładowania (loading/error) i redukuje ilość kodu boilerplate o 80% w porównaniu do Reduxa. Resztę stanu trzymamy w natywnych funkcjach serwera Next.js.
+- **Framework Główny:** Next.js (z App Routerem). Serwuje zarówno interfejs użytkownika, jak i obsługuje komunikację backendową (API/Server Actions).
+- **Frontend:** React.js z wykorzystaniem TailwindCSS do budowy nowoczesnego i responsywnego interfejsu.
+- **Komunikacja z API i Stan Aplikacji:** React Query (TanStack Query) do dynamicznych komponentów (np. kalendarz, kreator).
+  > **Dlaczego React Query, a nie Redux?** Ponieważ nasza aplikacja opiera się na ciągłym pobieraniu i aktualizowaniu danych z serwera (leady, spotkania, statystyki). React Query to tzw. _server-state manager_ – automatycznie cache'uje zapytania, odświeża dane w tle, zarządza stanami ładowania (loading/error) i redukuje ilość kodu boilerplate o 80% w porównaniu do Reduxa. Resztę stanu trzymamy w natywnych funkcjach serwera Next.js.
 
 ```text
 PZPP_PROJEKT_1/
@@ -40,8 +40,8 @@ PZPP_PROJEKT_1/
         │
         ├── (public)/         <-- ŚWIAT 2: STRONA OFERTOWA (Dla niezalogowanych)
         │   ├── layout.js     <-- Publiczny górny pasek (Navbar)
-        │   ├── oferta/       
-        │   ├── cennik/       
+        │   ├── oferta/
+        │   ├── cennik/
         │   ├── login/        <-- Logowanie
         │   └── register/     <-- Rejestracja
         │
