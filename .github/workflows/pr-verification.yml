@@ -25,6 +25,8 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
+        env:
+          DIRECT_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
 
       - name: Check code formatting
         run: npm run format:check
