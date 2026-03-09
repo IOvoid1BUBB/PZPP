@@ -34,7 +34,7 @@ git checkout -b feature/12-tabela-crm
 
 ## KROK 3: Kodowanie i Testowanie Lokalne
 
-Teraz piszesz kod w odpowiednim folderze. Kiedy skończysz, **musisz sprawdzić, czy nic nie wybuchło na Twoim komputerze**, zanim wyślesz to reszcie.
+Teraz piszesz kod w odpowiednim folderze. Kiedy skończysz, **musisz sprawdzić, czy nic nie wybuchło na twoim komputerze**, zanim wyślesz to reszcie.
 
 1. **Odpal aplikację:** Wpisz `npm run dev` i przeklikaj swoją funkcję w przeglądarce (`localhost:3000`).
 2. **Sprawdź błędy (Linter):** Wpisz `npm run lint`. Jeśli wyskoczą błędy, popraw je. Kod z błędami lintera nie przejdzie Code Review!
