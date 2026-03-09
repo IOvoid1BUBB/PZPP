@@ -10,7 +10,7 @@ export default function ReactQueryProvider({ children }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // Dane uznawane za "świeże" przez 1 minutę
+            staleTime: 60 * 1000, // Dane uznawane za najnowsze przez 1 minutę
             refetchOnWindowFocus: false, // Nie odświeża przy zmianie zakładki
           },
         },

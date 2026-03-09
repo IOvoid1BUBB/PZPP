@@ -1,4 +1,6 @@
 import Image from "next/image";
+import LeadForm from "@/components/crm/LeadForm";
+import LeadsTable from "@/components/crm/LeadsTable";
 
 export default function Home() {
   return (
