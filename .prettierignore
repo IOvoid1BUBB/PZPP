@@ -23,4 +23,4 @@
 next-env.d.ts
 
 # prisma generated code
-/src/generated/prisma
+/prisma/generated
