@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -16,19 +17,19 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  password      String?   // Pole na zahashowane hasło
   emailVerified DateTime?
   image         String?
-  role          Role      @default(UCZESTNIK) //Role: admin, kreator, uczestnik
+  role          Role      @default(UCZESTNIK)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  //Relacje NextAuth
   accounts      Account[]
   sessions      Session[]
-
-  //Relacje biznesowe
+  
+  // Relacje biznesowe
   organizedMeetings Meeting[]  @relation("MeetingOrganizer")
-  enrollments       Enrollment[] //Zapisy na kursy
+  enrollments       Enrollment[] 
   certificates      Certificate[]
 }
 
