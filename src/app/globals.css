@@ -133,19 +133,19 @@
 
 @keyframes blob {
   0% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1.2);
   }
   25% {
-    transform: translate(calc(-50% + 35vw), calc(-50% - 30vh)) scale(1.3);
+    transform: translate(calc(-50% + 35vw), calc(-50% - 30vh)) scale(1.5);
   }
   50% {
-    transform: translate(calc(-50% - 40vw), calc(-50% + 25vh)) scale(0.8);
+    transform: translate(calc(-50% - 40vw), calc(-50% + 25vh)) scale(1);
   }
   75% {
-    transform: translate(calc(-50% + 25vw), calc(-50% + 35vh)) scale(1.1);
+    transform: translate(calc(-50% + 25vw), calc(-50% + 35vh)) scale(1.3);
   }
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1.2);
   }
 }
 
