@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section className="relative w-full min-h-[100dvh] flex flex-col justify-center items-center overflow-hidden bg-white pt-16">
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#5ec269] rounded-full blur-[100px] opacity-40 animate-blob pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#22c55e] rounded-full blur-[90px] opacity-40 animate-blob pointer-events-none z-0" />
       
       <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col items-center text-center space-y-8">
         <div className="space-y-4 max-w-3xl">
