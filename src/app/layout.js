@@ -38,7 +38,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pl" className="scroll-smooth">
+    <html lang="pl" className="scroll-smooth" suppressHydrationWarning={true}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
