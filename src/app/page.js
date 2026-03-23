@@ -3,6 +3,7 @@ import Hero from "@/components/landing-page/Hero";
 import Features from "@/components/landing-page/Features";
 import Pricing from "@/components/landing-page/Pricing";
 import Footer from "@/components/layout/Footer";
+import OptInForm from "@/components/ui/OptInForm";
 
 export default function LandingPage() {
   return (
@@ -12,6 +13,7 @@ export default function LandingPage() {
         <Hero />
         <Features />
         <Pricing />
+        <OptInForm />
       </main>
       <Footer />
     </div>
