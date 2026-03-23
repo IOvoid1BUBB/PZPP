@@ -1,7 +1,9 @@
 "use server";
 
-import { prisma } from "../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+
+const ALLOWED_KANBAN_STATUSES = ["NEW", "CONTACTED", "WON"];
 
 // Bezpieczna funkcja serwerowa do zapisu leada
 export async function createLead(formData) {
@@ -52,5 +54,36 @@ export async function getLeads() {
     });
   } catch (error) {
     return [];
+  }
+}
+
+/**
+ * Aktualizuje status leada z walidacją wspieranych kolumn Kanban.
+ * @param {string} leadId
+ * @param {"NEW" | "CONTACTED" | "WON"} newStatus
+ * @returns {Promise<{success: boolean, lead?: import("@prisma/client").Lead, error?: string}>}
+ */
+export async function updateLeadStatus(leadId, newStatus) {
+  try {
+    if (!leadId || typeof leadId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID leada." };
+    }
+
+    if (!ALLOWED_KANBAN_STATUSES.includes(newStatus)) {
+      return { success: false, error: "Nieprawidłowy status Kanban." };
+    }
+
+    const updatedLead = await prisma.lead.update({
+      where: { id: leadId },
+      data: { status: newStatus },
+    });
+
+    revalidatePath("/dashboard/kanban");
+    revalidatePath("/dashboard");
+
+    return { success: true, lead: updatedLead };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Nie udało się zaktualizować statusu leada." };
   }
 }
