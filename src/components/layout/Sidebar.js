@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
+  LayoutDashboard,
   LayoutGrid,
   Filter,
   Table2,
@@ -13,11 +14,13 @@ import {
   Files,
   Settings,
   LogOut,
+  TrendingUp,
 } from 'lucide-react'
 
-// Elementy nawigacji zgodne ze zdjęciem
+// Elementy nawigacji
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Page builder', icon: LayoutGrid },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/pagebuilder', label: 'Page builder', icon: LayoutGrid },
   { href: '/dashboard/lejki', label: 'Lejki', icon: Filter },
   { href: '/dashboard/kanban', label: 'Tablica Kanban', icon: Table2 },
   { href: '/dashboard/skrzynka', label: 'Skrzynka', icon: Mail },
@@ -32,10 +35,21 @@ export default function Sidebar() {
 
   return (
     <aside className="flex h-full min-h-screen flex-col border-r border-sidebar-border bg-sidebar p-4 md:rounded-r-2xl">
-      {/* Logo / nagłówek */}
-      <div className="mb-8 flex h-10 w-10 items-center justify-center rounded-lg bg-foreground text-xl font-bold text-background">
-        K
-      </div>
+      {/* Logo z Navbar */}
+      <Link
+        href="/dashboard"
+        className="mb-8 flex items-center gap-2 rounded-lg p-2 transition-colors hover:bg-sidebar-accent/70"
+      >
+        <TrendingUp className="size-5 shrink-0 text-sidebar-foreground" />
+        <div className="flex flex-col">
+          <span className="text-sm font-bold leading-tight text-sidebar-foreground">
+            IMS
+          </span>
+          <span className="text-[10px] leading-tight text-muted-foreground">
+            Sprzedażowe centrum dowodzenia
+          </span>
+        </div>
+      </Link>
 
       {/* Nawigacja */}
       <nav className="flex flex-1 flex-col gap-2">
