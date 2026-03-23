@@ -46,6 +46,37 @@ export async function createLead(formData) {
   }
 }
 
+// Statystyki dashboardu (łącznie leadów, konwersja, kursy, dokumenty)
+export async function getDashboardStats() {
+  try {
+    const [totalLeads, wonLeads, activeCourses, pendingSignatures] =
+      await Promise.all([
+        prisma.lead.count(),
+        prisma.lead.count({ where: { status: "WON" } }),
+        prisma.course.count({ where: { isPublished: true } }),
+        prisma.document.count({ where: { isSigned: false } }),
+      ]);
+
+    const conversionRate =
+      totalLeads > 0 ? ((wonLeads / totalLeads) * 100).toFixed(1) : "0";
+
+    return {
+      totalLeads,
+      conversionRate: `${conversionRate}%`,
+      activeCourses,
+      pendingSignatures,
+    };
+  } catch (error) {
+    console.error("getDashboardStats:", error);
+    return {
+      totalLeads: 0,
+      conversionRate: "0%",
+      activeCourses: 0,
+      pendingSignatures: 0,
+    };
+  }
+}
+
 // Pobieranie danych dla tabeli
 export async function getLeads() {
   try {
