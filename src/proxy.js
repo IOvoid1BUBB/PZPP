@@ -7,9 +7,13 @@ export default withAuth(
     const path = req.nextUrl.pathname;
 
     // Dev mode dla sekcji dashboard
-    if (process.env.NODE_ENV === "development" && path.startsWith("/dashboard")) {
+    if (
+      process.env.NODE_ENV === "development" &&
+      (path.startsWith("/dashboard") || path.startsWith("/student"))
+    ) {
       return NextResponse.next();
     }
+    
 
     // 1. Jeśli ktoś próbuje wejść do Panelu Kreatora (Dashboard)
     if (
@@ -31,7 +35,8 @@ export default withAuth(
       authorized: ({ req, token }) => {
         if (
           process.env.NODE_ENV === "development" &&
-          req.nextUrl.pathname.startsWith("/dashboard")
+          (req.nextUrl.pathname.startsWith("/dashboard") ||
+            req.nextUrl.pathname.startsWith("/student"))
         ) {
           return true;
         }

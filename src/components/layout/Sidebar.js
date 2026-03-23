@@ -15,6 +15,8 @@ import {
   Settings,
   LogOut,
   TrendingUp,
+  IdCard,
+  User,
 } from 'lucide-react'
 
 // Elementy nawigacji
@@ -30,14 +32,32 @@ const NAV_ITEMS = [
   { href: '/dashboard/ustawienia', label: 'Ustawienia', icon: Settings },
 ]
 
+const STUDENT_NAV_ITEMS = [
+  { href: '/student', label: 'Wszystkie kursy', icon: IdCard },
+  { href: '/student/konto', label: 'Moje konto', icon: User },
+]
+
 export default function Sidebar() {
   const pathname = usePathname()
+  const isStudentRoute = pathname.startsWith('/student')
+  const navItems = isStudentRoute ? STUDENT_NAV_ITEMS : NAV_ITEMS
+  const logoHref = isStudentRoute ? '/student' : '/dashboard'
+
+  const isNavActive = (href) => {
+    if (isStudentRoute) {
+      if (href === '/student') {
+        return pathname === '/student' || pathname === '/student/'
+      }
+      return pathname === href || pathname.startsWith(`${href}/`)
+    }
+    return pathname === href
+  }
 
   return (
     <aside className="flex h-full min-h-screen flex-col border-r border-sidebar-border bg-sidebar p-4 md:rounded-r-2xl">
       {/* Logo z Navbar */}
       <Link
-        href="/dashboard"
+        href={logoHref}
         className="mb-8 flex items-center gap-2 rounded-lg p-2 transition-colors hover:bg-sidebar-accent/70"
       >
         <TrendingUp className="size-5 shrink-0 text-sidebar-foreground" />
@@ -52,9 +72,9 @@ export default function Sidebar() {
       </Link>
 
       {/* Nawigacja */}
-      <nav className="flex flex-1 flex-col gap-2">
-        {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href
+      <nav className="flex flex-1 flex-col gap-2" aria-label={isStudentRoute ? 'Nawigacja kursanta' : undefined}>
+        {navItems.map((item) => {
+          const isActive = isNavActive(item.href)
           const Icon = item.icon
 
           return (
