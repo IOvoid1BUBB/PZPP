@@ -57,6 +57,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.35.2",
     "grapesjs": "^0.21.12",
+    "grapesjs-preset-webpage": "^1.0.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
