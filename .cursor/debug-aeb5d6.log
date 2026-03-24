@@ -1,5 +1,0 @@
-{"sessionId":"aeb5d6","runId":"prisma-bugs-check","hypothesisId":"H3","location":"src/app/actions/leadActions.js:getLeads","message":"getLeads query start","data":{"queryKey":"leads.findMany"},"timestamp":1774298922070}
-{"sessionId":"aeb5d6","runId":"prisma-bugs-check","hypothesisId":"H3","location":"src/app/actions/leadActions.js:getLeads","message":"getLeads query start","data":{"queryKey":"leads.findMany"},"timestamp":1774298938314}
-{"sessionId":"aeb5d6","runId":"prisma-bugs-check","hypothesisId":"H3","location":"src/app/actions/leadActions.js:getLeads","message":"getLeads query start","data":{"queryKey":"leads.findMany"},"timestamp":1774298945113}
-{"sessionId":"aeb5d6","runId":"prisma-bugs-check","hypothesisId":"H3","location":"src/app/actions/leadActions.js:getLeads","message":"getLeads query start","data":{"queryKey":"leads.findMany"},"timestamp":1774298961346}
-{"sessionId":"aeb5d6","runId":"prisma-bugs-check","hypothesisId":"H3","location":"src/app/actions/leadActions.js:getLeads","message":"getLeads query start","data":{"queryKey":"leads.findMany"},"timestamp":1774299253751}
