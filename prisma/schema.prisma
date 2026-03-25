@@ -5,8 +5,6 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL") // Dodane standardowe zaciąganie URL (wymagane przez Prismę)
-  directUrl = env("DIRECT_URL")
 }
         
 enum Role {
@@ -94,50 +92,18 @@ model Lead {
   updatedAt   DateTime   @updatedAt
 
   //Relacje
-  tags         Tag[]      @relation("LeadTags")
-  notes        Note[]
-  documents    Document[]
-  meetings     Meeting[]
-  messages     Message[]
-  
-  // NOWE: Relacja do wartości Custom Fields
-  customFields LeadCustomFieldValue[]
+  tags        Tag[]      @relation("LeadTags")
+  notes       Note[]
+  documents   Document[]
+  meetings    Meeting[]
+  messages    Message[]
 }
 
 model Tag {
   id    String @id @default(cuid())
   name  String @unique
-  color String? // NOWE: Opcjonalny kolor tła do wyświetlania w UI tabeli CRM
-  
   leads Lead[] @relation("LeadTags")
 }
-
-// --- NOWE TABELE: CUSTOM FIELDS ---
-
-model CustomField {
-  id          String   @id @default(cuid())
-  name        String   @unique // np. "Wielkość firmy", "Budżet"
-  type        String   // np. "text", "number", "select"
-  
-  values      LeadCustomFieldValue[]
-}
-
-// Tabela przechowująca konkretne wartości (np. Budżet -> "50 000 PLN" dla konkretnego Leada)
-model LeadCustomFieldValue {
-  id            String   @id @default(cuid())
-  value         String   @db.Text // Wartość wpisana w formularzu (Text dla bezpieczeństwa długich wpisów)
-  
-  leadId        String
-  lead          Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  
-  customFieldId String
-  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
-
-  // Zabezpieczenie: dany Lead może mieć tylko jedną wartość dla konkretnego pola
-  @@unique([leadId, customFieldId]) 
-}
-
-// ----------------------------------
 
 model Note {
   id        String   @id @default(cuid())
@@ -187,42 +153,42 @@ model Course {
 }
 
 model Module {
-  id        String   @id @default(cuid())
-  title     String
-  order     Int      // Kolejność modułów
-  courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  lessons   Lesson[]
+  id          String   @id @default(cuid())
+  title       String
+  order       Int      // Kolejność modułów
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
 }
 
 model Lesson {
-  id        String   @id @default(cuid())
-  title     String
-  videoUrl  String?  //Hostowanie wideo
-  content   String?  @db.Text
-  order     Int
-  moduleId  String
-  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  title       String
+  videoUrl    String?  //Hostowanie wideo
+  content     String?  @db.Text
+  order       Int
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 }
 
 model Enrollment {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  progress  Int      @default(0) // Procent ukończenia
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress    Int      @default(0) // Procent ukończenia
+  createdAt   DateTime @default(now())
 
   @@unique([userId, courseId])
 }
 
 model Certificate {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String
-  issuedAt  DateTime @default(now())
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  issuedAt    DateTime @default(now())
 }
 
 // ======================================================
@@ -230,17 +196,17 @@ model Certificate {
 // ======================================================
 
 model Document {
-  id        String   @id @default(cuid())
-  title     String
-  fileUrl   String   // Ścieżka do zapisanego pliku PDF/HTML
-  isSigned  Boolean  @default(false)
-  signature String?  @db.Text // Plik graficzny z react-signature-canvas (base64)
-  signedAt  DateTime?
+  id          String   @id @default(cuid())
+  title       String
+  fileUrl     String   // Ścieżka do zapisanego pliku PDF/HTML
+  isSigned    Boolean  @default(false)
+  signature   String?  @db.Text // Plik graficzny z react-signature-canvas (base64)
+  signedAt    DateTime?
   
-  leadId    String
-  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 // MODUŁ F: KALENDARZ I SPOTKANIA
