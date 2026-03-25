@@ -18,7 +18,7 @@ export default function StudentDashboard({
   const router = useRouter()
 
   const handleOpenCourse = (course) => {
-    router.push(`/student/kurs/${course.id}`)
+    router.push(`/courses/${course.id}`)
   }
 
   return (
