@@ -23,11 +23,11 @@ import {
 // Elementy nawigacji
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/pagebuilder', label: 'Page builder', icon: LayoutGrid },
+  { href: '/dashboard/pagebuilder', label: 'Page builder', icon: LayoutGrid },
   { href: '/dashboard/lejki', label: 'Lejki', icon: Filter },
   { href: '/dashboard/kanban', label: 'Tablica Kanban', icon: Table2 },
   { href: '/dashboard/skrzynka', label: 'Skrzynka', icon: Mail },
-  { href: '/dashboard/kalendarz', label: 'Kalendarz', icon: Calendar },
+  { href: '/dashboard/calendar', label: 'Kalendarz', icon: Calendar },
   { href: '/dashboard/kursy', label: 'Kursy', icon: BookMarked },
   { href: '/dashboard/dokumenty', label: 'Dokumenty', icon: Files },
   { href: '/dashboard/ustawienia', label: 'Ustawienia', icon: Settings },
