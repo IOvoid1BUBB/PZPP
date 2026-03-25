@@ -16,6 +16,8 @@ import {
   Settings,
   LogOut,
   TrendingUp,
+  IdCard,
+  User,
   Menu,
   X,
 } from 'lucide-react'
@@ -33,10 +35,15 @@ const NAV_ITEMS = [
   { href: '/dashboard/ustawienia', label: 'Ustawienia', icon: Settings },
 ]
 
-function SidebarBrand({ className = '', onNavigate }) {
+const STUDENT_NAV_ITEMS = [
+  { href: '/student', label: 'Wszystkie kursy', icon: IdCard },
+  { href: '/student/konto', label: 'Moje konto', icon: User },
+]
+
+function SidebarBrand({ className = '', onNavigate, logoHref }) {
   return (
     <Link
-      href="/dashboard"
+      href={logoHref}
       onClick={onNavigate}
       className={`mb-8 flex items-center gap-2 rounded-lg p-2 transition-colors hover:bg-sidebar-accent/70 ${className}`}
     >
@@ -53,11 +60,23 @@ function SidebarBrand({ className = '', onNavigate }) {
   )
 }
 
-function NavLinks({ pathname, onItemClick }) {
+function NavLinks({ pathname, onItemClick, isStudentRoute }) {
+  const navItems = isStudentRoute ? STUDENT_NAV_ITEMS : NAV_ITEMS
+
+  const isNavActive = (href) => {
+    if (isStudentRoute) {
+      if (href === '/student') {
+        return pathname === '/student' || pathname === '/student/'
+      }
+      return pathname === href || pathname.startsWith(`${href}/`)
+    }
+    return pathname === href
+  }
+
   return (
     <>
-      {NAV_ITEMS.map((item) => {
-        const isActive = pathname === item.href
+      {navItems.map((item) => {
+        const isActive = isNavActive(item.href)
         const Icon = item.icon
 
         return (
@@ -98,6 +117,9 @@ export default function Sidebar() {
   const panelId = useId()
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  const isStudentRoute = pathname.startsWith('/student')
+  const logoHref = isStudentRoute ? '/student' : '/dashboard'
+
   const closeMobile = () => setMobileOpen(false)
 
   useEffect(() => {
@@ -137,7 +159,7 @@ export default function Sidebar() {
           )}
         </button>
         <Link
-          href="/dashboard"
+          href={logoHref}
           className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-sidebar-accent/70"
         >
           <TrendingUp className="size-5 shrink-0 text-sidebar-foreground" />
@@ -153,14 +175,12 @@ export default function Sidebar() {
 
       {/* Desktop */}
       <aside className="hidden h-full min-h-screen flex-col border-r border-sidebar-border bg-sidebar p-4 md:flex md:rounded-r-2xl">
-        <SidebarBrand />
+        <SidebarBrand logoHref={logoHref} />
         <nav className="flex flex-1 flex-col gap-2">
-          <NavLinks pathname={pathname} />
+          <NavLinks pathname={pathname} isStudentRoute={isStudentRoute} />
         </nav>
         <div className="mt-auto border-t border-sidebar-border pt-4">
-          <LogoutButton
-            onClick={() => signOut({ callbackUrl: '/' })}
-          />
+          <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />
         </div>
       </aside>
 
@@ -190,14 +210,12 @@ export default function Sidebar() {
                 <X className="size-5 stroke-[1.5]" />
               </button>
             </div>
-            <SidebarBrand className="mb-6" onNavigate={closeMobile} />
+            <SidebarBrand className="mb-6" onNavigate={closeMobile} logoHref={logoHref} />
             <nav className="flex flex-1 flex-col gap-2 overflow-y-auto">
-              <NavLinks pathname={pathname} onItemClick={closeMobile} />
+              <NavLinks pathname={pathname} onItemClick={closeMobile} isStudentRoute={isStudentRoute} />
             </nav>
             <div className="mt-auto border-t border-sidebar-border pt-4">
-              <LogoutButton
-                onClick={() => signOut({ callbackUrl: '/' })}
-              />
+              <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />
             </div>
           </aside>
         </div>
