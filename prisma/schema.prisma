@@ -18,6 +18,7 @@ model User {
   name          String?
   email         String?   @unique
   password      String?   // Pole na zahashowane hasło
+  timezone      String?   @default("Europe/Warsaw")
   emailVerified DateTime?
   image         String?
   role          Role      @default(UCZESTNIK)
