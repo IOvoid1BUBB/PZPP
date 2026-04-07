@@ -2,6 +2,7 @@
 
 import { DragDropContext } from "@hello-pangea/dnd";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ExternalLink, Ticket } from "lucide-react";
 import { getLeads, updateLeadStatus } from "@/app/actions/leadActions";
 import KanbanColumn from "./KanbanColumn";
 
@@ -19,7 +20,7 @@ function optimisticallyMoveLead(leads, leadId, newStatus) {
 }
 
 // Kontener glownej tablicy Kanban dla leadow.
-export default function KanbanBoard() {
+export default function KanbanBoard({ jiraIssues = [] }) {
   const queryClient = useQueryClient();
 
   const { data: leads = [], isLoading } = useQuery({
@@ -90,6 +91,45 @@ export default function KanbanBoard() {
             leads={leads.filter((lead) => lead.status === column.status)}
           />
         ))}
+        </div>
+
+        <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
+          {/* TODO: Rozszerzyć o dwukierunkową synchronizację statusów między Kanban a Jira. */}
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+              <Ticket className="size-4 text-blue-700" />
+              Zadania Jira (read-only)
+            </h3>
+            <span className="rounded-full border border-blue-200 bg-white px-2.5 py-1 text-xs font-medium text-blue-700">
+              {jiraIssues.length}
+            </span>
+          </div>
+
+          {jiraIssues.length < 1 ? (
+            <p className="text-xs text-slate-600">
+              Brak zadań do wyświetlenia lub brak aktywnej integracji Jira.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {jiraIssues.map((issue) => (
+                <a
+                  key={issue.id}
+                  href={issue.url || "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-start justify-between gap-3 rounded-lg border border-blue-100 bg-white px-3 py-2 text-sm hover:bg-blue-50"
+                >
+                  <div className="min-w-0">
+                    <div className="font-medium text-slate-900">
+                      {issue.key}: {issue.summary}
+                    </div>
+                    <div className="text-xs text-slate-600">Status: {issue.status}</div>
+                  </div>
+                  <ExternalLink className="size-4 shrink-0 text-blue-700" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </DragDropContext>
