@@ -27,6 +27,7 @@ model User {
 
   accounts      Account[]
   sessions      Session[]
+  apiKeyIntegrations ApiKeyIntegration[]
   
   // Relacje biznesowe
   organizedMeetings Meeting[]  @relation("MeetingOrganizer")
@@ -51,6 +52,19 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model ApiKeyIntegration {
+  id           String   @id @default(cuid())
+  userId       String
+  providerName String
+  encryptedKey String   @db.Text
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@unique([userId, providerName])
 }
 
 model Session {
