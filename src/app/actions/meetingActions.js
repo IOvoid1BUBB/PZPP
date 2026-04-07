@@ -60,6 +60,239 @@ export async function getMeetings(startDate, endDate) {
   }
 }
 
+function isTokenExpired(expiresAt) {
+  if (!expiresAt) return false;
+  const nowInSeconds = Math.floor(Date.now() / 1000);
+  return expiresAt <= nowInSeconds;
+}
+
+function toIsoDateOrNull(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function toUnifiedEvent(item) {
+  const start = toIsoDateOrNull(item?.start);
+  const end = toIsoDateOrNull(item?.end);
+  if (!start || !end) return null;
+
+  return {
+    id: item.id,
+    title: item.title || "Bez tytułu",
+    start,
+    end,
+    source: item.source,
+    externalUrl: item.externalUrl || null,
+  };
+}
+
+async function fetchGoogleCalendarEvents(account, rangeStart, rangeEnd) {
+  try {
+    if (!account?.access_token) return [];
+    if (isTokenExpired(account.expires_at)) {
+      // TODO: Dodać refresh token rotation i ponowienie requestu do Google API.
+      throw new Error("Google token wygasł.");
+    }
+
+    const params = new URLSearchParams({
+      singleEvents: "true",
+      orderBy: "startTime",
+      maxResults: "200",
+      timeMin: rangeStart.toISOString(),
+      timeMax: rangeEnd.toISOString(),
+    });
+
+    const response = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${account.access_token}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (response.status === 401) {
+      // TODO: Dodać flow odświeżania tokenu dla Google.
+      throw new Error("Google API 401.");
+    }
+
+    if (!response.ok) {
+      throw new Error(`Google API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const items = Array.isArray(data?.items) ? data.items : [];
+
+    return items
+      .map((event) =>
+        toUnifiedEvent({
+          id: `google-${event.id}`,
+          title: event.summary,
+          start: event?.start?.dateTime || event?.start?.date,
+          end: event?.end?.dateTime || event?.end?.date,
+          source: "google",
+          externalUrl: event?.htmlLink || null,
+        })
+      )
+      .filter(Boolean);
+  } catch (error) {
+    console.error("fetchGoogleCalendarEvents:", error);
+    throw error;
+  }
+}
+
+async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
+  try {
+    if (!account?.access_token) return [];
+    if (isTokenExpired(account.expires_at)) {
+      // TODO: Dodać refresh token rotation i ponowienie requestu do Microsoft Graph.
+      throw new Error("Outlook token wygasł.");
+    }
+
+    const params = new URLSearchParams({
+      $top: "200",
+      $orderby: "start/dateTime",
+      startDateTime: rangeStart.toISOString(),
+      endDateTime: rangeEnd.toISOString(),
+    });
+
+    const response = await fetch(
+      `https://graph.microsoft.com/v1.0/me/calendarView?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${account.access_token}`,
+          "Content-Type": "application/json",
+          Prefer: 'outlook.timezone="UTC"',
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (response.status === 401) {
+      // TODO: Dodać flow odświeżania tokenu dla Outlook/Graph.
+      throw new Error("Microsoft Graph API 401.");
+    }
+
+    if (!response.ok) {
+      throw new Error(`Microsoft Graph API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const items = Array.isArray(data?.value) ? data.value : [];
+
+    return items
+      .map((event) =>
+        toUnifiedEvent({
+          id: `outlook-${event.id}`,
+          title: event.subject,
+          start: event?.start?.dateTime,
+          end: event?.end?.dateTime,
+          source: "outlook",
+          externalUrl: event?.webLink || null,
+        })
+      )
+      .filter(Boolean);
+  } catch (error) {
+    console.error("fetchOutlookCalendarEvents:", error);
+    throw error;
+  }
+}
+
+/**
+ * Zwraca ujednoliconą listę wydarzeń z lokalnej bazy oraz integracji OAuth.
+ * Błędy z zewnętrznych providerów nie przerywają działania kalendarza.
+ *
+ * @param {string | null | undefined} userId
+ * @param {string|Date} startDate
+ * @param {string|Date} endDate
+ */
+export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
+  try {
+    const start = toDate(startDate, "startDate");
+    const end = toDate(endDate, "endDate");
+    if (end <= start) return [];
+
+    let resolvedUserId = userId;
+    if (!resolvedUserId) {
+      const session = await getServerSession(authOptions);
+      resolvedUserId = session?.user?.id;
+    }
+
+    const [localMeetings, accounts] = await Promise.all([
+      prisma.meeting.findMany({
+        where: {
+          startTime: { lt: end },
+          endTime: { gt: start },
+          ...(resolvedUserId ? { organizerId: resolvedUserId } : {}),
+        },
+        orderBy: { startTime: "asc" },
+        select: {
+          id: true,
+          title: true,
+          startTime: true,
+          endTime: true,
+          meetLink: true,
+        },
+      }),
+      resolvedUserId
+        ? prisma.account.findMany({
+            where: {
+              userId: resolvedUserId,
+              provider: { in: ["google", "azure-ad"] },
+            },
+            select: {
+              provider: true,
+              access_token: true,
+              refresh_token: true,
+              expires_at: true,
+            },
+          })
+        : Promise.resolve([]),
+    ]);
+
+    const googleAccount = accounts.find((account) => account.provider === "google");
+    const outlookAccount = accounts.find((account) => account.provider === "azure-ad");
+
+    const externalResults = await Promise.allSettled([
+      googleAccount ? fetchGoogleCalendarEvents(googleAccount, start, end) : [],
+      outlookAccount ? fetchOutlookCalendarEvents(outlookAccount, start, end) : [],
+    ]);
+
+    const externalEvents = externalResults
+      .flatMap((result) => {
+        if (result.status === "fulfilled") return result.value || [];
+        console.error("getUnifiedCalendarEvents external provider error:", result.reason);
+        return [];
+      })
+      .filter(Boolean);
+
+    const localEvents = localMeetings
+      .map((meeting) =>
+        toUnifiedEvent({
+          id: meeting.id,
+          title: meeting.title,
+          start: meeting.startTime,
+          end: meeting.endTime,
+          source: "local",
+          externalUrl: meeting.meetLink || null,
+        })
+      )
+      .filter(Boolean);
+
+    return [...localEvents, ...externalEvents].sort(
+      (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
+    );
+  } catch (error) {
+    console.error("getUnifiedCalendarEvents:", error);
+    return [];
+  }
+}
+
 /**
  * Tworzy nowe spotkanie.
  *
@@ -98,6 +331,8 @@ export async function createMeeting(data) {
         ? meetLinkRaw.trim() || null
         : meetLinkRaw ?? null;
 
+    // TODO: Dla synchronizacji 2-way po utworzeniu lokalnego spotkania
+    // należy wykonać mutację do Google/Outlook i zapisać external event id.
     const meeting = await prisma.meeting.create({
       data: {
         title,
