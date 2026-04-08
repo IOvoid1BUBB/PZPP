@@ -28,3 +28,11 @@ export const LeadStatus = {
 } as const
 
 export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
+
+
+export const LessonResourceType = {
+  LINK: 'LINK',
+  PDF: 'PDF'
+} as const
+
+export type LessonResourceType = (typeof LessonResourceType)[keyof typeof LessonResourceType]

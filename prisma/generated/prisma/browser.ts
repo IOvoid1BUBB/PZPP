@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type Account = Prisma.AccountModel
 /**
+ * Model ApiKeyIntegration
+ * 
+ */
+export type ApiKeyIntegration = Prisma.ApiKeyIntegrationModel
+/**
  * Model Session
  * 
  */
@@ -77,6 +82,11 @@ export type Module = Prisma.ModuleModel
  * 
  */
 export type Lesson = Prisma.LessonModel
+/**
+ * Model LessonResource
+ * 
+ */
+export type LessonResource = Prisma.LessonResourceModel
 /**
  * Model Enrollment
  * 

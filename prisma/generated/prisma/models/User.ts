@@ -29,6 +29,7 @@ export type UserMinAggregateOutputType = {
   name: string | null
   email: string | null
   password: string | null
+  timezone: string | null
   emailVerified: Date | null
   image: string | null
   role: $Enums.Role | null
@@ -41,6 +42,7 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   email: string | null
   password: string | null
+  timezone: string | null
   emailVerified: Date | null
   image: string | null
   role: $Enums.Role | null
@@ -53,6 +55,7 @@ export type UserCountAggregateOutputType = {
   name: number
   email: number
   password: number
+  timezone: number
   emailVerified: number
   image: number
   role: number
@@ -67,6 +70,7 @@ export type UserMinAggregateInputType = {
   name?: true
   email?: true
   password?: true
+  timezone?: true
   emailVerified?: true
   image?: true
   role?: true
@@ -79,6 +83,7 @@ export type UserMaxAggregateInputType = {
   name?: true
   email?: true
   password?: true
+  timezone?: true
   emailVerified?: true
   image?: true
   role?: true
@@ -91,6 +96,7 @@ export type UserCountAggregateInputType = {
   name?: true
   email?: true
   password?: true
+  timezone?: true
   emailVerified?: true
   image?: true
   role?: true
@@ -176,6 +182,7 @@ export type UserGroupByOutputType = {
   name: string | null
   email: string | null
   password: string | null
+  timezone: string | null
   emailVerified: Date | null
   image: string | null
   role: $Enums.Role
@@ -209,6 +216,7 @@ export type UserWhereInput = {
   name?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
+  timezone?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
@@ -216,6 +224,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationListRelationFilter
   organizedMeetings?: Prisma.MeetingListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
@@ -226,6 +235,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -233,6 +243,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationOrderByRelationAggregateInput
   organizedMeetings?: Prisma.MeetingOrderByRelationAggregateInput
   enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
@@ -246,6 +257,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
+  timezone?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
@@ -253,6 +265,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationListRelationFilter
   organizedMeetings?: Prisma.MeetingListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
@@ -263,6 +276,7 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
+  timezone?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -281,6 +295,7 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  timezone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
@@ -293,6 +308,7 @@ export type UserCreateInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -300,6 +316,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -310,6 +327,7 @@ export type UserUncheckedCreateInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -317,6 +335,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -327,6 +346,7 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -334,6 +354,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -344,6 +365,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -351,6 +373,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
@@ -361,6 +384,7 @@ export type UserCreateManyInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -373,6 +397,7 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -385,6 +410,7 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -397,6 +423,7 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -409,6 +436,7 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -421,6 +449,7 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  timezone?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -465,6 +494,20 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutAccountsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserCreateNestedOneWithoutApiKeyIntegrationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedCreateWithoutApiKeyIntegrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApiKeyIntegrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutApiKeyIntegrationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedCreateWithoutApiKeyIntegrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApiKeyIntegrationsInput
+  upsert?: Prisma.UserUpsertWithoutApiKeyIntegrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApiKeyIntegrationsInput, Prisma.UserUpdateWithoutApiKeyIntegrationsInput>, Prisma.UserUncheckedUpdateWithoutApiKeyIntegrationsInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -528,12 +571,14 @@ export type UserCreateWithoutAccountsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -544,12 +589,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -576,12 +623,14 @@ export type UserUpdateWithoutAccountsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -592,11 +641,101 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutApiKeyIntegrationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApiKeyIntegrationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedCreateWithoutApiKeyIntegrationsInput>
+}
+
+export type UserUpsertWithoutApiKeyIntegrationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedUpdateWithoutApiKeyIntegrationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedCreateWithoutApiKeyIntegrationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApiKeyIntegrationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApiKeyIntegrationsInput, Prisma.UserUncheckedUpdateWithoutApiKeyIntegrationsInput>
+}
+
+export type UserUpdateWithoutApiKeyIntegrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -608,12 +747,14 @@ export type UserCreateWithoutSessionsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -624,12 +765,14 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -656,12 +799,14 @@ export type UserUpdateWithoutSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -672,12 +817,14 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
@@ -688,6 +835,7 @@ export type UserCreateWithoutEnrollmentsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -695,6 +843,7 @@ export type UserCreateWithoutEnrollmentsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
 }
@@ -704,6 +853,7 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -711,6 +861,7 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
 }
@@ -736,6 +887,7 @@ export type UserUpdateWithoutEnrollmentsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -743,6 +895,7 @@ export type UserUpdateWithoutEnrollmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
 }
@@ -752,6 +905,7 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -759,6 +913,7 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -768,6 +923,7 @@ export type UserCreateWithoutCertificatesInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -775,6 +931,7 @@ export type UserCreateWithoutCertificatesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
 }
@@ -784,6 +941,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -791,6 +949,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
 }
@@ -816,6 +975,7 @@ export type UserUpdateWithoutCertificatesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -823,6 +983,7 @@ export type UserUpdateWithoutCertificatesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
 }
@@ -832,6 +993,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -839,6 +1001,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -848,6 +1011,7 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -855,6 +1019,7 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
 }
@@ -864,6 +1029,7 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   name?: string | null
   email?: string | null
   password?: string | null
+  timezone?: string | null
   emailVerified?: Date | string | null
   image?: string | null
   role?: $Enums.Role
@@ -871,6 +1037,7 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
 }
@@ -896,6 +1063,7 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -903,6 +1071,7 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
 }
@@ -912,6 +1081,7 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -919,6 +1089,7 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -931,6 +1102,7 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
 export type UserCountOutputType = {
   accounts: number
   sessions: number
+  apiKeyIntegrations: number
   organizedMeetings: number
   enrollments: number
   certificates: number
@@ -939,6 +1111,7 @@ export type UserCountOutputType = {
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  apiKeyIntegrations?: boolean | UserCountOutputTypeCountApiKeyIntegrationsArgs
   organizedMeetings?: boolean | UserCountOutputTypeCountOrganizedMeetingsArgs
   enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
   certificates?: boolean | UserCountOutputTypeCountCertificatesArgs
@@ -971,6 +1144,13 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountApiKeyIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApiKeyIntegrationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountOrganizedMeetingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MeetingWhereInput
 }
@@ -995,6 +1175,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   email?: boolean
   password?: boolean
+  timezone?: boolean
   emailVerified?: boolean
   image?: boolean
   role?: boolean
@@ -1002,6 +1183,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  apiKeyIntegrations?: boolean | Prisma.User$apiKeyIntegrationsArgs<ExtArgs>
   organizedMeetings?: boolean | Prisma.User$organizedMeetingsArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
@@ -1013,6 +1195,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   email?: boolean
   password?: boolean
+  timezone?: boolean
   emailVerified?: boolean
   image?: boolean
   role?: boolean
@@ -1025,6 +1208,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   email?: boolean
   password?: boolean
+  timezone?: boolean
   emailVerified?: boolean
   image?: boolean
   role?: boolean
@@ -1037,6 +1221,7 @@ export type UserSelectScalar = {
   name?: boolean
   email?: boolean
   password?: boolean
+  timezone?: boolean
   emailVerified?: boolean
   image?: boolean
   role?: boolean
@@ -1044,10 +1229,11 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "emailVerified" | "image" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "timezone" | "emailVerified" | "image" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  apiKeyIntegrations?: boolean | Prisma.User$apiKeyIntegrationsArgs<ExtArgs>
   organizedMeetings?: boolean | Prisma.User$organizedMeetingsArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
@@ -1061,6 +1247,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    apiKeyIntegrations: Prisma.$ApiKeyIntegrationPayload<ExtArgs>[]
     organizedMeetings: Prisma.$MeetingPayload<ExtArgs>[]
     enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
@@ -1070,6 +1257,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string | null
     email: string | null
     password: string | null
+    timezone: string | null
     emailVerified: Date | null
     image: string | null
     role: $Enums.Role
@@ -1471,6 +1659,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  apiKeyIntegrations<T extends Prisma.User$apiKeyIntegrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apiKeyIntegrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizedMeetings<T extends Prisma.User$organizedMeetingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizedMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   certificates<T extends Prisma.User$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1507,6 +1696,7 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
+  readonly timezone: Prisma.FieldRef<"User", 'String'>
   readonly emailVerified: Prisma.FieldRef<"User", 'DateTime'>
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
@@ -1950,6 +2140,30 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.apiKeyIntegrations
+ */
+export type User$apiKeyIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApiKeyIntegration
+   */
+  select?: Prisma.ApiKeyIntegrationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApiKeyIntegration
+   */
+  omit?: Prisma.ApiKeyIntegrationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApiKeyIntegrationInclude<ExtArgs> | null
+  where?: Prisma.ApiKeyIntegrationWhereInput
+  orderBy?: Prisma.ApiKeyIntegrationOrderByWithRelationInput | Prisma.ApiKeyIntegrationOrderByWithRelationInput[]
+  cursor?: Prisma.ApiKeyIntegrationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApiKeyIntegrationScalarFieldEnum | Prisma.ApiKeyIntegrationScalarFieldEnum[]
 }
 
 /**

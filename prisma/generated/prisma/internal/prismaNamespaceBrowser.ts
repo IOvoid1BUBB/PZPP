@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Account: 'Account',
+  ApiKeyIntegration: 'ApiKeyIntegration',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Lead: 'Lead',
@@ -63,6 +64,7 @@ export const ModelName = {
   Course: 'Course',
   Module: 'Module',
   Lesson: 'Lesson',
+  LessonResource: 'LessonResource',
   Enrollment: 'Enrollment',
   Certificate: 'Certificate',
   Document: 'Document',
@@ -91,6 +93,7 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
+  timezone: 'timezone',
   emailVerified: 'emailVerified',
   image: 'image',
   role: 'role',
@@ -117,6 +120,17 @@ export const AccountScalarFieldEnum = {
 } as const
 
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const ApiKeyIntegrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  providerName: 'providerName',
+  encryptedKey: 'encryptedKey',
+  createdAt: 'createdAt'
+} as const
+
+export type ApiKeyIntegrationScalarFieldEnum = (typeof ApiKeyIntegrationScalarFieldEnum)[keyof typeof ApiKeyIntegrationScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -226,12 +240,25 @@ export const LessonScalarFieldEnum = {
   id: 'id',
   title: 'title',
   videoUrl: 'videoUrl',
+  videoText: 'videoText',
   content: 'content',
   order: 'order',
   moduleId: 'moduleId'
 } as const
 
 export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
+
+
+export const LessonResourceScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  url: 'url',
+  order: 'order',
+  lessonId: 'lessonId'
+} as const
+
+export type LessonResourceScalarFieldEnum = (typeof LessonResourceScalarFieldEnum)[keyof typeof LessonResourceScalarFieldEnum]
 
 
 export const EnrollmentScalarFieldEnum = {

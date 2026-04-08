@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Account: 'Account',
+  ApiKeyIntegration: 'ApiKeyIntegration',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Lead: 'Lead',
@@ -396,6 +397,7 @@ export const ModelName = {
   Course: 'Course',
   Module: 'Module',
   Lesson: 'Lesson',
+  LessonResource: 'LessonResource',
   Enrollment: 'Enrollment',
   Certificate: 'Certificate',
   Document: 'Document',
@@ -416,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "message" | "course" | "module" | "lesson" | "enrollment" | "certificate" | "document" | "meeting" | "customField"
+    modelProps: "user" | "account" | "apiKeyIntegration" | "session" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "message" | "course" | "module" | "lesson" | "lessonResource" | "enrollment" | "certificate" | "document" | "meeting" | "customField"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -565,6 +567,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApiKeyIntegration: {
+      payload: Prisma.$ApiKeyIntegrationPayload<ExtArgs>
+      fields: Prisma.ApiKeyIntegrationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApiKeyIntegrationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApiKeyIntegrationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        findFirst: {
+          args: Prisma.ApiKeyIntegrationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApiKeyIntegrationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        findMany: {
+          args: Prisma.ApiKeyIntegrationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>[]
+        }
+        create: {
+          args: Prisma.ApiKeyIntegrationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        createMany: {
+          args: Prisma.ApiKeyIntegrationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApiKeyIntegrationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>[]
+        }
+        delete: {
+          args: Prisma.ApiKeyIntegrationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        update: {
+          args: Prisma.ApiKeyIntegrationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApiKeyIntegrationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApiKeyIntegrationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApiKeyIntegrationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApiKeyIntegrationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyIntegrationPayload>
+        }
+        aggregate: {
+          args: Prisma.ApiKeyIntegrationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApiKeyIntegration>
+        }
+        groupBy: {
+          args: Prisma.ApiKeyIntegrationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiKeyIntegrationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApiKeyIntegrationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiKeyIntegrationCountAggregateOutputType> | number
         }
       }
     }
@@ -1308,6 +1384,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LessonResource: {
+      payload: Prisma.$LessonResourcePayload<ExtArgs>
+      fields: Prisma.LessonResourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LessonResourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LessonResourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        findFirst: {
+          args: Prisma.LessonResourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LessonResourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        findMany: {
+          args: Prisma.LessonResourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>[]
+        }
+        create: {
+          args: Prisma.LessonResourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        createMany: {
+          args: Prisma.LessonResourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LessonResourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>[]
+        }
+        delete: {
+          args: Prisma.LessonResourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        update: {
+          args: Prisma.LessonResourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.LessonResourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LessonResourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LessonResourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.LessonResourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LessonResourcePayload>
+        }
+        aggregate: {
+          args: Prisma.LessonResourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLessonResource>
+        }
+        groupBy: {
+          args: Prisma.LessonResourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LessonResourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LessonResourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LessonResourceCountAggregateOutputType> | number
+        }
+      }
+    }
     Enrollment: {
       payload: Prisma.$EnrollmentPayload<ExtArgs>
       fields: Prisma.EnrollmentFieldRefs
@@ -1722,6 +1872,7 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
+  timezone: 'timezone',
   emailVerified: 'emailVerified',
   image: 'image',
   role: 'role',
@@ -1748,6 +1899,17 @@ export const AccountScalarFieldEnum = {
 } as const
 
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const ApiKeyIntegrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  providerName: 'providerName',
+  encryptedKey: 'encryptedKey',
+  createdAt: 'createdAt'
+} as const
+
+export type ApiKeyIntegrationScalarFieldEnum = (typeof ApiKeyIntegrationScalarFieldEnum)[keyof typeof ApiKeyIntegrationScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1857,12 +2019,25 @@ export const LessonScalarFieldEnum = {
   id: 'id',
   title: 'title',
   videoUrl: 'videoUrl',
+  videoText: 'videoText',
   content: 'content',
   order: 'order',
   moduleId: 'moduleId'
 } as const
 
 export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
+
+
+export const LessonResourceScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  url: 'url',
+  order: 'order',
+  lessonId: 'lessonId'
+} as const
+
+export type LessonResourceScalarFieldEnum = (typeof LessonResourceScalarFieldEnum)[keyof typeof LessonResourceScalarFieldEnum]
 
 
 export const EnrollmentScalarFieldEnum = {
@@ -2046,6 +2221,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
+
+/**
+ * Reference to a field of type 'LessonResourceType'
+ */
+export type EnumLessonResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LessonResourceType'>
+    
+
+
+/**
+ * Reference to a field of type 'LessonResourceType[]'
+ */
+export type ListEnumLessonResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LessonResourceType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2143,6 +2332,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   account?: Prisma.AccountOmit
+  apiKeyIntegration?: Prisma.ApiKeyIntegrationOmit
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit
   lead?: Prisma.LeadOmit
@@ -2153,6 +2343,7 @@ export type GlobalOmitConfig = {
   course?: Prisma.CourseOmit
   module?: Prisma.ModuleOmit
   lesson?: Prisma.LessonOmit
+  lessonResource?: Prisma.LessonResourceOmit
   enrollment?: Prisma.EnrollmentOmit
   certificate?: Prisma.CertificateOmit
   document?: Prisma.DocumentOmit
