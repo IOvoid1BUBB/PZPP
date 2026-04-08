@@ -225,6 +225,7 @@ export type MeetingOrderByWithRelationInput = {
 
 export type MeetingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  organizerId_startTime?: Prisma.MeetingOrganizerIdStartTimeCompoundUniqueInput
   AND?: Prisma.MeetingWhereInput | Prisma.MeetingWhereInput[]
   OR?: Prisma.MeetingWhereInput[]
   NOT?: Prisma.MeetingWhereInput | Prisma.MeetingWhereInput[]
@@ -237,7 +238,7 @@ export type MeetingWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   organizer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
-}, "id">
+}, "id" | "organizerId_startTime">
 
 export type MeetingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -350,6 +351,11 @@ export type MeetingListRelationFilter = {
 
 export type MeetingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type MeetingOrganizerIdStartTimeCompoundUniqueInput = {
+  organizerId: string
+  startTime: Date | string
 }
 
 export type MeetingCountOrderByAggregateInput = {

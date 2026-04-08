@@ -263,6 +263,7 @@ model Meeting {
   lead        Lead?    @relation(fields: [leadId], references: [id])
 
   createdAt   DateTime @default(now())
+  @@unique([organizerId, startTime])
 }
 model CustomField {
   id        String   @id @default(cuid())

@@ -368,6 +368,15 @@ export async function createMeeting(data) {
       },
     };
   } catch (error) {
+    //Wyłapywanie błędu unikalności z bazy danych (zapobieganie dublowaniu)
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: "Ten termin jest już zajęty! Ktoś inny zdążył zarezerwować tę samą godzinę.",
+      };
+    }
+
+    // Standardowe łapanie pozostałych błędów
     console.error("createMeeting:", error);
     return {
       success: false,
@@ -375,6 +384,7 @@ export async function createMeeting(data) {
     };
   }
 }
+
 
 /**
  * Usuwa spotkanie po id (tylko jeśli należy do zalogowanego organizatora).
