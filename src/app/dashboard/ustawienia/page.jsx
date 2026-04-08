@@ -81,7 +81,14 @@ const preferencesSchema = z.object({
 export default function SettingsPage() {
   const { toast } = useToast();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [connectedProviders, setConnectedProviders] = useState([]);
+  const [integrationsData, setIntegrationsData] = useState({
+    connectedProviders: [],
+    jiraProjects: [],
+    jiraProjectsError: null,
+    jiraSelectedProjectKey: null,
+    jiraSelectedProjectName: null,
+    jiraSelectedCloudId: null,
+  });
 
   const profileForm = useForm({
     resolver: zodResolver(profileSchema),
@@ -134,9 +141,23 @@ export default function SettingsPage() {
       });
 
       if (integrationsResult?.success) {
-        setConnectedProviders(integrationsResult.data.connectedProviders || []);
+        setIntegrationsData({
+          connectedProviders: integrationsResult.data.connectedProviders || [],
+          jiraProjects: integrationsResult.data.jiraProjects || [],
+          jiraProjectsError: integrationsResult.data.jiraProjectsError || null,
+          jiraSelectedProjectKey: integrationsResult.data.jiraSelectedProjectKey || null,
+          jiraSelectedProjectName: integrationsResult.data.jiraSelectedProjectName || null,
+          jiraSelectedCloudId: integrationsResult.data.jiraSelectedCloudId || null,
+        });
       } else {
-        setConnectedProviders([]);
+        setIntegrationsData({
+          connectedProviders: [],
+          jiraProjects: [],
+          jiraProjectsError: null,
+          jiraSelectedProjectKey: null,
+          jiraSelectedProjectName: null,
+          jiraSelectedCloudId: null,
+        });
       }
       setIsInitialLoading(false);
     }
@@ -388,7 +409,13 @@ export default function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="integracje" className="pt-4">
-          <IntegrationPanelClient connectedProviders={connectedProviders} />
+          <IntegrationPanelClient
+            connectedProviders={integrationsData.connectedProviders}
+            jiraProjects={integrationsData.jiraProjects}
+            jiraProjectsError={integrationsData.jiraProjectsError}
+            jiraSelectedProjectKey={integrationsData.jiraSelectedProjectKey}
+            jiraSelectedCloudId={integrationsData.jiraSelectedCloudId}
+          />
         </TabsContent>
       </Tabs>
     </div>

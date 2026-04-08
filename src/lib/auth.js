@@ -72,6 +72,18 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ account, user }) {
+      if (!account || account.provider === "credentials") {
+        return true;
+      }
+
+      // Prevent creating/linking OAuth accounts when provider does not return email.
+      if (!user?.email) {
+        return "/login?error=OAuthEmailMissing";
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
