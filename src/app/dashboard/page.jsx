@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"; // <-- DODANE: Importujemy stan z Reacta
 import { useQuery } from "@tanstack/react-query";
 import {
   Card,
@@ -36,10 +37,10 @@ import { getLeads, getDashboardStats } from "@/app/actions/leadActions";
 const STATUS_LABELS = {
   NEW: "Nowy",
   CONTACTED: "W kontakcie",
-  QUALIFIED: "Zakwalifikowany",
+  QUALIFIED: "Zakwalifikowane",
   PROPOSAL: "Propozycja",
-  WON: "Sprzedany",
-  LOST: "Utracony",
+  WON: "Sprzedane",
+  LOST: "Utracone",
 };
 
 const STATUS_COLORS = {
@@ -51,11 +52,11 @@ const STATUS_COLORS = {
   LOST: "bg-gray-400/90 text-white border-gray-500",
 };
 
-/**
- * Strona główna dashboardu CRM – startowy ekran podsumowania (Home/Statystyki).
- * @returns {JSX.Element}
- */
 export default function DashboardPage() {
+  // 1. DODANE: Stany dla wyszukiwarki i filtra statusu
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+
   const { data: leads = [], isLoading: leadsLoading } = useQuery({
     queryKey: ["leads"],
     queryFn: () => getLeads(),
@@ -94,7 +95,21 @@ export default function DashboardPage() {
     },
   ];
 
-  const displayedLeads = leads;
+  // 2. DODANE: Magia filtrowania danych w locie!
+  const displayedLeads = leads.filter((lead) => {
+    // Sprawdzenie statusu
+    const matchesStatus = statusFilter === "all" || lead.status === statusFilter;
+    
+    // Sprawdzenie wyszukiwarki tekstowej (ignoruje wielkość liter)
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = 
+      !searchQuery || 
+      lead.firstName?.toLowerCase().includes(searchLower) ||
+      lead.lastName?.toLowerCase().includes(searchLower) ||
+      lead.email?.toLowerCase().includes(searchLower);
+
+    return matchesStatus && matchesSearch;
+  });
 
   return (
     <section className="space-y-6">
@@ -106,7 +121,6 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      {/* Karty statystyk z danych z bazy */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
           <Card
@@ -128,15 +142,16 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Sekcja Twoje leady */}
       <div className="rounded-xl border border-primary/30 bg-accent/30 p-6">
         <h2 className="mb-4 text-xl font-bold">Twoje leady</h2>
 
-        {/* Pasek wyszukiwania i akcji */}
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
+            {/* 3. PODPIĘCIE: Wyszukiwarka */}
             <Input
               placeholder="Wyszukaj leada"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="max-w-sm rounded-lg border-primary/40 bg-background pr-10"
             />
             <Search className="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -149,7 +164,9 @@ export default function DashboardPage() {
             <UserPlus className="mr-2 size-4" />
             Dodaj leada
           </Button>
-          <Select defaultValue="all">
+          
+          {/* 4. PODPIĘCIE: Dropdown do filtrowania statusów (Shadcn używa onValueChange) */}
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px] rounded-lg border-primary/40">
               <SelectValue placeholder="Wszystkie leady" />
             </SelectTrigger>
@@ -165,7 +182,6 @@ export default function DashboardPage() {
           </Select>
         </div>
 
-        {/* Tabela leadów z bazy */}
         <div className="rounded-lg border border-primary/20 bg-background/80 overflow-hidden">
           <Table>
             <TableHeader>
@@ -188,7 +204,7 @@ export default function DashboardPage() {
               ) : displayedLeads.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                    Brak leadów. Dodaj pierwszego leada.
+                    Brak wyników.
                   </TableCell>
                 </TableRow>
               ) : (

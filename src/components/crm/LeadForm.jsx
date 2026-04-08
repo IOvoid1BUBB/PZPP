@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { createLead } from "../actions/leadActions";
+import { createLead } from "@/app/actions/leadActions";
 
 export default function LeadForm() {
   const formRef = useRef(null);
