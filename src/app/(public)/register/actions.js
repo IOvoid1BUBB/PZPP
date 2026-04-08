@@ -4,11 +4,14 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
-// Definiujemy schemat walidacji
+// 1. Definiujemy schemat walidacji uwzględniający rolę
 const registerSchema = z.object({
   name: z.string().min(2, "Imię jest za krótkie"),
   email: z.string().email("Niepoprawny format email"),
   password: z.string().min(8, "Hasło musi mieć min. 8 znaków"),
+  role: z.enum(["KREATOR", "UCZESTNIK"], {
+    errorMap: () => ({ message: "Nieprawidłowa rola" })
+  }),
 });
 
 export async function registerUser(formData) {
@@ -20,7 +23,8 @@ export async function registerUser(formData) {
     return { error: validated.error.errors[0].message };
   }
 
-  const { email, password, name } = validated.data;
+  // 2. Pobieramy zwalidowaną rolę (role) ze zmiennych
+  const { email, password, name, role } = validated.data;
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -33,7 +37,7 @@ export async function registerUser(formData) {
         email,
         name,
         password: hashedPassword,
-        role: "UCZESTNIK", // Domyślna rola dla rejestrujących się
+        role: role, // 3. Używamy roli wybranej na frontendzie (zamiast hardcodowanego "UCZESTNIK")
       },
     });
 
