@@ -9,6 +9,8 @@ import {
   Lock,
   Play,
   PlayCircle,
+  FileText,
+  Link2,
   Search,
   User,
 } from 'lucide-react'
@@ -21,7 +23,25 @@ function getNormalizedId(courseIdParam) {
   return Array.isArray(courseIdParam) ? courseIdParam[0] : courseIdParam
 }
 
-export default async function StudentCoursePage({ params }) {
+function getYoutubeIdFromUrl(url) {
+  if (!url || typeof url !== 'string') return null
+  try {
+    const u = new URL(url)
+    if (u.hostname.includes('youtu.be')) {
+      const id = u.pathname.replace('/', '').trim()
+      return id || null
+    }
+    if (u.hostname.includes('youtube.com')) {
+      const id = u.searchParams.get('v')
+      return id || null
+    }
+  } catch {
+    // ignore
+  }
+  return null
+}
+
+export default async function StudentCoursePage({ params, searchParams }) {
   const { courseId } = await params
   const normalizedCourseId = getNormalizedId(courseId)
 
@@ -30,71 +50,47 @@ export default async function StudentCoursePage({ params }) {
     process.env.NEXT_PUBLIC_DEV_MODE === 'true' ||
     process.env.NODE_ENV !== 'production'
 
-  // Wymaganie: pobierz tytuł kursu z Prisma po id, a resztę trzymaj jako mock.
   const course = await prisma.course.findUnique({
     where: { id: normalizedCourseId },
+    include: {
+      modules: {
+        orderBy: { order: 'asc' },
+        include: {
+          lessons: {
+            orderBy: { order: 'asc' },
+            include: { resources: { orderBy: { order: 'asc' } } },
+          },
+        },
+      },
+    },
   })
 
   if (!course) notFound()
   if (!course.isPublished && !devMode) notFound()
 
-  // Mock struktury pod przyszłe dynamiczne ładowanie.
-  // Wymaganie: zamiast "kurs szydełkowania" wyświetl "relacyjne bazy danych".
-  const courseTitle =
-    course.title && /szyde(ł)?l?k|szydelk/i.test(course.title)
-      ? 'relacyjne bazy danych'
-      : course.title || 'relacyjne bazy danych'
-  const mockModules = [
-    {
-      id: 'm1',
-      title: 'Moduł: Wprowadzenie do SQL',
-      lessons: [
-        { number: 1, title: 'Lekcja 1: Czym jest SQL?', status: 'completed' },
-        { number: 2, title: 'Lekcja 2: Pierwsze zapytania SELECT', status: 'locked' },
-        { number: 3, title: 'Lekcja 3: Aliasy i sortowanie', status: 'completed' },
-        { number: 4, title: 'Lekcja 4: Filtrowanie WHERE', status: 'locked' },
-        { number: 5, title: 'Lekcja 5: Grupowanie GROUP BY', status: 'locked' },
-        { number: 6, title: 'Lekcja 6: Podstawy agregacji', status: 'locked' },
-      ],
-    },
-    {
-      id: 'm2',
-      title: 'Moduł: Modelowanie danych',
-      lessons: [
-        { number: 1, title: 'Lekcja 1: Encje i atrybuty', status: 'locked' },
-        { number: 2, title: 'Lekcja 2: Schemat relacyjny', status: 'locked' },
-        { number: 3, title: 'Lekcja 3: Normalizacja (intuicja)', status: 'locked' },
-        { number: 4, title: 'Lekcja 4: Indeksy i wydajność', status: 'locked' },
-        { number: 5, title: 'Lekcja 5: Integralność danych', status: 'locked' },
-        { number: 6, title: 'Lekcja 6: Case study schematu', status: 'locked' },
-      ],
-    },
-    {
-      id: 'm3',
-      title: 'Moduł: Relacje i klucze obce',
-      lessons: [
-        { number: 1, title: 'Lekcja 1: Klucze podstawowe (PK)', status: 'completed' },
-        {
-          number: 2,
-          title: 'Lekcja 2: Relacje jeden-do-wielu (FK)',
-          status: 'active',
-        },
-        { number: 3, title: 'Lekcja 3: Ograniczenia i spójność', status: 'completed' },
-        { number: 4, title: 'Lekcja 4: Relacje wiele-do-wielu', status: 'locked' },
-        { number: 5, title: 'Lekcja 5: JOINy w praktyce', status: 'locked' },
-        { number: 6, title: 'Lekcja 6: Zadania praktyczne', status: 'locked' },
-      ],
-    },
-  ]
+  const courseTitle = course.title || 'Kurs'
+  const modules = course.modules ?? []
+
+  const lessonIdParam = searchParams?.lessonId
+  const normalizedLessonId = Array.isArray(lessonIdParam) ? lessonIdParam[0] : lessonIdParam
+
+  const firstModule = modules[0]
+  const firstLesson = firstModule?.lessons?.[0]
+
+  const activeLesson =
+    (normalizedLessonId
+      ? modules.flatMap((m) => m.lessons ?? []).find((l) => l.id === normalizedLessonId)
+      : null) || firstLesson
 
   const activeModule =
-    mockModules.find((m) => m.title === 'Moduł: Relacje i klucze obce') || mockModules[2]
-  const activeLesson = activeModule.lessons.find((l) => l.status === 'active')
-  const videoTitle = activeLesson
-    ? `${activeModule.title}: ${activeLesson.title}`
-    : 'Moduł: Relacje i klucze obce: Relacje jeden-do-wielu (FK)'
+    activeLesson?.moduleId
+      ? modules.find((m) => m.id === activeLesson.moduleId) || firstModule
+      : firstModule
 
-  const completedPercent = 25
+  if (!activeLesson || !activeModule) notFound()
+
+  const videoTitle = `${activeModule.title}: ${activeLesson.title}`
+  const youtubeId = getYoutubeIdFromUrl(activeLesson.videoUrl)
 
   return (
     <div className="space-y-6">
@@ -154,12 +150,12 @@ export default async function StudentCoursePage({ params }) {
             <h2 className="text-2xl font-bold leading-tight text-[#0f172a]">{courseTitle}</h2>
             <div className="mt-2 flex items-center gap-2 text-sm text-[#0f172a]">
               <GraduationCap className="size-4 text-primary" />
-              <span className="font-medium">Relacyjne bazy danych dla Początkujących</span>
+              <span className="font-medium">Portal studenta</span>
             </div>
 
             <div className="mt-5 space-y-2">
-              {mockModules.map((module) => {
-                const isDefaultOpen = module.title === 'Moduł: Relacje i klucze obce'
+              {modules.map((module) => {
+                const isDefaultOpen = module.id === activeModule?.id
                 return (
                   <details
                     key={module.id}
@@ -175,17 +171,18 @@ export default async function StudentCoursePage({ params }) {
 
                     <div className="mt-3 space-y-2 pb-1">
                       <ol className="space-y-1">
-                        {module.lessons.map((lesson) => {
-                          const isActive = lesson.status === 'active'
-                          const isCompleted = lesson.status === 'completed'
-                          const isLocked = lesson.status === 'locked'
+                        {(module.lessons ?? []).map((lesson) => {
+                          const isActive = lesson.id === activeLesson?.id
+                          const isCompleted = false
+                          const isLocked = false
 
                           return (
-                            <li key={lesson.number}>
-                              <div
+                            <li key={lesson.id}>
+                              <Link
+                                href={`/student/kurs/${normalizedCourseId}?lessonId=${lesson.id}`}
                                 className={[
-                                  'flex items-center gap-3 rounded-md px-2 py-2',
-                                  isActive ? 'bg-[#e5e7eb]' : 'bg-transparent',
+                                  'flex items-center gap-3 rounded-md px-2 py-2 transition-colors',
+                                  isActive ? 'bg-[#e5e7eb]' : 'bg-transparent hover:bg-[#f3f4f6]',
                                 ].join(' ')}
                               >
                                 <span
@@ -200,7 +197,9 @@ export default async function StudentCoursePage({ params }) {
                                 </span>
 
                                 <div className="flex min-w-0 flex-1 items-center gap-2">
-                                  <span className="text-xs font-semibold text-[#6b7280]">{lesson.number}</span>
+                                  <span className="text-xs font-semibold text-[#6b7280]">
+                                    {lesson.order}
+                                  </span>
                                   <span
                                     className={[
                                       'truncate text-sm',
@@ -210,7 +209,7 @@ export default async function StudentCoursePage({ params }) {
                                     {lesson.title}
                                   </span>
                                 </div>
-                              </div>
+                              </Link>
                             </li>
                           )
                         })}
@@ -221,14 +220,8 @@ export default async function StudentCoursePage({ params }) {
               })}
             </div>
 
-            <div className="mt-5">
-              <p className="text-sm text-[#4b5563]">Postęp kursu: {completedPercent}% completed</p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#e5e7eb]">
-                <div
-                  className="h-full bg-primary"
-                  style={{ width: `${completedPercent}%` }}
-                />
-              </div>
+            <div className="mt-5 text-sm text-[#4b5563]">
+              Wybierz lekcję z listy, aby zobaczyć materiały.
             </div>
           </div>
         </section>
@@ -236,7 +229,25 @@ export default async function StudentCoursePage({ params }) {
         {/* Środkowa kolumna - odtwarzacz i notatki */}
         <section className="space-y-4">
           <div className="rounded-xl border border-[#e5e7eb] bg-white p-5">
-            <CourseYouTubePlayer youtubeId="Pa1Wd29s85c" ariaLabel={videoTitle} />
+            {youtubeId ? (
+              <CourseYouTubePlayer youtubeId={youtubeId} ariaLabel={videoTitle} />
+            ) : activeLesson.videoUrl ? (
+              <div className="rounded-lg border border-[#e5e7eb] bg-[#fafafa] p-4 text-sm">
+                <div className="font-semibold text-[#0f172a]">Wideo</div>
+                <div className="mt-2 break-all text-[#4b5563]">{activeLesson.videoUrl}</div>
+                <div className="mt-3">
+                  <Button asChild variant="outline">
+                    <a href={activeLesson.videoUrl} target="_blank" rel="noreferrer">
+                      Otwórz w nowej karcie
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-lg border border-[#e5e7eb] bg-[#fafafa] p-4 text-sm text-[#4b5563]">
+                Brak wideo w tej lekcji.
+              </div>
+            )}
 
             {/* Nawigacja lekcji */}
             <div className="mt-4 grid grid-cols-2 gap-4">
@@ -306,9 +317,56 @@ export default async function StudentCoursePage({ params }) {
 
             <Textarea
               className="mt-3 min-h-[220px] resize-y"
-              defaultValue="To jest notatka do lekcji o relacjach w bazach danych"
+              defaultValue={activeLesson.content || ''}
+              placeholder="Notatki do lekcji…"
             />
           </div>
+
+          {(activeLesson.videoText || (activeLesson.resources ?? []).length > 0) ? (
+            <div className="rounded-xl border border-[#e5e7eb] bg-white p-5">
+              <h3 className="text-lg font-bold text-[#0f172a]">Materiały do lekcji</h3>
+
+              {activeLesson.videoText ? (
+                <div className="mt-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
+                    <FileText className="size-4 text-primary" />
+                    Tekst do wideo
+                  </div>
+                  <div className="mt-2 whitespace-pre-wrap rounded-lg border border-[#e5e7eb] bg-[#fafafa] p-3 text-sm text-[#0f172a]">
+                    {activeLesson.videoText}
+                  </div>
+                </div>
+              ) : null}
+
+              {(activeLesson.resources ?? []).length > 0 ? (
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
+                    <Link2 className="size-4 text-primary" />
+                    Linki i pliki PDF
+                  </div>
+                  <ul className="space-y-2">
+                    {(activeLesson.resources ?? []).map((r) => (
+                      <li key={r.id} className="rounded-lg border border-[#e5e7eb] bg-[#fafafa] p-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="truncate text-sm font-semibold text-[#0f172a]">
+                              {r.title}
+                            </div>
+                            <div className="mt-1 break-all text-xs text-[#4b5563]">{r.url}</div>
+                          </div>
+                          <Button asChild size="sm" variant="outline">
+                            <a href={r.url} target="_blank" rel="noreferrer">
+                              Otwórz
+                            </a>
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </section>
 
         {/* Prawa kolumna - dodatki */}
