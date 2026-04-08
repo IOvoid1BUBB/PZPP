@@ -29,10 +29,10 @@ import { Badge } from "@/components/ui/badge";
 import {
   Search,
   UserPlus,
-  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLeads, getDashboardStats } from "@/app/actions/leadActions";
+import LeadProfileSheet from "@/components/crm/lead-profile/LeadProfileSheet";
 
 const STATUS_LABELS = {
   NEW: "Nowy",
@@ -56,6 +56,7 @@ export default function DashboardPage() {
   // 1. DODANE: Stany dla wyszukiwarki i filtra statusu
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
 
   const { data: leads = [], isLoading: leadsLoading } = useQuery({
     queryKey: ["leads"],
@@ -191,7 +192,7 @@ export default function DashboardPage() {
                 <TableHead>Adres email</TableHead>
                 <TableHead>Numer telefonu</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="w-12"></TableHead>
+                  <TableHead className="w-28 text-right">Profil 360</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -219,9 +220,10 @@ export default function DashboardPage() {
                     <TableRow
                       key={lead.id}
                       className={cn(
-                        "border-primary/10",
+                        "border-primary/10 cursor-pointer",
                         index % 2 === 0 ? "bg-accent/20" : "bg-background"
                       )}
+                      onClick={() => setSelectedLeadId(lead.id)}
                     >
                       <TableCell className="font-medium text-muted-foreground">
                         {index + 1}
@@ -242,11 +244,16 @@ export default function DashboardPage() {
                       </TableCell>
                       <TableCell>
                         <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          className="h-8 w-8 rounded-md"
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="rounded-md"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setSelectedLeadId(lead.id);
+                          }}
                         >
-                          <ChevronDown className="size-4" />
+                          Pokaż
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -257,6 +264,12 @@ export default function DashboardPage() {
           </Table>
         </div>
       </div>
+
+      <LeadProfileSheet
+        isOpen={!!selectedLeadId}
+        onClose={() => setSelectedLeadId(null)}
+        leadId={selectedLeadId}
+      />
     </section>
   );
 }
