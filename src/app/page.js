@@ -19,7 +19,6 @@ export default function LandingPage() {
               Wybierz dogodny dzień i godzinę, a my wrócimy z konsultacją.
             </p>
           </div>
-          <PublicBookingWidget />
         </section>
         <Pricing />
       </main>
