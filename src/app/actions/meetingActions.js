@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { addLeadActivity } from "@/app/actions/scoringActions";
 
 function toDate(value, fieldName) {
   if (value instanceof Date) return value;
@@ -351,6 +352,11 @@ export async function createMeeting(data) {
         leadId: true,
       },
     });
+
+    if (meeting.leadId) {
+      // Importuj addLeadActivity na górze pliku meetingActions.js
+      await addLeadActivity(meeting.leadId, 'MEETING_SCHEDULED');
+    }
 
     revalidatePath("/dashboard/calendar");
     revalidatePath("/dashboard");
