@@ -3,6 +3,8 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getLeads } from "@/app/actions/leadActions";
+import LeadProfileSheet from "@/components/crm/lead-profile/LeadProfileSheet";
+import { Button } from "@/components/ui/button";
 import {
   flexRender,
   getCoreRowModel,
@@ -21,6 +23,7 @@ export default function LeadsTable() {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
 
   // ZMIANA 1: Zamykamy kolumny w useMemo. Dzięki temu React ich nie "resetuje" przy każdym kliknięciu!
   const columns = useMemo(() => [
@@ -32,6 +35,24 @@ export default function LeadsTable() {
       accessorKey: "status", 
       header: "Status",
       filterFn: "equalsString" // ZMIANA 2: Wymuszamy dokładne dopasowanie 1:1
+    },
+    {
+      id: "actions",
+      header: "Akcje",
+      cell: ({ row }) => (
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={(event) => {
+            event.stopPropagation();
+            const leadId = row.original?.id;
+            if (leadId) setSelectedLeadId(leadId);
+          }}
+        >
+          Pokaz profil 360
+        </Button>
+      ),
     },
   ], []);
 
@@ -118,7 +139,14 @@ export default function LeadsTable() {
           <tbody>
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row, index) => (
-                <tr key={row.id} className="border-b hover:bg-gray-50">
+                <tr
+                  key={row.id}
+                  className="border-b hover:bg-gray-50 cursor-pointer"
+                  onClick={() => {
+                    const leadId = row.original?.id;
+                    if (leadId) setSelectedLeadId(leadId);
+                  }}
+                >
                   <td className="p-4 text-gray-500">{index + 1}</td>
                   {row.getVisibleCells().map(cell => (
                     <td key={cell.id} className="p-4">
@@ -157,6 +185,12 @@ export default function LeadsTable() {
           Następna
         </button>
       </div>
+
+      <LeadProfileSheet
+        isOpen={!!selectedLeadId}
+        onClose={() => setSelectedLeadId(null)}
+        leadId={selectedLeadId}
+      />
     </div>
   );
 }
