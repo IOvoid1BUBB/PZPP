@@ -205,3 +205,34 @@ export async function updateLeadStatus(leadId, newStatus) {
     return { success: false, error: "Nie udało się zaktualizować statusu leada." };
   }
 }
+
+export async function createOrUpdateLead(data) {
+  const { email, firstName, lastName, ...otherData } = data;
+
+  // 1. Szukamy istniejącego leada po mailu
+  const existingLead = await prisma.lead.findUnique({
+    where: { email: email.toLowerCase() }
+  });
+
+  if (existingLead) {
+    // 2. Jeśli istnieje, aktualizujemy go i podbijamy punkty (np. za powtórny kontakt)
+    return await prisma.lead.update({
+      where: { id: existingLead.id },
+      data: {
+        ...otherData,
+        score: { increment: 10 } // Bonus za powracający kontakt
+      }
+    });
+  }
+
+  // 3. Jeśli nie istnieje, tworzymy nowy rekord z bazowym scoringiem
+  return await prisma.lead.create({
+    data: {
+      email: email.toLowerCase(),
+      firstName,
+      lastName,
+      score: 20, // Punkty startowe za zapis
+      ...otherData
+    }
+  });
+}
