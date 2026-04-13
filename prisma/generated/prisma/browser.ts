@@ -68,6 +68,11 @@ export type LandingPage = Prisma.LandingPageModel
  */
 export type Message = Prisma.MessageModel
 /**
+ * Model Task
+ * 
+ */
+export type Task = Prisma.TaskModel
+/**
  * Model Course
  * 
  */
@@ -97,6 +102,11 @@ export type Enrollment = Prisma.EnrollmentModel
  * 
  */
 export type Certificate = Prisma.CertificateModel
+/**
+ * Model LessonCompletion
+ * 
+ */
+export type LessonCompletion = Prisma.LessonCompletionModel
 /**
  * Model Document
  * 

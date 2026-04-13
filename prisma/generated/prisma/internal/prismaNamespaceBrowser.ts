@@ -61,12 +61,14 @@ export const ModelName = {
   Note: 'Note',
   LandingPage: 'LandingPage',
   Message: 'Message',
+  Task: 'Task',
   Course: 'Course',
   Module: 'Module',
   Lesson: 'Lesson',
   LessonResource: 'LessonResource',
   Enrollment: 'Enrollment',
   Certificate: 'Certificate',
+  LessonCompletion: 'LessonCompletion',
   Document: 'Document',
   Meeting: 'Meeting',
   CustomField: 'CustomField'
@@ -98,7 +100,10 @@ export const UserScalarFieldEnum = {
   image: 'image',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  jiraSelectedProjectKey: 'jiraSelectedProjectKey',
+  jiraSelectedProjectName: 'jiraSelectedProjectName',
+  jiraSelectedCloudId: 'jiraSelectedCloudId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -213,6 +218,21 @@ export const MessageScalarFieldEnum = {
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
+export const TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  dueDate: 'dueDate',
+  isCompleted: 'isCompleted',
+  leadId: 'leadId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -280,6 +300,16 @@ export const CertificateScalarFieldEnum = {
 } as const
 
 export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
+
+
+export const LessonCompletionScalarFieldEnum = {
+  id: 'id',
+  enrollmentId: 'enrollmentId',
+  lessonId: 'lessonId',
+  completedAt: 'completedAt'
+} as const
+
+export type LessonCompletionScalarFieldEnum = (typeof LessonCompletionScalarFieldEnum)[keyof typeof LessonCompletionScalarFieldEnum]
 
 
 export const DocumentScalarFieldEnum = {
