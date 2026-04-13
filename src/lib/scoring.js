@@ -8,7 +8,8 @@ export const SCORING_RULES = {
   EMAIL_CLICK: 15,
   MEETING_SCHEDULED: 50,
   MEETING_NOSHOW: -30,
-  MANUAL_BONUS: 20, // Np. gdy handlowiec ręcznie podbija ocenę po dobrym telefonie
+  MANUAL_BONUS: 20,
+  SMS_SENT: 10, // Np. gdy handlowiec ręcznie podbija ocenę po dobrym telefonie
 };
 
 // Funkcja pomocnicza: Klasyfikuje leada na podstawie jego punktów

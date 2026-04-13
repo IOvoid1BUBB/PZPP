@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { render } from "@react-email/render";
 import React from "react";
 import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
-
+import { addLeadActivity } from "@/app/actions/scoringActions";
 import CrmWelcomeLead, {
   getSubject as getCrmWelcomeLeadSubject,
 } from "@/emails/templates/CrmWelcomeLead";
@@ -97,6 +97,8 @@ export async function sendEmailToLead(leadId, toEmail, subject, body) {
         direction: "OUTBOUND",
       },
     });
+
+    await addLeadActivity(leadId, 'EMAIL_OPEN');
 
     // 3. Odświeżenie widoku profilu leada
     revalidatePath(`/crm/lead/${leadId}`);
@@ -202,6 +204,8 @@ export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
       },
     });
 
+    await addLeadActivity(leadId, 'EMAIL_OPEN');
+
     revalidatePath(`/crm/lead/${leadId}`);
     revalidatePath("/dashboard/skrzynka");
     revalidatePath("/student/skrzynka");
@@ -252,6 +256,8 @@ export async function simulateSMSToLead(leadId, phone, body) {
         direction: "OUTBOUND",
       },
     });
+
+    await addLeadActivity(leadId, 'SMS_SENT');
 
     revalidatePath(`/crm/lead/${leadId}`);
     revalidatePath("/dashboard/skrzynka");
