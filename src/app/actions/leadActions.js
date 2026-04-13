@@ -199,8 +199,11 @@ export async function createOrUpdateLead(data) {
   const normalizedEmail = String(email || "").toLowerCase();
 
   // 1. Szukamy istniejącego leada po mailu
-  const existingLead = await prisma.lead.findUnique({
-    where: { email: normalizedEmail },
+  const existingLead = await prisma.lead.findFirst({
+    where: isAdminRole(auth.role)
+      ? { email: normalizedEmail }
+      : { ownerId: auth.userId, email: normalizedEmail },
+    select: { id: true, ownerId: true },
   });
 
   if (existingLead) {

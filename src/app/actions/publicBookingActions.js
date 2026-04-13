@@ -165,8 +165,8 @@ export async function bookPublicMeeting(data) {
         return { ok: false, error: "Wybrany termin został już zarezerwowany." };
       }
 
-      const existingLead = await tx.lead.findUnique({
-        where: { email },
+      const existingLead = await tx.lead.findFirst({
+        where: { ownerId: organizerId, email },
         select: { id: true, ownerId: true },
       });
 

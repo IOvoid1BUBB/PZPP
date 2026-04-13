@@ -39,6 +39,7 @@ model User {
   certificates      Certificate[]
   landingPages      LandingPage[]
   ownedLeads        Lead[]        @relation("LeadOwner")
+  tags             Tag[]         @relation("TagOwner")
   courses           Course[]
   funnels           Funnel[]      @relation("FunnelOwner")
 }
@@ -126,7 +127,7 @@ model Lead {
   id        String     @id @default(cuid())
   firstName String
   lastName  String?
-  email     String     @unique
+  email     String
   phone     String?
   status    LeadStatus @default(NEW) //Statusy leadów i pipeline
   score     Int        @default(0) //Lead scoring
@@ -146,12 +147,18 @@ model Lead {
   messages     Message[]
   tasks        Task[]
   @@index([ownerId])
+  @@unique([ownerId, email])
 }
 
 model Tag {
   id    String @id @default(cuid())
-  name  String @unique
+  name  String
+  ownerId String?
+  owner   User?  @relation("TagOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   leads Lead[] @relation("LeadTags")
+
+  @@index([ownerId])
+  @@unique([ownerId, name])
 }
 
 model Note {

@@ -25,17 +25,47 @@ export async function POST(request) {
       );
     }
 
-    const lead = await prisma.lead.findUnique({
-      where: { email: String(sender).trim() },
-    });
+    const email = String(sender).trim().toLowerCase();
+    const hintedOwnerId =
+      (typeof payload?.ownerId === "string" && payload.ownerId.trim()) ||
+      (request.headers.get("x-owner-id") || "").trim() ||
+      null;
 
-    if (!lead) {
+    const lead = hintedOwnerId
+      ? await prisma.lead.findFirst({
+          where: { ownerId: hintedOwnerId, email },
+          select: { id: true },
+        })
+      : null;
+
+    let resolvedLead = lead;
+    if (!resolvedLead) {
+      const candidates = await prisma.lead.findMany({
+        where: { email },
+        select: { id: true, ownerId: true },
+        take: 2,
+      });
+      if (candidates.length === 1) {
+        resolvedLead = { id: candidates[0].id };
+      } else if (candidates.length > 1) {
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              "Ambiguous lead email. Provide ownerId in payload or x-owner-id header.",
+          },
+          { status: 409 }
+        );
+      }
+    }
+
+    if (!resolvedLead) {
       return NextResponse.json({ success: true, ignored: true }, { status: 200 });
     }
 
     await prisma.message.create({
       data: {
-        leadId: lead.id,
+        leadId: resolvedLead.id,
         subject: String(subject),
         body: String(text),
         type: "EMAIL",

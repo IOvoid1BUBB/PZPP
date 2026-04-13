@@ -27,16 +27,19 @@ export type AggregateTag = {
 export type TagMinAggregateOutputType = {
   id: string | null
   name: string | null
+  ownerId: string | null
 }
 
 export type TagMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  ownerId: string | null
 }
 
 export type TagCountAggregateOutputType = {
   id: number
   name: number
+  ownerId: number
   _all: number
 }
 
@@ -44,16 +47,19 @@ export type TagCountAggregateOutputType = {
 export type TagMinAggregateInputType = {
   id?: true
   name?: true
+  ownerId?: true
 }
 
 export type TagMaxAggregateInputType = {
   id?: true
   name?: true
+  ownerId?: true
 }
 
 export type TagCountAggregateInputType = {
   id?: true
   name?: true
+  ownerId?: true
   _all?: true
 }
 
@@ -132,6 +138,7 @@ export type TagGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type TagGroupByOutputType = {
   id: string
   name: string
+  ownerId: string | null
   _count: TagCountAggregateOutputType | null
   _min: TagMinAggregateOutputType | null
   _max: TagMaxAggregateOutputType | null
@@ -158,27 +165,35 @@ export type TagWhereInput = {
   NOT?: Prisma.TagWhereInput | Prisma.TagWhereInput[]
   id?: Prisma.StringFilter<"Tag"> | string
   name?: Prisma.StringFilter<"Tag"> | string
+  ownerId?: Prisma.StringNullableFilter<"Tag"> | string | null
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   leads?: Prisma.LeadListRelationFilter
 }
 
 export type TagOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  owner?: Prisma.UserOrderByWithRelationInput
   leads?: Prisma.LeadOrderByRelationAggregateInput
 }
 
 export type TagWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  name?: string
+  ownerId_name?: Prisma.TagOwnerIdNameCompoundUniqueInput
   AND?: Prisma.TagWhereInput | Prisma.TagWhereInput[]
   OR?: Prisma.TagWhereInput[]
   NOT?: Prisma.TagWhereInput | Prisma.TagWhereInput[]
+  name?: Prisma.StringFilter<"Tag"> | string
+  ownerId?: Prisma.StringNullableFilter<"Tag"> | string | null
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   leads?: Prisma.LeadListRelationFilter
-}, "id" | "name">
+}, "id" | "ownerId_name">
 
 export type TagOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TagCountOrderByAggregateInput
   _max?: Prisma.TagMaxOrderByAggregateInput
   _min?: Prisma.TagMinOrderByAggregateInput
@@ -190,35 +205,41 @@ export type TagScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TagScalarWhereWithAggregatesInput | Prisma.TagScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Tag"> | string
   name?: Prisma.StringWithAggregatesFilter<"Tag"> | string
+  ownerId?: Prisma.StringNullableWithAggregatesFilter<"Tag"> | string | null
 }
 
 export type TagCreateInput = {
   id?: string
   name: string
+  owner?: Prisma.UserCreateNestedOneWithoutTagsInput
   leads?: Prisma.LeadCreateNestedManyWithoutTagsInput
 }
 
 export type TagUncheckedCreateInput = {
   id?: string
   name: string
+  ownerId?: string | null
   leads?: Prisma.LeadUncheckedCreateNestedManyWithoutTagsInput
 }
 
 export type TagUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  owner?: Prisma.UserUpdateOneWithoutTagsNestedInput
   leads?: Prisma.LeadUpdateManyWithoutTagsNestedInput
 }
 
 export type TagUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leads?: Prisma.LeadUncheckedUpdateManyWithoutTagsNestedInput
 }
 
 export type TagCreateManyInput = {
   id?: string
   name: string
+  ownerId?: string | null
 }
 
 export type TagUpdateManyMutationInput = {
@@ -229,6 +250,7 @@ export type TagUpdateManyMutationInput = {
 export type TagUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TagListRelationFilter = {
@@ -241,19 +263,69 @@ export type TagOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type TagOwnerIdNameCompoundUniqueInput = {
+  ownerId: string
+  name: string
+}
+
 export type TagCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
 }
 
 export type TagMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
 }
 
 export type TagMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+}
+
+export type TagCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput> | Prisma.TagCreateWithoutOwnerInput[] | Prisma.TagUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutOwnerInput | Prisma.TagCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.TagCreateManyOwnerInputEnvelope
+  connect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+}
+
+export type TagUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput> | Prisma.TagCreateWithoutOwnerInput[] | Prisma.TagUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutOwnerInput | Prisma.TagCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.TagCreateManyOwnerInputEnvelope
+  connect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+}
+
+export type TagUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput> | Prisma.TagCreateWithoutOwnerInput[] | Prisma.TagUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutOwnerInput | Prisma.TagCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.TagUpsertWithWhereUniqueWithoutOwnerInput | Prisma.TagUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.TagCreateManyOwnerInputEnvelope
+  set?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  disconnect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  delete?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  connect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  update?: Prisma.TagUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TagUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.TagUpdateManyWithWhereWithoutOwnerInput | Prisma.TagUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
+}
+
+export type TagUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput> | Prisma.TagCreateWithoutOwnerInput[] | Prisma.TagUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutOwnerInput | Prisma.TagCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.TagUpsertWithWhereUniqueWithoutOwnerInput | Prisma.TagUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.TagCreateManyOwnerInputEnvelope
+  set?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  disconnect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  delete?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  connect?: Prisma.TagWhereUniqueInput | Prisma.TagWhereUniqueInput[]
+  update?: Prisma.TagUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TagUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.TagUpdateManyWithWhereWithoutOwnerInput | Prisma.TagUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
 }
 
 export type TagCreateNestedManyWithoutLeadsInput = {
@@ -294,14 +366,63 @@ export type TagUncheckedUpdateManyWithoutLeadsNestedInput = {
   deleteMany?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
 }
 
+export type TagCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  leads?: Prisma.LeadCreateNestedManyWithoutTagsInput
+}
+
+export type TagUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  leads?: Prisma.LeadUncheckedCreateNestedManyWithoutTagsInput
+}
+
+export type TagCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.TagWhereUniqueInput
+  create: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput>
+}
+
+export type TagCreateManyOwnerInputEnvelope = {
+  data: Prisma.TagCreateManyOwnerInput | Prisma.TagCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type TagUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.TagWhereUniqueInput
+  update: Prisma.XOR<Prisma.TagUpdateWithoutOwnerInput, Prisma.TagUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.TagCreateWithoutOwnerInput, Prisma.TagUncheckedCreateWithoutOwnerInput>
+}
+
+export type TagUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.TagWhereUniqueInput
+  data: Prisma.XOR<Prisma.TagUpdateWithoutOwnerInput, Prisma.TagUncheckedUpdateWithoutOwnerInput>
+}
+
+export type TagUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.TagScalarWhereInput
+  data: Prisma.XOR<Prisma.TagUpdateManyMutationInput, Prisma.TagUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type TagScalarWhereInput = {
+  AND?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
+  OR?: Prisma.TagScalarWhereInput[]
+  NOT?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
+  id?: Prisma.StringFilter<"Tag"> | string
+  name?: Prisma.StringFilter<"Tag"> | string
+  ownerId?: Prisma.StringNullableFilter<"Tag"> | string | null
+}
+
 export type TagCreateWithoutLeadsInput = {
   id?: string
   name: string
+  owner?: Prisma.UserCreateNestedOneWithoutTagsInput
 }
 
 export type TagUncheckedCreateWithoutLeadsInput = {
   id?: string
   name: string
+  ownerId?: string | null
 }
 
 export type TagCreateOrConnectWithoutLeadsInput = {
@@ -325,27 +446,44 @@ export type TagUpdateManyWithWhereWithoutLeadsInput = {
   data: Prisma.XOR<Prisma.TagUpdateManyMutationInput, Prisma.TagUncheckedUpdateManyWithoutLeadsInput>
 }
 
-export type TagScalarWhereInput = {
-  AND?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
-  OR?: Prisma.TagScalarWhereInput[]
-  NOT?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
-  id?: Prisma.StringFilter<"Tag"> | string
-  name?: Prisma.StringFilter<"Tag"> | string
+export type TagCreateManyOwnerInput = {
+  id?: string
+  name: string
+}
+
+export type TagUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  leads?: Prisma.LeadUpdateManyWithoutTagsNestedInput
+}
+
+export type TagUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  leads?: Prisma.LeadUncheckedUpdateManyWithoutTagsNestedInput
+}
+
+export type TagUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TagUpdateWithoutLeadsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  owner?: Prisma.UserUpdateOneWithoutTagsNestedInput
 }
 
 export type TagUncheckedUpdateWithoutLeadsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TagUncheckedUpdateManyWithoutLeadsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -382,6 +520,8 @@ export type TagCountOutputTypeCountLeadsArgs<ExtArgs extends runtime.Types.Exten
 export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  ownerId?: boolean
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
   leads?: boolean | Prisma.Tag$leadsArgs<ExtArgs>
   _count?: boolean | Prisma.TagCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
@@ -389,34 +529,46 @@ export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type TagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  ownerId?: boolean
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
 
 export type TagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  ownerId?: boolean
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
 
 export type TagSelectScalar = {
   id?: boolean
   name?: boolean
+  ownerId?: boolean
 }
 
-export type TagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name", ExtArgs["result"]["tag"]>
+export type TagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "ownerId", ExtArgs["result"]["tag"]>
 export type TagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
   leads?: boolean | Prisma.Tag$leadsArgs<ExtArgs>
   _count?: boolean | Prisma.TagCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type TagIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type TagIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TagIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
+}
+export type TagIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Tag$ownerArgs<ExtArgs>
+}
 
 export type $TagPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Tag"
   objects: {
+    owner: Prisma.$UserPayload<ExtArgs> | null
     leads: Prisma.$LeadPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    ownerId: string | null
   }, ExtArgs["result"]["tag"]>
   composites: {}
 }
@@ -811,6 +963,7 @@ readonly fields: TagFieldRefs;
  */
 export interface Prisma__TagClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  owner<T extends Prisma.Tag$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   leads<T extends Prisma.Tag$leadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -843,6 +996,7 @@ export interface Prisma__TagClient<T, Null = never, ExtArgs extends runtime.Type
 export interface TagFieldRefs {
   readonly id: Prisma.FieldRef<"Tag", 'String'>
   readonly name: Prisma.FieldRef<"Tag", 'String'>
+  readonly ownerId: Prisma.FieldRef<"Tag", 'String'>
 }
     
 
@@ -1097,6 +1251,10 @@ export type TagCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    */
   data: Prisma.TagCreateManyInput | Prisma.TagCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1167,6 +1325,10 @@ export type TagUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Tags to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1233,6 +1395,25 @@ export type TagDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Limit how many Tags to delete.
    */
   limit?: number
+}
+
+/**
+ * Tag.owner
+ */
+export type Tag$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

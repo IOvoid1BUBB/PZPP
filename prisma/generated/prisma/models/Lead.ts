@@ -298,12 +298,13 @@ export type LeadOrderByWithRelationInput = {
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
+  ownerId_email?: Prisma.LeadOwnerIdEmailCompoundUniqueInput
   AND?: Prisma.LeadWhereInput | Prisma.LeadWhereInput[]
   OR?: Prisma.LeadWhereInput[]
   NOT?: Prisma.LeadWhereInput | Prisma.LeadWhereInput[]
   firstName?: Prisma.StringFilter<"Lead"> | string
   lastName?: Prisma.StringNullableFilter<"Lead"> | string | null
+  email?: Prisma.StringFilter<"Lead"> | string
   phone?: Prisma.StringNullableFilter<"Lead"> | string | null
   status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
   score?: Prisma.IntFilter<"Lead"> | number
@@ -319,7 +320,7 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   meetings?: Prisma.MeetingListRelationFilter
   messages?: Prisma.MessageListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
-}, "id" | "email">
+}, "id" | "ownerId_email">
 
 export type LeadOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -490,6 +491,11 @@ export type LeadListRelationFilter = {
 
 export type LeadOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type LeadOwnerIdEmailCompoundUniqueInput = {
+  ownerId: string
+  email: string
 }
 
 export type LeadCountOrderByAggregateInput = {

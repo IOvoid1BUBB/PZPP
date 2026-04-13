@@ -7,14 +7,24 @@ import { notFound } from "next/navigation";
 export default async function StudentSkrzynkaPage() {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
+  const userId = session?.user?.id;
 
-  if (!email) {
+  if (!email || !userId) {
     notFound();
   }
 
-  const lead = await prisma.lead.findUnique({
-    where: { email },
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    select: { course: { select: { authorId: true } } },
   });
+
+  const ownerId = enrollment?.course?.authorId ?? null;
+  const lead = ownerId
+    ? await prisma.lead.findFirst({
+        where: { ownerId, email: String(email).toLowerCase() },
+      })
+    : null;
 
   return (
     <section className="flex min-h-0 flex-1 flex-col gap-4 pb-4">
