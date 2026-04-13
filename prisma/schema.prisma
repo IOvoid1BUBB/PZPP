@@ -37,6 +37,8 @@ model User {
   tasks             Task[]
   enrollments       Enrollment[]
   certificates      Certificate[]
+  lessonNotes       StudentLessonNote[]
+  lessonQuestionsAuthored LessonQuestion[] @relation("LessonQuestionAuthor")
   landingPages      LandingPage[]
   ownedLeads        Lead[]        @relation("LeadOwner")
   tags             Tag[]         @relation("TagOwner")
@@ -336,6 +338,37 @@ model Lesson {
 
   resources   LessonResource[]
   completions LessonCompletion[]
+  notes       StudentLessonNote[]
+  questions   LessonQuestion[]
+}
+
+model StudentLessonNote {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+  @@index([lessonId])
+}
+
+model LessonQuestion {
+  id          String   @id @default(cuid())
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question    String   @db.Text
+  answer      String?  @db.Text
+  order       Int      @default(1)
+  createdById String?
+  createdBy   User?    @relation("LessonQuestionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([lessonId, order])
 }
 
 enum LessonResourceType {

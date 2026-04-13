@@ -69,6 +69,8 @@ export const ModelName = {
   Course: 'Course',
   Module: 'Module',
   Lesson: 'Lesson',
+  StudentLessonNote: 'StudentLessonNote',
+  LessonQuestion: 'LessonQuestion',
   LessonResource: 'LessonResource',
   Enrollment: 'Enrollment',
   Certificate: 'Certificate',
@@ -335,6 +337,32 @@ export const LessonScalarFieldEnum = {
 } as const
 
 export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
+
+
+export const StudentLessonNoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  lessonId: 'lessonId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentLessonNoteScalarFieldEnum = (typeof StudentLessonNoteScalarFieldEnum)[keyof typeof StudentLessonNoteScalarFieldEnum]
+
+
+export const LessonQuestionScalarFieldEnum = {
+  id: 'id',
+  lessonId: 'lessonId',
+  question: 'question',
+  answer: 'answer',
+  order: 'order',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LessonQuestionScalarFieldEnum = (typeof LessonQuestionScalarFieldEnum)[keyof typeof LessonQuestionScalarFieldEnum]
 
 
 export const LessonResourceScalarFieldEnum = {

@@ -132,6 +132,16 @@ export type Module = Prisma.ModuleModel
  */
 export type Lesson = Prisma.LessonModel
 /**
+ * Model StudentLessonNote
+ * 
+ */
+export type StudentLessonNote = Prisma.StudentLessonNoteModel
+/**
+ * Model LessonQuestion
+ * 
+ */
+export type LessonQuestion = Prisma.LessonQuestionModel
+/**
  * Model LessonResource
  * 
  */
