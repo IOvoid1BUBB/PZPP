@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import CourseYouTubePlayer from '@/components/course/CourseYouTubePlayer'
+import NextLessonButton from '@/components/features/courses/NextLessonButton'
 
 function getNormalizedId(courseIdParam) {
   return Array.isArray(courseIdParam) ? courseIdParam[0] : courseIdParam
@@ -257,12 +258,9 @@ export default async function StudentCoursePage({ params, searchParams }) {
               >
                 <span className="text-primary">←</span> Poprzednia lekcja
               </button>
-              <button
-                type="button"
-                className="justify-self-end text-right text-sm font-medium text-[#0f172a] hover:text-primary"
-              >
-                Następna lekcja <span className="text-primary">→</span>
-              </button>
+              <div className="justify-self-end text-right text-sm font-medium text-[#0f172a] hover:text-primary">
+                <NextLessonButton courseId={normalizedCourseId} lessonId={activeLesson.id} />
+              </div>
             </div>
           </div>
 

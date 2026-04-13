@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { calculateCourseProgress } from "@/lib/course-progress";
+import { findNextLessonId, getOrderedCourseLessons } from "@/lib/course-navigation";
 
 async function requireCreator() {
   // DEV bypass: allow testing without login/roles.
@@ -417,6 +419,194 @@ export async function deleteLesson(lessonId) {
   } catch (error) {
     console.error("deleteLesson:", error);
     return { success: false, error: "Nie udało się usunąć lekcji." };
+  }
+}
+
+async function getCurrentUserId() {
+  const session = await getServerSession(authOptions);
+  return session?.user?.id ?? null;
+}
+
+async function getCurrentSessionUser() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id ?? null;
+  const role = session?.user?.role ?? null;
+  return { userId, role };
+}
+
+export async function getStudentCertificateProgress(courseId) {
+  try {
+    if (!courseId || typeof courseId !== "string") {
+      return { success: true, shouldRender: false };
+    }
+
+    const { userId } = await getCurrentSessionUser();
+    if (!userId) {
+      return { success: true, shouldRender: false };
+    }
+
+    const enrollment = await prisma.enrollment.findUnique({
+      where: { userId_courseId: { userId, courseId } },
+      select: { id: true },
+    });
+
+    if (!enrollment) {
+      return { success: true, shouldRender: false };
+    }
+
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: {
+        title: true,
+        modules: {
+          include: {
+            lessons: {
+              select: { id: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!course) {
+      return { success: true, shouldRender: false };
+    }
+
+    const totalLessons = (course.modules ?? []).reduce(
+      (sum, moduleRecord) => sum + (moduleRecord.lessons?.length ?? 0),
+      0
+    );
+    const completedLessons = await prisma.lessonCompletion.count({
+      where: { enrollmentId: enrollment.id },
+    });
+    const progress = calculateCourseProgress(completedLessons, totalLessons);
+
+    const certificateTitle = `Certyfikat ukończenia: ${course.title}`;
+    const hasCertificateModel = Boolean(certificateTitle);
+
+    if (!hasCertificateModel) {
+      return { success: true, shouldRender: false };
+    }
+
+    return {
+      success: true,
+      shouldRender: true,
+      progress,
+      completedLessons,
+      totalLessons,
+      isCompleted: progress === 100,
+    };
+  } catch (error) {
+    console.error("getStudentCertificateProgress:", error);
+    return { success: false, shouldRender: false, error: "Nie udało się pobrać progresu." };
+  }
+}
+
+export async function completeLessonAndProceed({ courseId, lessonId }) {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) {
+      return { success: false, error: "Brak autoryzacji. Zaloguj się ponownie." };
+    }
+    if (!courseId || !lessonId) {
+      return { success: false, error: "Brak wymaganych danych lekcji lub kursu." };
+    }
+
+    const [courseData, enrollment] = await Promise.all([
+      prisma.course.findUnique({
+        where: { id: courseId },
+        select: {
+          id: true,
+          title: true,
+          modules: {
+            orderBy: { order: "asc" },
+            include: {
+              lessons: {
+                orderBy: { order: "asc" },
+                select: { id: true, order: true },
+              },
+            },
+          },
+        },
+      }),
+      prisma.enrollment.findUnique({
+        where: { userId_courseId: { userId, courseId } },
+        select: { id: true },
+      }),
+    ]);
+
+    if (!courseData || !enrollment) {
+      return { success: false, error: "Nie znaleziono kursu lub zapisu użytkownika." };
+    }
+
+    const orderedLessons = getOrderedCourseLessons(courseData.modules);
+    const lessonExists = orderedLessons.some((lesson) => lesson.id === lessonId);
+    if (!lessonExists) {
+      return { success: false, error: "Lekcja nie należy do wskazanego kursu." };
+    }
+
+    const totalLessons = orderedLessons.length;
+    const nextLessonId = findNextLessonId(orderedLessons, lessonId);
+
+    const result = await prisma.$transaction(async (tx) => {
+      await tx.lessonCompletion.upsert({
+        where: { enrollmentId_lessonId: { enrollmentId: enrollment.id, lessonId } },
+        update: {},
+        create: { enrollmentId: enrollment.id, lessonId },
+      });
+
+      const completedLessons = await tx.lessonCompletion.count({
+        where: { enrollmentId: enrollment.id },
+      });
+
+      const progress = calculateCourseProgress(completedLessons, totalLessons);
+
+      await tx.enrollment.update({
+        where: { id: enrollment.id },
+        data: { progress },
+      });
+
+      if (progress === 100) {
+        const certificateTitle = `Certyfikat ukończenia: ${courseData.title}`;
+        const existingCertificate = await tx.certificate.findFirst({
+          where: { userId, title: certificateTitle },
+          select: { id: true },
+        });
+
+        if (!existingCertificate) {
+          await tx.certificate.create({
+            data: {
+              userId,
+              title: certificateTitle,
+            },
+          });
+        }
+      }
+
+      return { progress };
+    });
+
+    revalidatePath(`/student/kurs/${courseId}`);
+    revalidatePath("/student");
+
+    if (nextLessonId) {
+      return {
+        success: true,
+        progress: result.progress,
+        nextLessonId,
+        redirectUrl: `/student/kurs/${courseId}?lessonId=${nextLessonId}`,
+      };
+    }
+
+    return {
+      success: true,
+      progress: result.progress,
+      nextLessonId: null,
+      redirectUrl: `/student/kurs/${courseId}?certificate=1`,
+    };
+  } catch (error) {
+    console.error("completeLessonAndProceed:", error);
+    return { success: false, error: "Nie udało się zapisać postępu lekcji." };
   }
 }
 

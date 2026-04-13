@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
   LayoutDashboard,
@@ -21,6 +21,7 @@ import {
   Menu,
   X,
 } from 'lucide-react'
+import StudentCertificateWidget from '@/components/features/courses/StudentCertificateWidget'
 
 // Elementy nawigacji
 const NAV_ITEMS = [
@@ -113,13 +114,27 @@ function LogoutButton({ onClick }) {
   )
 }
 
-export default function Sidebar() {
+function resolveCourseIdFromPath(pathname, paramsCourseId) {
+  if (typeof paramsCourseId === 'string' && paramsCourseId.length > 0) return paramsCourseId
+  if (!pathname.startsWith('/student/kurs/')) return null
+
+  const parts = pathname.split('/')
+  const idx = parts.findIndex((part) => part === 'kurs')
+  if (idx < 0) return null
+  return parts[idx + 1] || null
+}
+
+export default function Sidebar({ isStudentLayout = false }) {
   const pathname = usePathname()
+  const params = useParams()
   const panelId = useId()
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const isStudentRoute = pathname.startsWith('/student')
+  const isStudentRoute = isStudentLayout || pathname.startsWith('/student')
   const logoHref = isStudentRoute ? '/student' : '/dashboard'
+  const courseId = isStudentRoute
+    ? resolveCourseIdFromPath(pathname, Array.isArray(params?.courseId) ? params.courseId[0] : params?.courseId)
+    : null
 
   const closeMobile = () => setMobileOpen(false)
 
@@ -179,6 +194,7 @@ export default function Sidebar() {
         <SidebarBrand logoHref={logoHref} />
         <nav className="flex flex-1 flex-col gap-2">
           <NavLinks pathname={pathname} isStudentRoute={isStudentRoute} />
+          {isStudentRoute ? <StudentCertificateWidget courseId={courseId} /> : null}
         </nav>
         <div className="mt-auto border-t border-sidebar-border pt-4">
           <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />
@@ -214,6 +230,7 @@ export default function Sidebar() {
             <SidebarBrand className="mb-6" onNavigate={closeMobile} logoHref={logoHref} />
             <nav className="flex flex-1 flex-col gap-2 overflow-y-auto">
               <NavLinks pathname={pathname} onItemClick={closeMobile} isStudentRoute={isStudentRoute} />
+              {isStudentRoute ? <StudentCertificateWidget courseId={courseId} /> : null}
             </nav>
             <div className="mt-auto border-t border-sidebar-border pt-4">
               <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />

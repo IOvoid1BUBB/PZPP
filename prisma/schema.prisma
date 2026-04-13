@@ -212,6 +212,7 @@ model Lesson {
   module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
   resources   LessonResource[]
+  completions LessonCompletion[]
 }
 
 enum LessonResourceType {
@@ -241,6 +242,7 @@ model Enrollment {
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   progress    Int      @default(0) // Procent ukończenia
   createdAt   DateTime @default(now())
+  lessonCompletions LessonCompletion[]
 
   @@unique([userId, courseId])
 }
@@ -251,6 +253,18 @@ model Certificate {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title       String
   issuedAt    DateTime @default(now())
+}
+
+model LessonCompletion {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lessonId     String
+  lesson       Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completedAt  DateTime   @default(now())
+
+  @@unique([enrollmentId, lessonId])
+  @@index([lessonId])
 }
 
 // ======================================================

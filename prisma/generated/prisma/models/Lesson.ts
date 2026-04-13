@@ -234,6 +234,7 @@ export type LessonWhereInput = {
   moduleId?: Prisma.StringFilter<"Lesson"> | string
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
   resources?: Prisma.LessonResourceListRelationFilter
+  completions?: Prisma.LessonCompletionListRelationFilter
 }
 
 export type LessonOrderByWithRelationInput = {
@@ -246,6 +247,7 @@ export type LessonOrderByWithRelationInput = {
   moduleId?: Prisma.SortOrder
   module?: Prisma.ModuleOrderByWithRelationInput
   resources?: Prisma.LessonResourceOrderByRelationAggregateInput
+  completions?: Prisma.LessonCompletionOrderByRelationAggregateInput
 }
 
 export type LessonWhereUniqueInput = Prisma.AtLeast<{
@@ -261,6 +263,7 @@ export type LessonWhereUniqueInput = Prisma.AtLeast<{
   moduleId?: Prisma.StringFilter<"Lesson"> | string
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
   resources?: Prisma.LessonResourceListRelationFilter
+  completions?: Prisma.LessonCompletionListRelationFilter
 }, "id">
 
 export type LessonOrderByWithAggregationInput = {
@@ -300,6 +303,7 @@ export type LessonCreateInput = {
   order: number
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   resources?: Prisma.LessonResourceCreateNestedManyWithoutLessonInput
+  completions?: Prisma.LessonCompletionCreateNestedManyWithoutLessonInput
 }
 
 export type LessonUncheckedCreateInput = {
@@ -311,6 +315,7 @@ export type LessonUncheckedCreateInput = {
   order: number
   moduleId: string
   resources?: Prisma.LessonResourceUncheckedCreateNestedManyWithoutLessonInput
+  completions?: Prisma.LessonCompletionUncheckedCreateNestedManyWithoutLessonInput
 }
 
 export type LessonUpdateInput = {
@@ -322,6 +327,7 @@ export type LessonUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   resources?: Prisma.LessonResourceUpdateManyWithoutLessonNestedInput
+  completions?: Prisma.LessonCompletionUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonUncheckedUpdateInput = {
@@ -333,6 +339,7 @@ export type LessonUncheckedUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   resources?: Prisma.LessonResourceUncheckedUpdateManyWithoutLessonNestedInput
+  completions?: Prisma.LessonCompletionUncheckedUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonCreateManyInput = {
@@ -473,6 +480,20 @@ export type LessonUpdateOneRequiredWithoutResourcesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LessonUpdateToOneWithWhereWithoutResourcesInput, Prisma.LessonUpdateWithoutResourcesInput>, Prisma.LessonUncheckedUpdateWithoutResourcesInput>
 }
 
+export type LessonCreateNestedOneWithoutCompletionsInput = {
+  create?: Prisma.XOR<Prisma.LessonCreateWithoutCompletionsInput, Prisma.LessonUncheckedCreateWithoutCompletionsInput>
+  connectOrCreate?: Prisma.LessonCreateOrConnectWithoutCompletionsInput
+  connect?: Prisma.LessonWhereUniqueInput
+}
+
+export type LessonUpdateOneRequiredWithoutCompletionsNestedInput = {
+  create?: Prisma.XOR<Prisma.LessonCreateWithoutCompletionsInput, Prisma.LessonUncheckedCreateWithoutCompletionsInput>
+  connectOrCreate?: Prisma.LessonCreateOrConnectWithoutCompletionsInput
+  upsert?: Prisma.LessonUpsertWithoutCompletionsInput
+  connect?: Prisma.LessonWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LessonUpdateToOneWithWhereWithoutCompletionsInput, Prisma.LessonUpdateWithoutCompletionsInput>, Prisma.LessonUncheckedUpdateWithoutCompletionsInput>
+}
+
 export type LessonCreateWithoutModuleInput = {
   id?: string
   title: string
@@ -481,6 +502,7 @@ export type LessonCreateWithoutModuleInput = {
   content?: string | null
   order: number
   resources?: Prisma.LessonResourceCreateNestedManyWithoutLessonInput
+  completions?: Prisma.LessonCompletionCreateNestedManyWithoutLessonInput
 }
 
 export type LessonUncheckedCreateWithoutModuleInput = {
@@ -491,6 +513,7 @@ export type LessonUncheckedCreateWithoutModuleInput = {
   content?: string | null
   order: number
   resources?: Prisma.LessonResourceUncheckedCreateNestedManyWithoutLessonInput
+  completions?: Prisma.LessonCompletionUncheckedCreateNestedManyWithoutLessonInput
 }
 
 export type LessonCreateOrConnectWithoutModuleInput = {
@@ -540,6 +563,7 @@ export type LessonCreateWithoutResourcesInput = {
   content?: string | null
   order: number
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
+  completions?: Prisma.LessonCompletionCreateNestedManyWithoutLessonInput
 }
 
 export type LessonUncheckedCreateWithoutResourcesInput = {
@@ -550,6 +574,7 @@ export type LessonUncheckedCreateWithoutResourcesInput = {
   content?: string | null
   order: number
   moduleId: string
+  completions?: Prisma.LessonCompletionUncheckedCreateNestedManyWithoutLessonInput
 }
 
 export type LessonCreateOrConnectWithoutResourcesInput = {
@@ -576,6 +601,7 @@ export type LessonUpdateWithoutResourcesInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
+  completions?: Prisma.LessonCompletionUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonUncheckedUpdateWithoutResourcesInput = {
@@ -586,6 +612,67 @@ export type LessonUncheckedUpdateWithoutResourcesInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  completions?: Prisma.LessonCompletionUncheckedUpdateManyWithoutLessonNestedInput
+}
+
+export type LessonCreateWithoutCompletionsInput = {
+  id?: string
+  title: string
+  videoUrl?: string | null
+  videoText?: string | null
+  content?: string | null
+  order: number
+  module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
+  resources?: Prisma.LessonResourceCreateNestedManyWithoutLessonInput
+}
+
+export type LessonUncheckedCreateWithoutCompletionsInput = {
+  id?: string
+  title: string
+  videoUrl?: string | null
+  videoText?: string | null
+  content?: string | null
+  order: number
+  moduleId: string
+  resources?: Prisma.LessonResourceUncheckedCreateNestedManyWithoutLessonInput
+}
+
+export type LessonCreateOrConnectWithoutCompletionsInput = {
+  where: Prisma.LessonWhereUniqueInput
+  create: Prisma.XOR<Prisma.LessonCreateWithoutCompletionsInput, Prisma.LessonUncheckedCreateWithoutCompletionsInput>
+}
+
+export type LessonUpsertWithoutCompletionsInput = {
+  update: Prisma.XOR<Prisma.LessonUpdateWithoutCompletionsInput, Prisma.LessonUncheckedUpdateWithoutCompletionsInput>
+  create: Prisma.XOR<Prisma.LessonCreateWithoutCompletionsInput, Prisma.LessonUncheckedCreateWithoutCompletionsInput>
+  where?: Prisma.LessonWhereInput
+}
+
+export type LessonUpdateToOneWithWhereWithoutCompletionsInput = {
+  where?: Prisma.LessonWhereInput
+  data: Prisma.XOR<Prisma.LessonUpdateWithoutCompletionsInput, Prisma.LessonUncheckedUpdateWithoutCompletionsInput>
+}
+
+export type LessonUpdateWithoutCompletionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
+  resources?: Prisma.LessonResourceUpdateManyWithoutLessonNestedInput
+}
+
+export type LessonUncheckedUpdateWithoutCompletionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  resources?: Prisma.LessonResourceUncheckedUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonCreateManyModuleInput = {
@@ -605,6 +692,7 @@ export type LessonUpdateWithoutModuleInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   resources?: Prisma.LessonResourceUpdateManyWithoutLessonNestedInput
+  completions?: Prisma.LessonCompletionUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonUncheckedUpdateWithoutModuleInput = {
@@ -615,6 +703,7 @@ export type LessonUncheckedUpdateWithoutModuleInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   resources?: Prisma.LessonResourceUncheckedUpdateManyWithoutLessonNestedInput
+  completions?: Prisma.LessonCompletionUncheckedUpdateManyWithoutLessonNestedInput
 }
 
 export type LessonUncheckedUpdateManyWithoutModuleInput = {
@@ -633,10 +722,12 @@ export type LessonUncheckedUpdateManyWithoutModuleInput = {
 
 export type LessonCountOutputType = {
   resources: number
+  completions: number
 }
 
 export type LessonCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resources?: boolean | LessonCountOutputTypeCountResourcesArgs
+  completions?: boolean | LessonCountOutputTypeCountCompletionsArgs
 }
 
 /**
@@ -656,6 +747,13 @@ export type LessonCountOutputTypeCountResourcesArgs<ExtArgs extends runtime.Type
   where?: Prisma.LessonResourceWhereInput
 }
 
+/**
+ * LessonCountOutputType without action
+ */
+export type LessonCountOutputTypeCountCompletionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LessonCompletionWhereInput
+}
+
 
 export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -667,6 +765,7 @@ export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   moduleId?: boolean
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
   resources?: boolean | Prisma.Lesson$resourcesArgs<ExtArgs>
+  completions?: boolean | Prisma.Lesson$completionsArgs<ExtArgs>
   _count?: boolean | Prisma.LessonCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
@@ -706,6 +805,7 @@ export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type LessonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
   resources?: boolean | Prisma.Lesson$resourcesArgs<ExtArgs>
+  completions?: boolean | Prisma.Lesson$completionsArgs<ExtArgs>
   _count?: boolean | Prisma.LessonCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LessonIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -720,6 +820,7 @@ export type $LessonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     module: Prisma.$ModulePayload<ExtArgs>
     resources: Prisma.$LessonResourcePayload<ExtArgs>[]
+    completions: Prisma.$LessonCompletionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1125,6 +1226,7 @@ export interface Prisma__LessonClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   module<T extends Prisma.ModuleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModuleDefaultArgs<ExtArgs>>): Prisma.Prisma__ModuleClient<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   resources<T extends Prisma.Lesson$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lesson$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  completions<T extends Prisma.Lesson$completionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lesson$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1583,6 +1685,30 @@ export type Lesson$resourcesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.LessonResourceScalarFieldEnum | Prisma.LessonResourceScalarFieldEnum[]
+}
+
+/**
+ * Lesson.completions
+ */
+export type Lesson$completionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LessonCompletion
+   */
+  select?: Prisma.LessonCompletionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LessonCompletion
+   */
+  omit?: Prisma.LessonCompletionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LessonCompletionInclude<ExtArgs> | null
+  where?: Prisma.LessonCompletionWhereInput
+  orderBy?: Prisma.LessonCompletionOrderByWithRelationInput | Prisma.LessonCompletionOrderByWithRelationInput[]
+  cursor?: Prisma.LessonCompletionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LessonCompletionScalarFieldEnum | Prisma.LessonCompletionScalarFieldEnum[]
 }
 
 /**
