@@ -99,6 +99,26 @@ enum LeadStatus {
   LOST
 }
 
+enum FunnelStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum FunnelStepType {
+  LANDING
+  CHECKOUT
+  THANK_YOU
+  CUSTOM
+}
+
+enum ABTestStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
 model Lead {
   id        String     @id @default(cuid())
   firstName String
@@ -147,7 +167,82 @@ model LandingPage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  variants  ABVariant[]
+  steps     FunnelStep[]
+
   @@index([authorId])
+}
+
+model Funnel {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  status      FunnelStatus @default(DRAFT)
+  description String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  steps       FunnelStep[]
+
+  @@index([status])
+}
+
+model FunnelStep {
+  id            String         @id @default(cuid())
+  funnelId       String
+  name           String
+  slug           String
+  order          Int
+  stepType       FunnelStepType @default(LANDING)
+  isRequired     Boolean        @default(true)
+  landingPageId  String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  funnel         Funnel         @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+  landingPage    LandingPage?   @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
+  abTests        ABTest[]
+
+  @@unique([funnelId, slug])
+  @@unique([funnelId, order])
+  @@index([funnelId])
+  @@index([landingPageId])
+}
+
+model ABTest {
+  id            String       @id @default(cuid())
+  funnelStepId  String
+  name          String
+  status        ABTestStatus @default(DRAFT)
+  startsAt      DateTime?
+  endsAt        DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  funnelStep    FunnelStep   @relation(fields: [funnelStepId], references: [id], onDelete: Cascade)
+  variants      ABVariant[]
+
+  @@index([funnelStepId])
+  @@index([status])
+}
+
+model ABVariant {
+  id            String      @id @default(cuid())
+  abTestId      String
+  landingPageId String
+  name          String
+  trafficWeight Int         @default(50)
+  views         Int         @default(0)
+  conversions   Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  abTest        ABTest      @relation(fields: [abTestId], references: [id], onDelete: Cascade)
+  landingPage   LandingPage @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
+
+  @@index([abTestId])
+  @@index([landingPageId])
+  @@unique([abTestId, name])
 }
 
 //MODUŁ C: KOMUNIKACJA (Email, SMS)

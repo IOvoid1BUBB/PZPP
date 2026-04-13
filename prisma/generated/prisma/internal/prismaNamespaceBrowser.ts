@@ -60,6 +60,10 @@ export const ModelName = {
   Tag: 'Tag',
   Note: 'Note',
   LandingPage: 'LandingPage',
+  Funnel: 'Funnel',
+  FunnelStep: 'FunnelStep',
+  ABTest: 'ABTest',
+  ABVariant: 'ABVariant',
   Message: 'Message',
   Task: 'Task',
   Course: 'Course',
@@ -204,6 +208,64 @@ export const LandingPageScalarFieldEnum = {
 } as const
 
 export type LandingPageScalarFieldEnum = (typeof LandingPageScalarFieldEnum)[keyof typeof LandingPageScalarFieldEnum]
+
+
+export const FunnelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  status: 'status',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FunnelScalarFieldEnum = (typeof FunnelScalarFieldEnum)[keyof typeof FunnelScalarFieldEnum]
+
+
+export const FunnelStepScalarFieldEnum = {
+  id: 'id',
+  funnelId: 'funnelId',
+  name: 'name',
+  slug: 'slug',
+  order: 'order',
+  stepType: 'stepType',
+  isRequired: 'isRequired',
+  landingPageId: 'landingPageId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FunnelStepScalarFieldEnum = (typeof FunnelStepScalarFieldEnum)[keyof typeof FunnelStepScalarFieldEnum]
+
+
+export const ABTestScalarFieldEnum = {
+  id: 'id',
+  funnelStepId: 'funnelStepId',
+  name: 'name',
+  status: 'status',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ABTestScalarFieldEnum = (typeof ABTestScalarFieldEnum)[keyof typeof ABTestScalarFieldEnum]
+
+
+export const ABVariantScalarFieldEnum = {
+  id: 'id',
+  abTestId: 'abTestId',
+  landingPageId: 'landingPageId',
+  name: 'name',
+  trafficWeight: 'trafficWeight',
+  views: 'views',
+  conversions: 'conversions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ABVariantScalarFieldEnum = (typeof ABVariantScalarFieldEnum)[keyof typeof ABVariantScalarFieldEnum]
 
 
 export const MessageScalarFieldEnum = {

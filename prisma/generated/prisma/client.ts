@@ -87,6 +87,26 @@ export type Note = Prisma.NoteModel
  */
 export type LandingPage = Prisma.LandingPageModel
 /**
+ * Model Funnel
+ * 
+ */
+export type Funnel = Prisma.FunnelModel
+/**
+ * Model FunnelStep
+ * 
+ */
+export type FunnelStep = Prisma.FunnelStepModel
+/**
+ * Model ABTest
+ * 
+ */
+export type ABTest = Prisma.ABTestModel
+/**
+ * Model ABVariant
+ * 
+ */
+export type ABVariant = Prisma.ABVariantModel
+/**
  * Model Message
  * 
  */

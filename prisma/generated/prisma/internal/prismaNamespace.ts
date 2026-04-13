@@ -393,6 +393,10 @@ export const ModelName = {
   Tag: 'Tag',
   Note: 'Note',
   LandingPage: 'LandingPage',
+  Funnel: 'Funnel',
+  FunnelStep: 'FunnelStep',
+  ABTest: 'ABTest',
+  ABVariant: 'ABVariant',
   Message: 'Message',
   Task: 'Task',
   Course: 'Course',
@@ -420,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "apiKeyIntegration" | "session" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "message" | "task" | "course" | "module" | "lesson" | "lessonResource" | "enrollment" | "certificate" | "lessonCompletion" | "document" | "meeting" | "customField"
+    modelProps: "user" | "account" | "apiKeyIntegration" | "session" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "funnel" | "funnelStep" | "aBTest" | "aBVariant" | "message" | "task" | "course" | "module" | "lesson" | "lessonResource" | "enrollment" | "certificate" | "lessonCompletion" | "document" | "meeting" | "customField"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1087,6 +1091,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.LandingPageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.LandingPageCountAggregateOutputType> | number
+        }
+      }
+    }
+    Funnel: {
+      payload: Prisma.$FunnelPayload<ExtArgs>
+      fields: Prisma.FunnelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FunnelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FunnelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        findFirst: {
+          args: Prisma.FunnelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FunnelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        findMany: {
+          args: Prisma.FunnelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>[]
+        }
+        create: {
+          args: Prisma.FunnelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        createMany: {
+          args: Prisma.FunnelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FunnelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>[]
+        }
+        delete: {
+          args: Prisma.FunnelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        update: {
+          args: Prisma.FunnelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        deleteMany: {
+          args: Prisma.FunnelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FunnelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FunnelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>[]
+        }
+        upsert: {
+          args: Prisma.FunnelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelPayload>
+        }
+        aggregate: {
+          args: Prisma.FunnelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFunnel>
+        }
+        groupBy: {
+          args: Prisma.FunnelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FunnelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelCountAggregateOutputType> | number
+        }
+      }
+    }
+    FunnelStep: {
+      payload: Prisma.$FunnelStepPayload<ExtArgs>
+      fields: Prisma.FunnelStepFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FunnelStepFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FunnelStepFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        findFirst: {
+          args: Prisma.FunnelStepFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FunnelStepFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        findMany: {
+          args: Prisma.FunnelStepFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>[]
+        }
+        create: {
+          args: Prisma.FunnelStepCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        createMany: {
+          args: Prisma.FunnelStepCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FunnelStepCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>[]
+        }
+        delete: {
+          args: Prisma.FunnelStepDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        update: {
+          args: Prisma.FunnelStepUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        deleteMany: {
+          args: Prisma.FunnelStepDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FunnelStepUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FunnelStepUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>[]
+        }
+        upsert: {
+          args: Prisma.FunnelStepUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FunnelStepPayload>
+        }
+        aggregate: {
+          args: Prisma.FunnelStepAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFunnelStep>
+        }
+        groupBy: {
+          args: Prisma.FunnelStepGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelStepGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FunnelStepCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FunnelStepCountAggregateOutputType> | number
+        }
+      }
+    }
+    ABTest: {
+      payload: Prisma.$ABTestPayload<ExtArgs>
+      fields: Prisma.ABTestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ABTestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ABTestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        findFirst: {
+          args: Prisma.ABTestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ABTestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        findMany: {
+          args: Prisma.ABTestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>[]
+        }
+        create: {
+          args: Prisma.ABTestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        createMany: {
+          args: Prisma.ABTestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ABTestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>[]
+        }
+        delete: {
+          args: Prisma.ABTestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        update: {
+          args: Prisma.ABTestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        deleteMany: {
+          args: Prisma.ABTestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ABTestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ABTestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>[]
+        }
+        upsert: {
+          args: Prisma.ABTestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABTestPayload>
+        }
+        aggregate: {
+          args: Prisma.ABTestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateABTest>
+        }
+        groupBy: {
+          args: Prisma.ABTestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ABTestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ABTestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ABTestCountAggregateOutputType> | number
+        }
+      }
+    }
+    ABVariant: {
+      payload: Prisma.$ABVariantPayload<ExtArgs>
+      fields: Prisma.ABVariantFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ABVariantFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ABVariantFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        findFirst: {
+          args: Prisma.ABVariantFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ABVariantFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        findMany: {
+          args: Prisma.ABVariantFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>[]
+        }
+        create: {
+          args: Prisma.ABVariantCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        createMany: {
+          args: Prisma.ABVariantCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ABVariantCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>[]
+        }
+        delete: {
+          args: Prisma.ABVariantDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        update: {
+          args: Prisma.ABVariantUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        deleteMany: {
+          args: Prisma.ABVariantDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ABVariantUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ABVariantUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>[]
+        }
+        upsert: {
+          args: Prisma.ABVariantUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ABVariantPayload>
+        }
+        aggregate: {
+          args: Prisma.ABVariantAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateABVariant>
+        }
+        groupBy: {
+          args: Prisma.ABVariantGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ABVariantGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ABVariantCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ABVariantCountAggregateOutputType> | number
         }
       }
     }
@@ -2133,6 +2433,64 @@ export const LandingPageScalarFieldEnum = {
 export type LandingPageScalarFieldEnum = (typeof LandingPageScalarFieldEnum)[keyof typeof LandingPageScalarFieldEnum]
 
 
+export const FunnelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  status: 'status',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FunnelScalarFieldEnum = (typeof FunnelScalarFieldEnum)[keyof typeof FunnelScalarFieldEnum]
+
+
+export const FunnelStepScalarFieldEnum = {
+  id: 'id',
+  funnelId: 'funnelId',
+  name: 'name',
+  slug: 'slug',
+  order: 'order',
+  stepType: 'stepType',
+  isRequired: 'isRequired',
+  landingPageId: 'landingPageId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FunnelStepScalarFieldEnum = (typeof FunnelStepScalarFieldEnum)[keyof typeof FunnelStepScalarFieldEnum]
+
+
+export const ABTestScalarFieldEnum = {
+  id: 'id',
+  funnelStepId: 'funnelStepId',
+  name: 'name',
+  status: 'status',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ABTestScalarFieldEnum = (typeof ABTestScalarFieldEnum)[keyof typeof ABTestScalarFieldEnum]
+
+
+export const ABVariantScalarFieldEnum = {
+  id: 'id',
+  abTestId: 'abTestId',
+  landingPageId: 'landingPageId',
+  name: 'name',
+  trafficWeight: 'trafficWeight',
+  views: 'views',
+  conversions: 'conversions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ABVariantScalarFieldEnum = (typeof ABVariantScalarFieldEnum)[keyof typeof ABVariantScalarFieldEnum]
+
+
 export const MessageScalarFieldEnum = {
   id: 'id',
   subject: 'subject',
@@ -2388,6 +2746,48 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'FunnelStatus'
+ */
+export type EnumFunnelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FunnelStatus[]'
+ */
+export type ListEnumFunnelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FunnelStepType'
+ */
+export type EnumFunnelStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelStepType'>
+    
+
+
+/**
+ * Reference to a field of type 'FunnelStepType[]'
+ */
+export type ListEnumFunnelStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FunnelStepType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ABTestStatus'
+ */
+export type EnumABTestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ABTestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ABTestStatus[]'
+ */
+export type ListEnumABTestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ABTestStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2518,6 +2918,10 @@ export type GlobalOmitConfig = {
   tag?: Prisma.TagOmit
   note?: Prisma.NoteOmit
   landingPage?: Prisma.LandingPageOmit
+  funnel?: Prisma.FunnelOmit
+  funnelStep?: Prisma.FunnelStepOmit
+  aBTest?: Prisma.ABTestOmit
+  aBVariant?: Prisma.ABVariantOmit
   message?: Prisma.MessageOmit
   task?: Prisma.TaskOmit
   course?: Prisma.CourseOmit
