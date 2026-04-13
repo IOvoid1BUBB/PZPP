@@ -17,9 +17,14 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import CourseYouTubePlayer from '@/components/course/CourseYouTubePlayer'
 import NextLessonButton from '@/components/features/courses/NextLessonButton'
+import StudentLessonNotesEditor from '@/components/features/courses/StudentLessonNotesEditor'
+import DbErrorToast from '@/components/student/DbErrorToast'
+import { Progress } from '@/components/ui/progress'
+
+const COURSE_LOAD_ERROR =
+  'Nie udalo sie wczytac kursu. Sprawdz polaczenie z baza lub sprobuj ponownie pozniej.'
 
 function getNormalizedId(courseIdParam) {
   return Array.isArray(courseIdParam) ? courseIdParam[0] : courseIdParam
@@ -49,31 +54,47 @@ export default async function StudentCoursePage({ params, searchParams }) {
   const auth = await requireStudentOrAdmin()
   if (!auth.ok) notFound()
 
-  const course = await prisma.course.findUnique({
-    where: { id: normalizedCourseId },
-    include: {
-      modules: {
-        orderBy: { order: 'asc' },
-        include: {
-          lessons: {
-            orderBy: { order: 'asc' },
-            include: { resources: { orderBy: { order: 'asc' } } },
+  let course
+  let enrollment = null
+  try {
+    course = await prisma.course.findUnique({
+      where: { id: normalizedCourseId },
+      include: {
+        modules: {
+          orderBy: { order: 'asc' },
+          include: {
+            lessons: {
+              orderBy: { order: 'asc' },
+              include: {
+                resources: { orderBy: { order: 'asc' } },
+                questions: { orderBy: { order: 'asc' } },
+              },
+            },
           },
         },
       },
-    },
-  })
+    })
+
+    if (!isAdminRole(auth.role)) {
+      enrollment = await prisma.enrollment.findUnique({
+        where: { userId_courseId: { userId: auth.userId, courseId: normalizedCourseId } },
+        select: { id: true, progress: true },
+      })
+    }
+  } catch (err) {
+    console.error('[StudentCoursePage]', err)
+    return (
+      <div className="space-y-4">
+        <DbErrorToast message={COURSE_LOAD_ERROR} />
+        <p className="text-sm text-muted-foreground">{COURSE_LOAD_ERROR}</p>
+      </div>
+    )
+  }
 
   if (!course) notFound()
   if (!course.isPublished && !isAdminRole(auth.role)) notFound()
 
-  if (!isAdminRole(auth.role)) {
-    const enrollment = await prisma.enrollment.findUnique({
-      where: { userId_courseId: { userId: auth.userId, courseId: normalizedCourseId } },
-      select: { id: true },
-    })
-    if (!enrollment) notFound()
-  }
+  if (!isAdminRole(auth.role) && !enrollment) notFound()
 
   const courseTitle = course.title || 'Kurs'
   const modules = course.modules ?? []
@@ -98,6 +119,45 @@ export default async function StudentCoursePage({ params, searchParams }) {
 
   const videoTitle = `${activeModule.title}: ${activeLesson.title}`
   const youtubeId = getYoutubeIdFromUrl(activeLesson.videoUrl)
+  const completedPercent = Math.min(100, Math.max(0, enrollment?.progress ?? 0))
+  const activeLessonQuestions = activeLesson.questions ?? []
+  const displayUserName =
+    (typeof auth.session?.user?.name === 'string' && auth.session.user.name.trim()) ||
+    (typeof auth.session?.user?.email === 'string' && auth.session.user.email.trim()) ||
+    'Uzytkownik'
+
+  let studentNote = ''
+  try {
+    const note = await prisma.studentLessonNote.findUnique({
+      where: {
+        userId_lessonId: {
+          userId: auth.userId,
+          lessonId: activeLesson.id,
+        },
+      },
+      select: { content: true },
+    })
+    studentNote = note?.content ?? ''
+  } catch (err) {
+    console.error('[StudentCoursePage:studentNote]', err)
+  }
+
+  let recentStudentNotes = []
+  try {
+    recentStudentNotes = await prisma.studentLessonNote.findMany({
+      where: {
+        userId: auth.userId,
+        lesson: { module: { courseId: normalizedCourseId } },
+      },
+      include: {
+        lesson: { select: { id: true, title: true } },
+      },
+      orderBy: { updatedAt: 'desc' },
+      take: 8,
+    })
+  } catch (err) {
+    console.error('[StudentCoursePage:recentStudentNotes]', err)
+  }
 
   return (
     <div className="space-y-6">
@@ -145,7 +205,7 @@ export default async function StudentCoursePage({ params, searchParams }) {
             <span className="inline-flex size-8 items-center justify-center rounded-full bg-[#e5e7eb] text-[#111827]">
               <User className="size-4" />
             </span>
-            <span className="hidden text-sm font-medium text-[#111827] sm:inline">Młody Jan</span>
+            <span className="hidden text-sm font-medium text-[#111827] sm:inline">{displayUserName}</span>
           </button>
         </div>
       </header>
@@ -227,8 +287,9 @@ export default async function StudentCoursePage({ params, searchParams }) {
               })}
             </div>
 
-            <div className="mt-5 text-sm text-[#4b5563]">
-              Wybierz lekcję z listy, aby zobaczyć materiały.
+            <div className="mt-5 space-y-2">
+              <p className="text-sm text-[#4b5563]">Postep kursu: {completedPercent}%</p>
+              <Progress value={completedPercent} className="h-2" />
             </div>
           </div>
         </section>
@@ -319,11 +380,7 @@ export default async function StudentCoursePage({ params, searchParams }) {
               </button>
             </div>
 
-            <Textarea
-              className="mt-3 min-h-[220px] resize-y"
-              defaultValue={activeLesson.content || ''}
-              placeholder="Notatki do lekcji…"
-            />
+            <StudentLessonNotesEditor lessonId={activeLesson.id} initialValue={studentNote} />
           </div>
 
           {(activeLesson.videoText || (activeLesson.resources ?? []).length > 0) ? (
@@ -393,42 +450,36 @@ export default async function StudentCoursePage({ params, searchParams }) {
               <h4 className="text-sm font-bold text-[#0f172a]">Moje notatki</h4>
 
               <div className="space-y-2">
-                {[
-                  {
-                    date: '28.01.2024',
-                    time: '10:15',
-                    title: 'Klucze podstawowe (PK)',
-                    snippet: 'Jak projektować PK i na co zwracać uwagę przy ich doborze...',
-                  },
-                  {
-                    date: '30.01.2024',
-                    time: '18:40',
-                    title: 'Relacje jeden-do-wielu (FK)',
-                    snippet: 'Kiedy FK ma sens, jak zapewnić spójność i uniknąć anomalii...',
-                  },
-                  {
-                    date: '02.02.2024',
-                    time: '09:05',
-                    title: 'Ograniczenia i spójność',
-                    snippet: 'Ograniczenia integralności jako praktyczny mechanizm jakości danych...',
-                  },
-                  {
-                    date: '05.02.2024',
-                    time: '21:22',
-                    title: 'JOINy w praktyce',
-                    snippet: 'Jak dobrać typ JOIN i jak czytać wynik zapytania...',
-                  },
-                ].map((n, idx) => (
-                  <article key={idx} className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-3">
+                {recentStudentNotes.length > 0 ? (
+                  recentStudentNotes.map((n) => (
+                    <article key={n.id} className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-3">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-medium text-[#6b7280]">
+                          {new Date(n.updatedAt).toLocaleString('pl-PL')}
+                        </p>
+                      </div>
+                      <p className="mt-1 text-sm font-semibold text-[#0f172a]">{n.lesson.title}</p>
+                      <p className="mt-1 line-clamp-2 text-xs text-[#4b5563]">{n.content}</p>
+                      <div className="mt-2">
+                        <Link
+                          href={`/student/kurs/${normalizedCourseId}?lessonId=${n.lesson.id}`}
+                          className="text-xs font-medium text-primary hover:underline"
+                        >
+                          Otwórz lekcję
+                        </Link>
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <article className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-3">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-[#6b7280]">
-                        {n.date} {n.time}
-                      </p>
+                      <p className="text-xs font-medium text-[#6b7280]">Brak zapisanych notatek</p>
                     </div>
-                    <p className="mt-1 text-sm font-semibold text-[#0f172a]">{n.title}</p>
-                    <p className="mt-1 line-clamp-2 text-xs text-[#4b5563]">{n.snippet}</p>
+                    <p className="mt-1 text-xs text-[#4b5563]">
+                      Twoje notatki beda zapisywane per lekcja i widoczne tylko dla Ciebie.
+                    </p>
                   </article>
-                ))}
+                )}
               </div>
             </div>
 
@@ -436,15 +487,22 @@ export default async function StudentCoursePage({ params, searchParams }) {
               <h4 className="text-sm font-bold text-[#0f172a]">Pytania i Odpowiedzi</h4>
 
               <div className="space-y-2">
-                {[
-                    'Question: sa notatka do lekcji o relacjach (FK)?',
-                    'Co to jest JOIN i kiedy używać?',
-                    'Jak zapewnić integralnosc danych przy FK?',
-                ].map((q, idx) => (
-                  <div key={idx} className="rounded-lg bg-[#f3f4f6] p-3 text-sm text-[#374151]">
-                    {q}
+                {activeLessonQuestions.length > 0 ? (
+                  activeLessonQuestions.map((qa) => (
+                    <article key={qa.id} className="rounded-lg bg-[#f3f4f6] p-3 text-sm text-[#374151]">
+                      <p className="font-semibold text-[#0f172a]">{qa.question}</p>
+                      <p className="mt-1 text-xs text-[#4b5563]">
+                        {qa.answer?.trim()
+                          ? qa.answer
+                          : 'Odpowiedź nie została jeszcze dodana przez kreatora.'}
+                      </p>
+                    </article>
+                  ))
+                ) : (
+                  <div className="rounded-lg bg-[#f3f4f6] p-3 text-sm text-[#4b5563]">
+                    Brak pytań dla tej lekcji. Kreator może dodać je w edycji lekcji.
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
