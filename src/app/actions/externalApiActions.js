@@ -179,7 +179,14 @@ export async function fetchJiraIssues(userId) {
       url: siteUrl ? `${siteUrl}/browse/${issue.key}` : null,
     }));
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    // Brak OAuth Jira jest scenariuszem opcjonalnym - zwracamy pusta liste.
+    if (message.includes("Brak podłączonej integracji OAuth dla: atlassian")) {
+      return [];
+    }
+
     console.error("fetchJiraIssues:", error);
-    throw error;
+    return [];
   }
 }
