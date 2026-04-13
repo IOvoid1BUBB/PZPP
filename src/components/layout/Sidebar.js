@@ -3,7 +3,7 @@
 import { useEffect, useId, useState } from 'react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import {
   LayoutDashboard,
   LayoutGrid,
@@ -114,6 +114,22 @@ function LogoutButton({ onClick }) {
   )
 }
 
+function UserProfileSummary({ name }) {
+  if (!name) return null
+
+  return (
+    <div className="mb-2 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-sidebar-foreground">
+      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-sidebar-accent/70 text-sidebar-foreground">
+        <User className="size-5 shrink-0 stroke-[1.5]" />
+      </span>
+      <div className="min-w-0">
+        <div className="truncate text-sm font-semibold text-sidebar-foreground">{name}</div>
+        <div className="text-xs text-muted-foreground">Zalogowano</div>
+      </div>
+    </div>
+  )
+}
+
 function resolveCourseIdFromPath(pathname, paramsCourseId) {
   if (typeof paramsCourseId === 'string' && paramsCourseId.length > 0) return paramsCourseId
   if (!pathname.startsWith('/student/kurs/')) return null
@@ -125,6 +141,8 @@ function resolveCourseIdFromPath(pathname, paramsCourseId) {
 }
 
 export default function Sidebar({ isStudentLayout = false }) {
+  const sessionState = useSession()
+  const session = sessionState?.data
   const pathname = usePathname()
   const params = useParams()
   const panelId = useId()
@@ -132,6 +150,13 @@ export default function Sidebar({ isStudentLayout = false }) {
 
   const isStudentRoute = isStudentLayout || pathname.startsWith('/student')
   const logoHref = isStudentRoute ? '/student' : '/dashboard'
+  const displayName =
+    (typeof session?.user?.name === 'string' && session.user.name.trim().length
+      ? session.user.name.trim()
+      : null) ||
+    (typeof session?.user?.email === 'string' && session.user.email.trim().length
+      ? session.user.email.trim()
+      : null)
   const courseId = isStudentRoute
     ? resolveCourseIdFromPath(pathname, Array.isArray(params?.courseId) ? params.courseId[0] : params?.courseId)
     : null
@@ -197,6 +222,7 @@ export default function Sidebar({ isStudentLayout = false }) {
           {isStudentRoute ? <StudentCertificateWidget courseId={courseId} /> : null}
         </nav>
         <div className="mt-auto border-t border-sidebar-border pt-4">
+          <UserProfileSummary name={displayName} />
           <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />
         </div>
       </aside>
@@ -233,6 +259,7 @@ export default function Sidebar({ isStudentLayout = false }) {
               {isStudentRoute ? <StudentCertificateWidget courseId={courseId} /> : null}
             </nav>
             <div className="mt-auto border-t border-sidebar-border pt-4">
+              <UserProfileSummary name={displayName} />
               <LogoutButton onClick={() => signOut({ callbackUrl: '/' })} />
             </div>
           </aside>
