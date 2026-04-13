@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { SCORING_RULES, getLeadTemperature } from "@/lib/scoring";
 import { revalidatePath } from "next/cache";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 
 /**
  * Dodaje (lub odejmuje) punkty za konkretną aktywność leada.
@@ -10,6 +11,11 @@ import { revalidatePath } from "next/cache";
  */
 export async function addLeadActivity(leadId, activityType) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) {
+      return { success: false, error: auth.error };
+    }
+
     // 1. Sprawdzamy, ile punktów jest warta ta akcja
     const points = SCORING_RULES[activityType];
     
@@ -20,11 +26,15 @@ export async function addLeadActivity(leadId, activityType) {
     // 2. Pobieramy obecny stan leada z bazy
     const currentLead = await prisma.lead.findUnique({
       where: { id: leadId },
-      select: { score: true, status: true }
+      select: { score: true, status: true, ownerId: true }
     });
 
     if (!currentLead) {
       return { success: false, error: "Lead nie został znaleziony w bazie." };
+    }
+
+    if (!isAdminRole(auth.role) && currentLead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak dostępu do tego leada." };
     }
 
     // 3. Obliczamy nowy wynik (jeśli miał null, traktujemy jako 0)

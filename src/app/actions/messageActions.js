@@ -5,6 +5,7 @@ import { transporter, mailOptions } from "@/lib/nodemailer";
 import { revalidatePath } from "next/cache";
 import { render } from "@react-email/render";
 import React from "react";
+import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 
 import CrmWelcomeLead, {
   getSubject as getCrmWelcomeLeadSubject,
@@ -49,6 +50,9 @@ export async function getLeadMessages(leadId) {
       },
     });
 
+    const access = await canAccessLead(lead);
+    if (!access.ok) return null;
+
     return lead;
   } catch (error) {
     console.error("getLeadMessages:", error);
@@ -61,8 +65,17 @@ export async function getLeadMessages(leadId) {
  */
 export async function sendEmailToLead(leadId, toEmail, subject, body) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     if (!leadId || !toEmail || !body) {
       return { success: false, error: "Brakuje wymaganych danych do wysyłki." };
+    }
+
+    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
+    if (!lead) return { success: false, error: "Lead nie istnieje." };
+    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
     }
 
     // 1. Fizyczna wysyłka maila przez Nodemailer
@@ -145,8 +158,17 @@ const TEMPLATE_REGISTRY = {
  */
 export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     if (!leadId || !toEmail || !templateName) {
       return { success: false, error: "Brakuje wymaganych danych do wysyłki." };
+    }
+
+    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
+    if (!lead) return { success: false, error: "Lead nie istnieje." };
+    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
     }
 
     const entry = TEMPLATE_REGISTRY[templateName];
@@ -205,8 +227,17 @@ export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
  */
 export async function simulateSMSToLead(leadId, phone, body) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     if (!leadId || !body) {
       return { success: false, error: "Brakuje wymaganych danych dla SMS." };
+    }
+
+    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
+    if (!lead) return { success: false, error: "Lead nie istnieje." };
+    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
     }
 
     // Tu w przyszłości można podpiąć bramkę SMS (np. Twilio, SMSAPI).

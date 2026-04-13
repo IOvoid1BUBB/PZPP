@@ -2,22 +2,25 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { calculateCourseProgress } from "@/lib/course-progress";
 import { findNextLessonId, getOrderedCourseLessons } from "@/lib/course-navigation";
 
 async function requireCreator() {
-  // DEV bypass: allow testing without login/roles.
-  if (process.env.NODE_ENV !== "production") {
-    return { ok: true, session: null, bypass: true };
-  }
-  const session = await getServerSession(authOptions);
-  const role = session?.user?.role;
-  if (role !== "KREATOR") {
-    return { ok: false, error: "Brak uprawnień. Ta akcja jest dostępna tylko dla kreatora." };
-  }
-  return { ok: true, session };
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) return auth;
+  return auth;
+}
+
+async function requireCourseOwner(courseId, auth) {
+  if (isAdminRole(auth.role)) return { ok: true };
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    select: { id: true, authorId: true },
+  });
+  if (!course) return { ok: false, error: "Nie znaleziono kursu." };
+  if (course.authorId !== auth.userId) return { ok: false, error: "Brak uprawnień do tego kursu." };
+  return { ok: true };
 }
 
 function normalizeString(value) {
@@ -50,6 +53,7 @@ export async function getCourses() {
     const auth = await requireCreator();
     if (!auth.ok) return [];
     return await prisma.course.findMany({
+      where: isAdminRole(auth.role) ? {} : { authorId: auth.userId },
       orderBy: { createdAt: "desc" },
       include: {
         _count: { select: { modules: true, enrollments: true } },
@@ -80,6 +84,7 @@ export async function createCourse(input) {
         description,
         price,
         isPublished,
+        authorId: auth.userId,
       },
     });
 
@@ -98,6 +103,9 @@ export async function updateCourse(courseId, input) {
     if (!courseId || typeof courseId !== "string") {
       return { success: false, error: "Nieprawidłowe ID kursu." };
     }
+
+    const own = await requireCourseOwner(courseId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const title = normalizeString(input?.title);
     const description = normalizeOptionalString(input?.description);
@@ -134,6 +142,9 @@ export async function deleteCourse(courseId) {
     if (!courseId || typeof courseId !== "string") {
       return { success: false, error: "Nieprawidłowe ID kursu." };
     }
+
+    const own = await requireCourseOwner(courseId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     await prisma.course.delete({ where: { id: courseId } });
 

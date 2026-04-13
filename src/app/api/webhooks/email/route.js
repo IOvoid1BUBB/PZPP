@@ -3,6 +3,14 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
   try {
+    const expected = process.env.EMAIL_WEBHOOK_SECRET;
+    if (expected) {
+      const provided = request.headers.get("x-webhook-secret");
+      if (!provided || provided !== expected) {
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+      }
+    }
+
     const payload = await request.json();
 
     // TODO: W przyszłości zaktualizować mapowanie pól pod specyficzny payload dostawcy

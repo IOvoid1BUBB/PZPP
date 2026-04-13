@@ -165,23 +165,34 @@ export async function bookPublicMeeting(data) {
         return { ok: false, error: "Wybrany termin został już zarezerwowany." };
       }
 
-      const lead = await tx.lead.upsert({
+      const existingLead = await tx.lead.findUnique({
         where: { email },
-        update: {
-          firstName,
-          lastName,
-          phone: phone || null,
-          source: "booking-widget",
-        },
-        create: {
-          firstName,
-          lastName,
-          email,
-          phone: phone || null,
-          source: "booking-widget",
-        },
-        select: { id: true },
+        select: { id: true, ownerId: true },
       });
+
+      const lead = existingLead
+        ? await tx.lead.update({
+            where: { id: existingLead.id },
+            data: {
+              firstName,
+              lastName,
+              phone: phone || null,
+              source: "booking-widget",
+              ...(existingLead.ownerId ? {} : { ownerId: organizerId }),
+            },
+            select: { id: true },
+          })
+        : await tx.lead.create({
+            data: {
+              firstName,
+              lastName,
+              email,
+              phone: phone || null,
+              source: "booking-widget",
+              ownerId: organizerId,
+            },
+            select: { id: true },
+          });
 
       const meeting = await tx.meeting.create({
         data: {

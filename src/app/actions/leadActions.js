@@ -2,12 +2,16 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 
 const ALLOWED_KANBAN_STATUSES = ["NEW", "CONTACTED", "WON"];
 
 // Bezpieczna funkcja serwerowa do zapisu leada
 export async function createLead(formData) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     const firstName = formData.get("firstName");
     const lastName = formData.get("lastName");
     const email = formData.get("email");
@@ -24,11 +28,12 @@ export async function createLead(formData) {
       data: {
         firstName,
         lastName,
-        email,
+        email: String(email).toLowerCase(),
         phone,
         source,
         status: "NEW", // domyślny status z Prisma Schema
         score: 0,
+        ownerId: auth.userId,
       },
     });
 
@@ -49,12 +54,27 @@ export async function createLead(formData) {
 // Statystyki dashboardu (łącznie leadów, konwersja, kursy, dokumenty)
 export async function getDashboardStats() {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) {
+      return {
+        totalLeads: 0,
+        conversionRate: "0%",
+        activeCourses: 0,
+        pendingSignatures: 0,
+      };
+    }
+
+    const leadWhere = isAdminRole(auth.role) ? {} : { ownerId: auth.userId };
     const [totalLeads, wonLeads, activeCourses, pendingSignatures] =
       await Promise.all([
-        prisma.lead.count(),
-        prisma.lead.count({ where: { status: "WON" } }),
+        prisma.lead.count({ where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId } }),
+        prisma.lead.count({ where: isAdminRole(auth.role) ? { status: "WON" } : { ownerId: auth.userId, status: "WON" } }),
         prisma.course.count({ where: { isPublished: true } }),
-        prisma.document.count({ where: { isSigned: false } }),
+        prisma.document.count({
+          where: isAdminRole(auth.role)
+            ? { isSigned: false }
+            : { isSigned: false, lead: { ownerId: auth.userId } },
+        }),
       ]);
 
     const conversionRate =
@@ -80,52 +100,14 @@ export async function getDashboardStats() {
 // Pobieranie danych dla tabeli
 export async function getLeads() {
   try {
-    // #region agent log
-    fetch("http://127.0.0.1:7452/ingest/4fcb5328-7a6a-4979-9992-6357b51d1f78", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "aeb5d6",
-      },
-      body: JSON.stringify({
-        sessionId: "aeb5d6",
-        runId: "prisma-bugs-check",
-        hypothesisId: "H3",
-        location: "src/app/actions/leadActions.js:getLeads",
-        message: "getLeads query start",
-        data: { queryKey: "leads.findMany" },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
 
     return await prisma.lead.findMany({
+      where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId },
       orderBy: { createdAt: 'desc' },
     });
   } catch (error) {
-    // #region agent log
-    fetch("http://127.0.0.1:7452/ingest/4fcb5328-7a6a-4979-9992-6357b51d1f78", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "aeb5d6",
-      },
-      body: JSON.stringify({
-        sessionId: "aeb5d6",
-        runId: "prisma-bugs-check",
-        hypothesisId: "H3",
-        location: "src/app/actions/leadActions.js:getLeads:catch",
-        message: "getLeads query failed",
-        data: {
-          errorName: error?.name || "unknown",
-          errorCode: error?.code || "none",
-          hasMeta: Boolean(error?.meta),
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-
     return [];
   }
 }
@@ -138,27 +120,8 @@ export async function getLeads() {
  */
 export async function updateLeadStatus(leadId, newStatus) {
   try {
-    // #region agent log
-    fetch("http://127.0.0.1:7452/ingest/4fcb5328-7a6a-4979-9992-6357b51d1f78", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "aeb5d6",
-      },
-      body: JSON.stringify({
-        sessionId: "aeb5d6",
-        runId: "prisma-bugs-check",
-        hypothesisId: "H4",
-        location: "src/app/actions/leadActions.js:updateLeadStatus",
-        message: "updateLeadStatus start",
-        data: {
-          hasLeadId: Boolean(leadId),
-          newStatus,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
 
     if (!leadId || typeof leadId !== "string") {
       return { success: false, error: "Nieprawidłowe ID leada." };
@@ -168,53 +131,49 @@ export async function updateLeadStatus(leadId, newStatus) {
       return { success: false, error: "Nieprawidłowy status Kanban." };
     }
 
-    const updatedLead = await prisma.lead.update({
-      where: { id: leadId },
-      data: { status: newStatus },
-    });
+    if (!isAdminRole(auth.role)) {
+      const updated = await prisma.lead.updateMany({
+        where: { id: leadId, ownerId: auth.userId },
+        data: { status: newStatus },
+      });
+      if (updated.count === 0) {
+        return { success: false, error: "Lead nie istnieje lub nie masz do niego dostępu." };
+      }
+    } else {
+      await prisma.lead.update({
+        where: { id: leadId },
+        data: { status: newStatus },
+      });
+    }
+
+    const updatedLead = await prisma.lead.findUnique({ where: { id: leadId } });
 
     revalidatePath("/dashboard/kanban");
     revalidatePath("/dashboard");
 
     return { success: true, lead: updatedLead };
   } catch (error) {
-    // #region agent log
-    fetch("http://127.0.0.1:7452/ingest/4fcb5328-7a6a-4979-9992-6357b51d1f78", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "aeb5d6",
-      },
-      body: JSON.stringify({
-        sessionId: "aeb5d6",
-        runId: "prisma-bugs-check",
-        hypothesisId: "H4",
-        location: "src/app/actions/leadActions.js:updateLeadStatus:catch",
-        message: "updateLeadStatus failed",
-        data: {
-          errorName: error?.name || "unknown",
-          errorCode: error?.code || "none",
-          hasMeta: Boolean(error?.meta),
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-
     console.error(error);
     return { success: false, error: "Nie udało się zaktualizować statusu leada." };
   }
 }
 
 export async function createOrUpdateLead(data) {
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error || "Unauthorized");
+
   const { email, firstName, lastName, ...otherData } = data;
+  const normalizedEmail = String(email || "").toLowerCase();
 
   // 1. Szukamy istniejącego leada po mailu
   const existingLead = await prisma.lead.findUnique({
-    where: { email: email.toLowerCase() }
+    where: { email: normalizedEmail },
   });
 
   if (existingLead) {
+    if (!isAdminRole(auth.role) && existingLead.ownerId !== auth.userId) {
+      throw new Error("Brak uprawnień do aktualizacji tego leada.");
+    }
     // 2. Jeśli istnieje, aktualizujemy go i podbijamy punkty (np. za powtórny kontakt)
     return await prisma.lead.update({
       where: { id: existingLead.id },
@@ -228,10 +187,11 @@ export async function createOrUpdateLead(data) {
   // 3. Jeśli nie istnieje, tworzymy nowy rekord z bazowym scoringiem
   return await prisma.lead.create({
     data: {
-      email: email.toLowerCase(),
+      email: normalizedEmail,
       firstName,
       lastName,
       score: 20, // Punkty startowe za zapis
+      ownerId: auth.userId,
       ...otherData
     }
   });
