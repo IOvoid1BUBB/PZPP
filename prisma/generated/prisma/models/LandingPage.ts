@@ -223,6 +223,8 @@ export type LandingPageWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"LandingPage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LandingPage"> | Date | string
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  variants?: Prisma.ABVariantListRelationFilter
+  steps?: Prisma.FunnelStepListRelationFilter
 }
 
 export type LandingPageOrderByWithRelationInput = {
@@ -237,6 +239,8 @@ export type LandingPageOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
+  variants?: Prisma.ABVariantOrderByRelationAggregateInput
+  steps?: Prisma.FunnelStepOrderByRelationAggregateInput
 }
 
 export type LandingPageWhereUniqueInput = Prisma.AtLeast<{
@@ -254,6 +258,8 @@ export type LandingPageWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"LandingPage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LandingPage"> | Date | string
   author?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  variants?: Prisma.ABVariantListRelationFilter
+  steps?: Prisma.FunnelStepListRelationFilter
 }, "id" | "slug">
 
 export type LandingPageOrderByWithAggregationInput = {
@@ -299,6 +305,8 @@ export type LandingPageCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   author?: Prisma.UserCreateNestedOneWithoutLandingPagesInput
+  variants?: Prisma.ABVariantCreateNestedManyWithoutLandingPageInput
+  steps?: Prisma.FunnelStepCreateNestedManyWithoutLandingPageInput
 }
 
 export type LandingPageUncheckedCreateInput = {
@@ -312,6 +320,8 @@ export type LandingPageUncheckedCreateInput = {
   authorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ABVariantUncheckedCreateNestedManyWithoutLandingPageInput
+  steps?: Prisma.FunnelStepUncheckedCreateNestedManyWithoutLandingPageInput
 }
 
 export type LandingPageUpdateInput = {
@@ -325,6 +335,8 @@ export type LandingPageUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneWithoutLandingPagesNestedInput
+  variants?: Prisma.ABVariantUpdateManyWithoutLandingPageNestedInput
+  steps?: Prisma.FunnelStepUpdateManyWithoutLandingPageNestedInput
 }
 
 export type LandingPageUncheckedUpdateInput = {
@@ -338,6 +350,8 @@ export type LandingPageUncheckedUpdateInput = {
   authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ABVariantUncheckedUpdateManyWithoutLandingPageNestedInput
+  steps?: Prisma.FunnelStepUncheckedUpdateManyWithoutLandingPageNestedInput
 }
 
 export type LandingPageCreateManyInput = {
@@ -427,6 +441,16 @@ export type LandingPageMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type LandingPageNullableScalarRelationFilter = {
+  is?: Prisma.LandingPageWhereInput | null
+  isNot?: Prisma.LandingPageWhereInput | null
+}
+
+export type LandingPageScalarRelationFilter = {
+  is?: Prisma.LandingPageWhereInput
+  isNot?: Prisma.LandingPageWhereInput
+}
+
 export type LandingPageCreateNestedManyWithoutAuthorInput = {
   create?: Prisma.XOR<Prisma.LandingPageCreateWithoutAuthorInput, Prisma.LandingPageUncheckedCreateWithoutAuthorInput> | Prisma.LandingPageCreateWithoutAuthorInput[] | Prisma.LandingPageUncheckedCreateWithoutAuthorInput[]
   connectOrCreate?: Prisma.LandingPageCreateOrConnectWithoutAuthorInput | Prisma.LandingPageCreateOrConnectWithoutAuthorInput[]
@@ -473,6 +497,36 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type LandingPageCreateNestedOneWithoutStepsInput = {
+  create?: Prisma.XOR<Prisma.LandingPageCreateWithoutStepsInput, Prisma.LandingPageUncheckedCreateWithoutStepsInput>
+  connectOrCreate?: Prisma.LandingPageCreateOrConnectWithoutStepsInput
+  connect?: Prisma.LandingPageWhereUniqueInput
+}
+
+export type LandingPageUpdateOneWithoutStepsNestedInput = {
+  create?: Prisma.XOR<Prisma.LandingPageCreateWithoutStepsInput, Prisma.LandingPageUncheckedCreateWithoutStepsInput>
+  connectOrCreate?: Prisma.LandingPageCreateOrConnectWithoutStepsInput
+  upsert?: Prisma.LandingPageUpsertWithoutStepsInput
+  disconnect?: Prisma.LandingPageWhereInput | boolean
+  delete?: Prisma.LandingPageWhereInput | boolean
+  connect?: Prisma.LandingPageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandingPageUpdateToOneWithWhereWithoutStepsInput, Prisma.LandingPageUpdateWithoutStepsInput>, Prisma.LandingPageUncheckedUpdateWithoutStepsInput>
+}
+
+export type LandingPageCreateNestedOneWithoutVariantsInput = {
+  create?: Prisma.XOR<Prisma.LandingPageCreateWithoutVariantsInput, Prisma.LandingPageUncheckedCreateWithoutVariantsInput>
+  connectOrCreate?: Prisma.LandingPageCreateOrConnectWithoutVariantsInput
+  connect?: Prisma.LandingPageWhereUniqueInput
+}
+
+export type LandingPageUpdateOneRequiredWithoutVariantsNestedInput = {
+  create?: Prisma.XOR<Prisma.LandingPageCreateWithoutVariantsInput, Prisma.LandingPageUncheckedCreateWithoutVariantsInput>
+  connectOrCreate?: Prisma.LandingPageCreateOrConnectWithoutVariantsInput
+  upsert?: Prisma.LandingPageUpsertWithoutVariantsInput
+  connect?: Prisma.LandingPageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandingPageUpdateToOneWithWhereWithoutVariantsInput, Prisma.LandingPageUpdateWithoutVariantsInput>, Prisma.LandingPageUncheckedUpdateWithoutVariantsInput>
+}
+
 export type LandingPageCreateWithoutAuthorInput = {
   id?: string
   title: string
@@ -483,6 +537,8 @@ export type LandingPageCreateWithoutAuthorInput = {
   isPublic?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ABVariantCreateNestedManyWithoutLandingPageInput
+  steps?: Prisma.FunnelStepCreateNestedManyWithoutLandingPageInput
 }
 
 export type LandingPageUncheckedCreateWithoutAuthorInput = {
@@ -495,6 +551,8 @@ export type LandingPageUncheckedCreateWithoutAuthorInput = {
   isPublic?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ABVariantUncheckedCreateNestedManyWithoutLandingPageInput
+  steps?: Prisma.FunnelStepUncheckedCreateNestedManyWithoutLandingPageInput
 }
 
 export type LandingPageCreateOrConnectWithoutAuthorInput = {
@@ -539,6 +597,150 @@ export type LandingPageScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"LandingPage"> | Date | string
 }
 
+export type LandingPageCreateWithoutStepsInput = {
+  id?: string
+  title: string
+  slug: string
+  htmlData?: string | null
+  cssData?: string | null
+  isActive?: boolean
+  isPublic?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author?: Prisma.UserCreateNestedOneWithoutLandingPagesInput
+  variants?: Prisma.ABVariantCreateNestedManyWithoutLandingPageInput
+}
+
+export type LandingPageUncheckedCreateWithoutStepsInput = {
+  id?: string
+  title: string
+  slug: string
+  htmlData?: string | null
+  cssData?: string | null
+  isActive?: boolean
+  isPublic?: boolean
+  authorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.ABVariantUncheckedCreateNestedManyWithoutLandingPageInput
+}
+
+export type LandingPageCreateOrConnectWithoutStepsInput = {
+  where: Prisma.LandingPageWhereUniqueInput
+  create: Prisma.XOR<Prisma.LandingPageCreateWithoutStepsInput, Prisma.LandingPageUncheckedCreateWithoutStepsInput>
+}
+
+export type LandingPageUpsertWithoutStepsInput = {
+  update: Prisma.XOR<Prisma.LandingPageUpdateWithoutStepsInput, Prisma.LandingPageUncheckedUpdateWithoutStepsInput>
+  create: Prisma.XOR<Prisma.LandingPageCreateWithoutStepsInput, Prisma.LandingPageUncheckedCreateWithoutStepsInput>
+  where?: Prisma.LandingPageWhereInput
+}
+
+export type LandingPageUpdateToOneWithWhereWithoutStepsInput = {
+  where?: Prisma.LandingPageWhereInput
+  data: Prisma.XOR<Prisma.LandingPageUpdateWithoutStepsInput, Prisma.LandingPageUncheckedUpdateWithoutStepsInput>
+}
+
+export type LandingPageUpdateWithoutStepsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  htmlData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cssData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneWithoutLandingPagesNestedInput
+  variants?: Prisma.ABVariantUpdateManyWithoutLandingPageNestedInput
+}
+
+export type LandingPageUncheckedUpdateWithoutStepsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  htmlData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cssData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ABVariantUncheckedUpdateManyWithoutLandingPageNestedInput
+}
+
+export type LandingPageCreateWithoutVariantsInput = {
+  id?: string
+  title: string
+  slug: string
+  htmlData?: string | null
+  cssData?: string | null
+  isActive?: boolean
+  isPublic?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author?: Prisma.UserCreateNestedOneWithoutLandingPagesInput
+  steps?: Prisma.FunnelStepCreateNestedManyWithoutLandingPageInput
+}
+
+export type LandingPageUncheckedCreateWithoutVariantsInput = {
+  id?: string
+  title: string
+  slug: string
+  htmlData?: string | null
+  cssData?: string | null
+  isActive?: boolean
+  isPublic?: boolean
+  authorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  steps?: Prisma.FunnelStepUncheckedCreateNestedManyWithoutLandingPageInput
+}
+
+export type LandingPageCreateOrConnectWithoutVariantsInput = {
+  where: Prisma.LandingPageWhereUniqueInput
+  create: Prisma.XOR<Prisma.LandingPageCreateWithoutVariantsInput, Prisma.LandingPageUncheckedCreateWithoutVariantsInput>
+}
+
+export type LandingPageUpsertWithoutVariantsInput = {
+  update: Prisma.XOR<Prisma.LandingPageUpdateWithoutVariantsInput, Prisma.LandingPageUncheckedUpdateWithoutVariantsInput>
+  create: Prisma.XOR<Prisma.LandingPageCreateWithoutVariantsInput, Prisma.LandingPageUncheckedCreateWithoutVariantsInput>
+  where?: Prisma.LandingPageWhereInput
+}
+
+export type LandingPageUpdateToOneWithWhereWithoutVariantsInput = {
+  where?: Prisma.LandingPageWhereInput
+  data: Prisma.XOR<Prisma.LandingPageUpdateWithoutVariantsInput, Prisma.LandingPageUncheckedUpdateWithoutVariantsInput>
+}
+
+export type LandingPageUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  htmlData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cssData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneWithoutLandingPagesNestedInput
+  steps?: Prisma.FunnelStepUpdateManyWithoutLandingPageNestedInput
+}
+
+export type LandingPageUncheckedUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  htmlData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cssData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  steps?: Prisma.FunnelStepUncheckedUpdateManyWithoutLandingPageNestedInput
+}
+
 export type LandingPageCreateManyAuthorInput = {
   id?: string
   title: string
@@ -561,6 +763,8 @@ export type LandingPageUpdateWithoutAuthorInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ABVariantUpdateManyWithoutLandingPageNestedInput
+  steps?: Prisma.FunnelStepUpdateManyWithoutLandingPageNestedInput
 }
 
 export type LandingPageUncheckedUpdateWithoutAuthorInput = {
@@ -573,6 +777,8 @@ export type LandingPageUncheckedUpdateWithoutAuthorInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ABVariantUncheckedUpdateManyWithoutLandingPageNestedInput
+  steps?: Prisma.FunnelStepUncheckedUpdateManyWithoutLandingPageNestedInput
 }
 
 export type LandingPageUncheckedUpdateManyWithoutAuthorInput = {
@@ -588,6 +794,44 @@ export type LandingPageUncheckedUpdateManyWithoutAuthorInput = {
 }
 
 
+/**
+ * Count Type LandingPageCountOutputType
+ */
+
+export type LandingPageCountOutputType = {
+  variants: number
+  steps: number
+}
+
+export type LandingPageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  variants?: boolean | LandingPageCountOutputTypeCountVariantsArgs
+  steps?: boolean | LandingPageCountOutputTypeCountStepsArgs
+}
+
+/**
+ * LandingPageCountOutputType without action
+ */
+export type LandingPageCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LandingPageCountOutputType
+   */
+  select?: Prisma.LandingPageCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LandingPageCountOutputType without action
+ */
+export type LandingPageCountOutputTypeCountVariantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ABVariantWhereInput
+}
+
+/**
+ * LandingPageCountOutputType without action
+ */
+export type LandingPageCountOutputTypeCountStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FunnelStepWhereInput
+}
+
 
 export type LandingPageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -601,6 +845,9 @@ export type LandingPageSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.LandingPage$authorArgs<ExtArgs>
+  variants?: boolean | Prisma.LandingPage$variantsArgs<ExtArgs>
+  steps?: boolean | Prisma.LandingPage$stepsArgs<ExtArgs>
+  _count?: boolean | Prisma.LandingPageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landingPage"]>
 
 export type LandingPageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -647,6 +894,9 @@ export type LandingPageSelectScalar = {
 export type LandingPageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "htmlData" | "cssData" | "isActive" | "isPublic" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["landingPage"]>
 export type LandingPageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.LandingPage$authorArgs<ExtArgs>
+  variants?: boolean | Prisma.LandingPage$variantsArgs<ExtArgs>
+  steps?: boolean | Prisma.LandingPage$stepsArgs<ExtArgs>
+  _count?: boolean | Prisma.LandingPageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LandingPageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.LandingPage$authorArgs<ExtArgs>
@@ -659,6 +909,8 @@ export type $LandingPagePayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "LandingPage"
   objects: {
     author: Prisma.$UserPayload<ExtArgs> | null
+    variants: Prisma.$ABVariantPayload<ExtArgs>[]
+    steps: Prisma.$FunnelStepPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1066,6 +1318,8 @@ readonly fields: LandingPageFieldRefs;
 export interface Prisma__LandingPageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   author<T extends Prisma.LandingPage$authorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandingPage$authorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  variants<T extends Prisma.LandingPage$variantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandingPage$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ABVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  steps<T extends Prisma.LandingPage$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandingPage$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FunnelStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1522,6 +1776,54 @@ export type LandingPage$authorArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * LandingPage.variants
+ */
+export type LandingPage$variantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ABVariant
+   */
+  select?: Prisma.ABVariantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ABVariant
+   */
+  omit?: Prisma.ABVariantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ABVariantInclude<ExtArgs> | null
+  where?: Prisma.ABVariantWhereInput
+  orderBy?: Prisma.ABVariantOrderByWithRelationInput | Prisma.ABVariantOrderByWithRelationInput[]
+  cursor?: Prisma.ABVariantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ABVariantScalarFieldEnum | Prisma.ABVariantScalarFieldEnum[]
+}
+
+/**
+ * LandingPage.steps
+ */
+export type LandingPage$stepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FunnelStep
+   */
+  select?: Prisma.FunnelStepSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FunnelStep
+   */
+  omit?: Prisma.FunnelStepOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FunnelStepInclude<ExtArgs> | null
+  where?: Prisma.FunnelStepWhereInput
+  orderBy?: Prisma.FunnelStepOrderByWithRelationInput | Prisma.FunnelStepOrderByWithRelationInput[]
+  cursor?: Prisma.FunnelStepWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FunnelStepScalarFieldEnum | Prisma.FunnelStepScalarFieldEnum[]
 }
 
 /**

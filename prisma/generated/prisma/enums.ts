@@ -30,6 +30,35 @@ export const LeadStatus = {
 export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
 
 
+export const FunnelStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type FunnelStatus = (typeof FunnelStatus)[keyof typeof FunnelStatus]
+
+
+export const FunnelStepType = {
+  LANDING: 'LANDING',
+  CHECKOUT: 'CHECKOUT',
+  THANK_YOU: 'THANK_YOU',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type FunnelStepType = (typeof FunnelStepType)[keyof typeof FunnelStepType]
+
+
+export const ABTestStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type ABTestStatus = (typeof ABTestStatus)[keyof typeof ABTestStatus]
+
+
 export const LessonResourceType = {
   LINK: 'LINK',
   PDF: 'PDF'

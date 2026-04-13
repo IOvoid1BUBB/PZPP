@@ -236,6 +236,57 @@ export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
+export type EnumFunnelStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStatus | Prisma.EnumFunnelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel> | $Enums.FunnelStatus
+}
+
+export type EnumFunnelStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStatus | Prisma.EnumFunnelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStatusWithAggregatesFilter<$PrismaModel> | $Enums.FunnelStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel>
+}
+
+export type EnumFunnelStepTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStepType | Prisma.EnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel> | $Enums.FunnelStepType
+}
+
+export type EnumFunnelStepTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStepType | Prisma.EnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStepTypeWithAggregatesFilter<$PrismaModel> | $Enums.FunnelStepType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel>
+}
+
+export type EnumABTestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ABTestStatus | Prisma.EnumABTestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel> | $Enums.ABTestStatus
+}
+
+export type EnumABTestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ABTestStatus | Prisma.EnumABTestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumABTestStatusWithAggregatesFilter<$PrismaModel> | $Enums.ABTestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel>
+}
+
 export type FloatNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
@@ -513,6 +564,57 @@ export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type NestedEnumFunnelStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStatus | Prisma.EnumFunnelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel> | $Enums.FunnelStatus
+}
+
+export type NestedEnumFunnelStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStatus | Prisma.EnumFunnelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStatus[] | Prisma.ListEnumFunnelStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStatusWithAggregatesFilter<$PrismaModel> | $Enums.FunnelStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFunnelStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumFunnelStepTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStepType | Prisma.EnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel> | $Enums.FunnelStepType
+}
+
+export type NestedEnumFunnelStepTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FunnelStepType | Prisma.EnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FunnelStepType[] | Prisma.ListEnumFunnelStepTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFunnelStepTypeWithAggregatesFilter<$PrismaModel> | $Enums.FunnelStepType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFunnelStepTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumABTestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ABTestStatus | Prisma.EnumABTestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel> | $Enums.ABTestStatus
+}
+
+export type NestedEnumABTestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ABTestStatus | Prisma.EnumABTestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ABTestStatus[] | Prisma.ListEnumABTestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumABTestStatusWithAggregatesFilter<$PrismaModel> | $Enums.ABTestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumABTestStatusFilter<$PrismaModel>
 }
 
 export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
