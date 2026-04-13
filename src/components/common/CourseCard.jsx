@@ -3,8 +3,11 @@
 import { BookOpen } from 'lucide-react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 
 export default function CourseCard({ course, onOpenCourse }) {
+  const showProgress = typeof course.progress === 'number'
+
   return (
     <article>
       <Card className="h-full overflow-hidden rounded-xl border border-primary/70 bg-[#d8f1e1] shadow-none">
@@ -25,6 +28,15 @@ export default function CourseCard({ course, onOpenCourse }) {
           <p className="text-sm text-[#0f172a]">
             {course.description?.trim() ? course.description : 'Brak opisu.'}
           </p>
+          {showProgress ? (
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center justify-between text-xs text-[#4b5563]">
+                <span>Postep</span>
+                <span className="font-medium tabular-nums text-[#0f172a]">{course.progress}%</span>
+              </div>
+              <Progress value={course.progress} className="h-2 bg-primary/15" />
+            </div>
+          ) : null}
         </CardContent>
         <CardFooter className="px-3 pb-3 pt-0">
           <Button

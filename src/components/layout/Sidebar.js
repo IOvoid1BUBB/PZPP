@@ -39,7 +39,7 @@ const NAV_ITEMS = [
 const STUDENT_NAV_ITEMS = [
   { href: '/student', label: 'Wszystkie kursy', icon: IdCard },
   { href: '/student/skrzynka', label: 'Skrzynka', icon: Mail },
-  { href: '/student/konto', label: 'Moje konto', icon: User },
+  { href: '/student/profil', label: 'Moje konto', icon: User },
 ]
 
 function SidebarBrand({ className = '', onNavigate, logoHref }) {

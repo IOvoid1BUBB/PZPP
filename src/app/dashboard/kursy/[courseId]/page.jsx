@@ -19,7 +19,13 @@ export default async function CourseDetailsPage({ params }) {
       modules: {
         orderBy: { order: "asc" },
         include: {
-          lessons: { orderBy: { order: "asc" }, include: { resources: { orderBy: { order: "asc" } } } },
+          lessons: {
+            orderBy: { order: "asc" },
+            include: {
+              resources: { orderBy: { order: "asc" } },
+              questions: { orderBy: { order: "asc" } },
+            },
+          },
         },
       },
     },

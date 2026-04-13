@@ -253,6 +253,8 @@ export type UserWhereInput = {
   tasks?: Prisma.TaskListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
+  lessonNotes?: Prisma.StudentLessonNoteListRelationFilter
+  lessonQuestionsAuthored?: Prisma.LessonQuestionListRelationFilter
   landingPages?: Prisma.LandingPageListRelationFilter
   ownedLeads?: Prisma.LeadListRelationFilter
   tags?: Prisma.TagListRelationFilter
@@ -281,6 +283,8 @@ export type UserOrderByWithRelationInput = {
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
+  lessonNotes?: Prisma.StudentLessonNoteOrderByRelationAggregateInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionOrderByRelationAggregateInput
   landingPages?: Prisma.LandingPageOrderByRelationAggregateInput
   ownedLeads?: Prisma.LeadOrderByRelationAggregateInput
   tags?: Prisma.TagOrderByRelationAggregateInput
@@ -312,6 +316,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tasks?: Prisma.TaskListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
+  lessonNotes?: Prisma.StudentLessonNoteListRelationFilter
+  lessonQuestionsAuthored?: Prisma.LessonQuestionListRelationFilter
   landingPages?: Prisma.LandingPageListRelationFilter
   ownedLeads?: Prisma.LeadListRelationFilter
   tags?: Prisma.TagListRelationFilter
@@ -378,6 +384,8 @@ export type UserCreateInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -406,6 +414,8 @@ export type UserUncheckedCreateInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -434,6 +444,8 @@ export type UserUpdateInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -462,6 +474,8 @@ export type UserUncheckedUpdateInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -731,6 +745,36 @@ export type UserUpdateOneWithoutCoursesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoursesInput, Prisma.UserUpdateWithoutCoursesInput>, Prisma.UserUncheckedUpdateWithoutCoursesInput>
 }
 
+export type UserCreateNestedOneWithoutLessonNotesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonNotesInput, Prisma.UserUncheckedCreateWithoutLessonNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonNotesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLessonNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonNotesInput, Prisma.UserUncheckedCreateWithoutLessonNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonNotesInput
+  upsert?: Prisma.UserUpsertWithoutLessonNotesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLessonNotesInput, Prisma.UserUpdateWithoutLessonNotesInput>, Prisma.UserUncheckedUpdateWithoutLessonNotesInput>
+}
+
+export type UserCreateNestedOneWithoutLessonQuestionsAuthoredInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedCreateWithoutLessonQuestionsAuthoredInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonQuestionsAuthoredInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutLessonQuestionsAuthoredNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedCreateWithoutLessonQuestionsAuthoredInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonQuestionsAuthoredInput
+  upsert?: Prisma.UserUpsertWithoutLessonQuestionsAuthoredInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLessonQuestionsAuthoredInput, Prisma.UserUpdateWithoutLessonQuestionsAuthoredInput>, Prisma.UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput>
+}
+
 export type UserCreateNestedOneWithoutEnrollmentsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutEnrollmentsInput, Prisma.UserUncheckedCreateWithoutEnrollmentsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutEnrollmentsInput
@@ -793,6 +837,8 @@ export type UserCreateWithoutAccountsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -820,6 +866,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -863,6 +911,8 @@ export type UserUpdateWithoutAccountsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -890,6 +940,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -917,6 +969,8 @@ export type UserCreateWithoutApiKeyIntegrationsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -944,6 +998,8 @@ export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -987,6 +1043,8 @@ export type UserUpdateWithoutApiKeyIntegrationsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -1014,6 +1072,8 @@ export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1041,6 +1101,8 @@ export type UserCreateWithoutSessionsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -1068,6 +1130,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -1111,6 +1175,8 @@ export type UserUpdateWithoutSessionsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -1138,6 +1204,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1166,6 +1234,8 @@ export type UserCreateWithoutOwnedLeadsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
@@ -1193,6 +1263,8 @@ export type UserUncheckedCreateWithoutOwnedLeadsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
@@ -1236,6 +1308,8 @@ export type UserUpdateWithoutOwnedLeadsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
@@ -1263,6 +1337,8 @@ export type UserUncheckedUpdateWithoutOwnedLeadsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1290,6 +1366,8 @@ export type UserCreateWithoutTagsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
@@ -1317,6 +1395,8 @@ export type UserUncheckedCreateWithoutTagsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
@@ -1360,6 +1440,8 @@ export type UserUpdateWithoutTagsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
@@ -1387,6 +1469,8 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1414,6 +1498,8 @@ export type UserCreateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
@@ -1441,6 +1527,8 @@ export type UserUncheckedCreateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
   courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
@@ -1484,6 +1572,8 @@ export type UserUpdateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
@@ -1511,6 +1601,8 @@ export type UserUncheckedUpdateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
   courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1538,6 +1630,8 @@ export type UserCreateWithoutFunnelsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -1565,6 +1659,8 @@ export type UserUncheckedCreateWithoutFunnelsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -1608,6 +1704,8 @@ export type UserUpdateWithoutFunnelsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -1635,6 +1733,8 @@ export type UserUncheckedUpdateWithoutFunnelsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1661,6 +1761,8 @@ export type UserCreateWithoutTasksInput = {
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -1688,6 +1790,8 @@ export type UserUncheckedCreateWithoutTasksInput = {
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -1731,6 +1835,8 @@ export type UserUpdateWithoutTasksInput = {
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -1758,6 +1864,8 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1786,6 +1894,8 @@ export type UserCreateWithoutCoursesInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -1813,6 +1923,8 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -1856,6 +1968,8 @@ export type UserUpdateWithoutCoursesInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -1883,9 +1997,275 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutLessonNotesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutLessonNotesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutLessonNotesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonNotesInput, Prisma.UserUncheckedCreateWithoutLessonNotesInput>
+}
+
+export type UserUpsertWithoutLessonNotesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLessonNotesInput, Prisma.UserUncheckedUpdateWithoutLessonNotesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonNotesInput, Prisma.UserUncheckedCreateWithoutLessonNotesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLessonNotesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLessonNotesInput, Prisma.UserUncheckedUpdateWithoutLessonNotesInput>
+}
+
+export type UserUpdateWithoutLessonNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLessonNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutLessonQuestionsAuthoredInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutLessonQuestionsAuthoredInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutLessonQuestionsAuthoredInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedCreateWithoutLessonQuestionsAuthoredInput>
+}
+
+export type UserUpsertWithoutLessonQuestionsAuthoredInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedCreateWithoutLessonQuestionsAuthoredInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLessonQuestionsAuthoredInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLessonQuestionsAuthoredInput, Prisma.UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput>
+}
+
+export type UserUpdateWithoutLessonQuestionsAuthoredInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
   funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
@@ -1909,6 +2289,8 @@ export type UserCreateWithoutEnrollmentsInput = {
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -1936,6 +2318,8 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -1979,6 +2363,8 @@ export type UserUpdateWithoutEnrollmentsInput = {
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -2006,6 +2392,8 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2033,6 +2421,8 @@ export type UserCreateWithoutCertificatesInput = {
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -2060,6 +2450,8 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -2103,6 +2495,8 @@ export type UserUpdateWithoutCertificatesInput = {
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -2130,6 +2524,8 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2157,6 +2553,8 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
@@ -2184,6 +2582,8 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
   ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
@@ -2227,6 +2627,8 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
@@ -2254,6 +2656,8 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
   ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2274,6 +2678,8 @@ export type UserCountOutputType = {
   tasks: number
   enrollments: number
   certificates: number
+  lessonNotes: number
+  lessonQuestionsAuthored: number
   landingPages: number
   ownedLeads: number
   tags: number
@@ -2289,6 +2695,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
   enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
   certificates?: boolean | UserCountOutputTypeCountCertificatesArgs
+  lessonNotes?: boolean | UserCountOutputTypeCountLessonNotesArgs
+  lessonQuestionsAuthored?: boolean | UserCountOutputTypeCountLessonQuestionsAuthoredArgs
   landingPages?: boolean | UserCountOutputTypeCountLandingPagesArgs
   ownedLeads?: boolean | UserCountOutputTypeCountOwnedLeadsArgs
   tags?: boolean | UserCountOutputTypeCountTagsArgs
@@ -2358,6 +2766,20 @@ export type UserCountOutputTypeCountCertificatesArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountLessonNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentLessonNoteWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLessonQuestionsAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LessonQuestionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountLandingPagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.LandingPageWhereInput
 }
@@ -2412,6 +2834,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
+  lessonNotes?: boolean | Prisma.User$lessonNotesArgs<ExtArgs>
+  lessonQuestionsAuthored?: boolean | Prisma.User$lessonQuestionsAuthoredArgs<ExtArgs>
   landingPages?: boolean | Prisma.User$landingPagesArgs<ExtArgs>
   ownedLeads?: boolean | Prisma.User$ownedLeadsArgs<ExtArgs>
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
@@ -2477,6 +2901,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
+  lessonNotes?: boolean | Prisma.User$lessonNotesArgs<ExtArgs>
+  lessonQuestionsAuthored?: boolean | Prisma.User$lessonQuestionsAuthoredArgs<ExtArgs>
   landingPages?: boolean | Prisma.User$landingPagesArgs<ExtArgs>
   ownedLeads?: boolean | Prisma.User$ownedLeadsArgs<ExtArgs>
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
@@ -2497,6 +2923,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
+    lessonNotes: Prisma.$StudentLessonNotePayload<ExtArgs>[]
+    lessonQuestionsAuthored: Prisma.$LessonQuestionPayload<ExtArgs>[]
     landingPages: Prisma.$LandingPagePayload<ExtArgs>[]
     ownedLeads: Prisma.$LeadPayload<ExtArgs>[]
     tags: Prisma.$TagPayload<ExtArgs>[]
@@ -2918,6 +3346,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   certificates<T extends Prisma.User$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lessonNotes<T extends Prisma.User$lessonNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lessonNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentLessonNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lessonQuestionsAuthored<T extends Prisma.User$lessonQuestionsAuthoredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lessonQuestionsAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   landingPages<T extends Prisma.User$landingPagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$landingPagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandingPagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedLeads<T extends Prisma.User$ownedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tags<T extends Prisma.User$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3523,6 +3953,54 @@ export type User$certificatesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+}
+
+/**
+ * User.lessonNotes
+ */
+export type User$lessonNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentLessonNote
+   */
+  select?: Prisma.StudentLessonNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentLessonNote
+   */
+  omit?: Prisma.StudentLessonNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentLessonNoteInclude<ExtArgs> | null
+  where?: Prisma.StudentLessonNoteWhereInput
+  orderBy?: Prisma.StudentLessonNoteOrderByWithRelationInput | Prisma.StudentLessonNoteOrderByWithRelationInput[]
+  cursor?: Prisma.StudentLessonNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentLessonNoteScalarFieldEnum | Prisma.StudentLessonNoteScalarFieldEnum[]
+}
+
+/**
+ * User.lessonQuestionsAuthored
+ */
+export type User$lessonQuestionsAuthoredArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LessonQuestion
+   */
+  select?: Prisma.LessonQuestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LessonQuestion
+   */
+  omit?: Prisma.LessonQuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LessonQuestionInclude<ExtArgs> | null
+  where?: Prisma.LessonQuestionWhereInput
+  orderBy?: Prisma.LessonQuestionOrderByWithRelationInput | Prisma.LessonQuestionOrderByWithRelationInput[]
+  cursor?: Prisma.LessonQuestionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LessonQuestionScalarFieldEnum | Prisma.LessonQuestionScalarFieldEnum[]
 }
 
 /**

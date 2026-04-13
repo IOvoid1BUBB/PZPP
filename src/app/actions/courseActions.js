@@ -273,7 +273,10 @@ export async function getLessonsByModule(moduleId) {
     return await prisma.lesson.findMany({
       where: { moduleId },
       orderBy: { order: "asc" },
-      include: { resources: { orderBy: { order: "asc" } } },
+      include: {
+        resources: { orderBy: { order: "asc" } },
+        questions: { orderBy: { order: "asc" } },
+      },
     });
   } catch (error) {
     console.error("getLessonsByModule:", error);
@@ -295,6 +298,7 @@ export async function createLesson(moduleId, input) {
     const videoText = normalizeOptionalString(input?.videoText);
     const content = normalizeOptionalString(input?.content);
     const resources = Array.isArray(input?.resources) ? input.resources : [];
+    const questions = Array.isArray(input?.questions) ? input.questions : [];
 
     if (!title) {
       return { success: false, error: "Tytuł lekcji jest wymagany." };
@@ -323,8 +327,21 @@ export async function createLesson(moduleId, input) {
             }))
             .filter((r) => Boolean(r.url)),
         },
+        questions: {
+          create: questions
+            .map((q, idx) => ({
+              question: normalizeString(q?.question),
+              answer: normalizeOptionalString(q?.answer),
+              order: normalizeInt(q?.order, idx + 1),
+              createdById: auth.userId,
+            }))
+            .filter((q) => Boolean(q.question)),
+        },
       },
-      include: { resources: { orderBy: { order: "asc" } } },
+      include: {
+        resources: { orderBy: { order: "asc" } },
+        questions: { orderBy: { order: "asc" } },
+      },
     });
 
     if (moduleRecord?.courseId) {
@@ -351,6 +368,7 @@ export async function updateLesson(lessonId, input) {
     const videoText = normalizeOptionalString(input?.videoText);
     const content = normalizeOptionalString(input?.content);
     const resources = Array.isArray(input?.resources) ? input.resources : [];
+    const questions = Array.isArray(input?.questions) ? input.questions : [];
 
     if (!title) {
       return { success: false, error: "Tytuł lekcji jest wymagany." };
@@ -363,6 +381,7 @@ export async function updateLesson(lessonId, input) {
 
     const lesson = await prisma.$transaction(async (tx) => {
       await tx.lessonResource.deleteMany({ where: { lessonId } });
+      await tx.lessonQuestion.deleteMany({ where: { lessonId } });
       return await tx.lesson.update({
         where: { id: lessonId },
         data: {
@@ -381,8 +400,21 @@ export async function updateLesson(lessonId, input) {
               }))
               .filter((r) => Boolean(r.url)),
           },
+          questions: {
+            create: questions
+              .map((q, idx) => ({
+                question: normalizeString(q?.question),
+                answer: normalizeOptionalString(q?.answer),
+                order: normalizeInt(q?.order, idx + 1),
+                createdById: auth.userId,
+              }))
+              .filter((q) => Boolean(q.question)),
+          },
         },
-        include: { resources: { orderBy: { order: "asc" } } },
+        include: {
+          resources: { orderBy: { order: "asc" } },
+          questions: { orderBy: { order: "asc" } },
+        },
       });
     });
 

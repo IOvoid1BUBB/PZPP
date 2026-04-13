@@ -75,6 +75,26 @@ const lessonSchema = z.object({
       }),
     )
     .default([]),
+  questions: z
+    .array(
+      z.object({
+        question: z.string().trim().min(1, "Podaj treść pytania."),
+        answer: z
+          .string()
+          .trim()
+          .optional()
+          .transform((v) => (v && v.length ? v : null)),
+        order: z
+          .union([z.number(), z.string()])
+          .optional()
+          .transform((v) => {
+            if (v === undefined || v === "") return null;
+            const n = typeof v === "number" ? v : Number.parseInt(String(v), 10);
+            return Number.isFinite(n) ? n : null;
+          }),
+      }),
+    )
+    .default([]),
 });
 
 export default function LessonFormDialog({
@@ -102,9 +122,24 @@ export default function LessonFormDialog({
               order: r.order ?? "",
             }))
           : [],
+        questions: Array.isArray(lesson.questions)
+          ? lesson.questions.map((q) => ({
+              question: q.question ?? "",
+              answer: q.answer ?? "",
+              order: q.order ?? "",
+            }))
+          : [],
       };
     }
-    return { title: "", order: 1, videoUrl: "", videoText: "", content: "", resources: [] };
+    return {
+      title: "",
+      order: 1,
+      videoUrl: "",
+      videoText: "",
+      content: "",
+      resources: [],
+      questions: [],
+    };
   }, [mode, lesson]);
 
   const form = useForm({
@@ -115,6 +150,10 @@ export default function LessonFormDialog({
   const resourcesFieldArray = useFieldArray({
     control: form.control,
     name: "resources",
+  });
+  const questionsFieldArray = useFieldArray({
+    control: form.control,
+    name: "questions",
   });
 
   useEffect(() => {
@@ -341,6 +380,98 @@ export default function LessonFormDialog({
                             <FormLabel>URL</FormLabel>
                             <FormControl>
                               <Input placeholder="https://…" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-3 rounded-lg border p-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="space-y-0.5">
+                  <div className="text-sm font-semibold">Pytania i odpowiedzi</div>
+                  <div className="text-xs text-muted-foreground">
+                    Te pytania zobaczy student przy aktualnej lekcji.
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    questionsFieldArray.append({
+                      question: "",
+                      answer: "",
+                      order: "",
+                    })
+                  }
+                >
+                  Dodaj pytanie
+                </Button>
+              </div>
+
+              {questionsFieldArray.fields.length === 0 ? (
+                <div className="py-3 text-sm text-muted-foreground">Brak pytań dla lekcji.</div>
+              ) : (
+                <div className="space-y-3">
+                  {questionsFieldArray.fields.map((f, idx) => (
+                    <div key={f.id} className="grid gap-3 rounded-md border p-3 sm:grid-cols-6">
+                      <FormField
+                        control={form.control}
+                        name={`questions.${idx}.question`}
+                        render={({ field }) => (
+                          <FormItem className="sm:col-span-4">
+                            <FormLabel>Pytanie</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Np. Co to jest JOIN?" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`questions.${idx}.order`}
+                        render={({ field }) => (
+                          <FormItem className="sm:col-span-1">
+                            <FormLabel>Kolejność</FormLabel>
+                            <FormControl>
+                              <Input
+                                inputMode="numeric"
+                                placeholder="1"
+                                value={field.value ?? ""}
+                                onChange={(e) => field.onChange(e.target.value)}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="flex items-end justify-end sm:col-span-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={() => questionsFieldArray.remove(idx)}
+                        >
+                          Usuń
+                        </Button>
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name={`questions.${idx}.answer`}
+                        render={({ field }) => (
+                          <FormItem className="sm:col-span-6">
+                            <FormLabel>Odpowiedź (opcjonalnie)</FormLabel>
+                            <FormControl>
+                              <Textarea rows={3} placeholder="Dodaj odpowiedź dla studenta" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
