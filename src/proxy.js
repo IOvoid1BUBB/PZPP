@@ -6,15 +6,6 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
-    // Dev mode dla sekcji dashboard
-    if (
-      process.env.NODE_ENV === "development" &&
-      (path.startsWith("/dashboard") || path.startsWith("/student"))
-    ) {
-      return NextResponse.next();
-    }
-    
-
     // 1. Jeśli ktoś próbuje wejść do Panelu Kreatora (Dashboard)
     if (
       path.startsWith("/dashboard") &&
@@ -33,14 +24,6 @@ export default withAuth(
     callbacks: {
       // Middleware odpali się tylko, jeśli użytkownik jest zalogowany (ma token)
       authorized: ({ req, token }) => {
-        if (
-          process.env.NODE_ENV === "development" &&
-          (req.nextUrl.pathname.startsWith("/dashboard") ||
-            req.nextUrl.pathname.startsWith("/student"))
-        ) {
-          return true;
-        }
-
         return !!token;
       },
     },

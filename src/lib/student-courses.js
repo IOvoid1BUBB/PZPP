@@ -36,13 +36,8 @@ export async function getEnrolledCoursesForUser(userId) {
  * Opublikowane kursy (katalog).
  */
 export async function getPublishedCourses() {
-  const devMode =
-    process.env.NEXT_PUBLIC_COURSE_DEV_MODE === 'true' ||
-    process.env.NEXT_PUBLIC_DEV_MODE === 'true' ||
-    process.env.NODE_ENV !== 'production'
-
   const courses = await prisma.course.findMany({
-    where: devMode ? undefined : { isPublished: true },
+    where: { isPublished: true },
     include: {
       modules: {
         select: { _count: { select: { lessons: true } } },

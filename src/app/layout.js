@@ -2,6 +2,7 @@ import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
+import AppProviders from "../providers/AppProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,9 +43,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <ReactQueryProvider>
-          {children}
-        </ReactQueryProvider>
+        <AppProviders>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </AppProviders>
         <Analytics />
       </body>
     </html>

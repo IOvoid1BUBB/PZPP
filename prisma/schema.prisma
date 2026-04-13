@@ -38,6 +38,9 @@ model User {
   enrollments       Enrollment[]
   certificates      Certificate[]
   landingPages      LandingPage[]
+  ownedLeads        Lead[]        @relation("LeadOwner")
+  courses           Course[]
+  funnels           Funnel[]      @relation("FunnelOwner")
 }
 
 model Account {
@@ -131,6 +134,9 @@ model Lead {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
+  ownerId String?
+  owner   User?  @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
   //Relacje
   tags         Tag[]         @relation("LeadTags")
   customFields CustomField[]
@@ -139,6 +145,7 @@ model Lead {
   meetings     Meeting[]
   messages     Message[]
   tasks        Task[]
+  @@index([ownerId])
 }
 
 model Tag {
@@ -162,6 +169,7 @@ model LandingPage {
   htmlData  String?  @db.Text //Wygenerowany kod przez GrapesJS
   cssData   String?  @db.Text
   isActive  Boolean  @default(false)
+  isPublic  Boolean  @default(false)
   authorId  String?
   author    User?    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -175,6 +183,7 @@ model LandingPage {
 
 model Funnel {
   id          String       @id @default(cuid())
+  ownerId     String?
   name        String
   slug        String       @unique
   status      FunnelStatus @default(DRAFT)
@@ -182,8 +191,10 @@ model Funnel {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
+  owner       User?        @relation("FunnelOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   steps       FunnelStep[]
 
+  @@index([ownerId])
   @@index([status])
 }
 
@@ -288,8 +299,13 @@ model Course {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
   modules     Module[]
   enrollments Enrollment[]
+
+  @@index([authorId])
 }
 
 model Module {
@@ -383,6 +399,8 @@ model Document {
   lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([leadId])
 }
 
 // MODUŁ F: KALENDARZ I SPOTKANIA

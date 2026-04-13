@@ -2,35 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 async function requireCreatorOrDevFallback() {
-  const session = await getServerSession(authOptions);
-
-  if (session?.user?.role === "KREATOR" && session.user.id) {
-    return { ok: true, session };
-  }
-
-  // DEV fallback to keep local workflow usable
-  if (process.env.NODE_ENV !== "production") {
-    const devCreator = await prisma.user.findFirst({
-      where: { role: "KREATOR" },
-      select: { id: true, role: true },
-    });
-    if (devCreator?.id) {
-      return {
-        ok: true,
-        session: { user: { id: devCreator.id, role: "KREATOR" } },
-        bypass: true,
-      };
-    }
-  }
-
-  return {
-    ok: false,
-    error: "Brak uprawnień. Ta akcja jest dostępna tylko dla kreatora.",
-  };
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) return auth;
+  return { ok: true, session: auth.session, userId: auth.userId, role: auth.role };
 }
 
 function slugify(input) {
@@ -64,12 +43,14 @@ export async function saveLandingPage(data) {
     const auth = await requireCreatorOrDevFallback();
     if (!auth.ok) return { success: false, error: auth.error };
 
-    const { id, title, slug, htmlData, cssData, isActive } = data || {};
-    const authorId = auth.session.user.id;
+    const { id, title, slug, htmlData, cssData, isActive, isPublic } = data || {};
+    const authorId = auth.userId;
 
     if (id) {
-      const own = await requireLandingOwnership(id, authorId);
-      if (!own.ok) return { success: false, error: own.error };
+      if (!isAdminRole(auth.role)) {
+        const own = await requireLandingOwnership(id, authorId);
+        if (!own.ok) return { success: false, error: own.error };
+      }
     }
 
     const normalizedTitle = String(title || "").trim() || "Nowa Kampania";
@@ -102,9 +83,10 @@ export async function saveLandingPage(data) {
             htmlData: typeof htmlData === "string" ? htmlData : null,
             cssData: typeof cssData === "string" ? cssData : null,
             isActive: typeof isActive === "boolean" ? isActive : undefined,
-            authorId: authorId, // claim legacy rows
+            isPublic: typeof isPublic === "boolean" ? isPublic : undefined,
+            ...(isAdminRole(auth.role) ? {} : { authorId: authorId }), // claim legacy rows for owner edits
           },
-          select: { id: true, slug: true, title: true, isActive: true, updatedAt: true },
+          select: { id: true, slug: true, title: true, isActive: true, isPublic: true, updatedAt: true },
         })
       : await prisma.landingPage.create({
           data: {
@@ -113,9 +95,10 @@ export async function saveLandingPage(data) {
             htmlData: typeof htmlData === "string" ? htmlData : null,
             cssData: typeof cssData === "string" ? cssData : null,
             isActive: typeof isActive === "boolean" ? isActive : false,
-            authorId,
+            isPublic: typeof isPublic === "boolean" ? isPublic : false,
+            authorId: isAdminRole(auth.role) ? authorId : authorId,
           },
-          select: { id: true, slug: true, title: true, isActive: true, updatedAt: true },
+          select: { id: true, slug: true, title: true, isActive: true, isPublic: true, updatedAt: true },
         });
 
     revalidatePath("/dashboard/pagebuilder");
@@ -136,10 +119,10 @@ export async function listLandingPages() {
   try {
     const auth = await requireCreatorOrDevFallback();
     if (!auth.ok) return [];
-    const authorId = auth.session.user.id;
+    const authorId = auth.userId;
 
     const pages = await prisma.landingPage.findMany({
-      where: { OR: [{ authorId }, { authorId: null }] },
+      where: isAdminRole(auth.role) ? {} : { OR: [{ authorId }, { authorId: null }] },
       orderBy: { updatedAt: "desc" },
       select: {
         id: true,
@@ -168,9 +151,11 @@ export async function getLandingPageForEditor(landingId) {
     if (!landingId || typeof landingId !== "string") {
       return { success: false, error: "Nieprawidłowe ID landing page." };
     }
-    const authorId = auth.session.user.id;
-    const own = await requireLandingOwnership(landingId, authorId);
-    if (!own.ok) return { success: false, error: own.error };
+    const authorId = auth.userId;
+    if (!isAdminRole(auth.role)) {
+      const own = await requireLandingOwnership(landingId, authorId);
+      if (!own.ok) return { success: false, error: own.error };
+    }
 
     const landing = await prisma.landingPage.findUnique({
       where: { id: landingId },
@@ -206,7 +191,7 @@ export async function createLandingPage() {
   try {
     const auth = await requireCreatorOrDevFallback();
     if (!auth.ok) return { success: false, error: auth.error };
-    const authorId = auth.session.user.id;
+    const authorId = auth.userId;
 
     const page = await prisma.landingPage.create({
       data: {
@@ -241,9 +226,11 @@ export async function deleteLandingPage(landingId) {
     if (!landingId || typeof landingId !== "string") {
       return { success: false, error: "Nieprawidłowe ID landing page." };
     }
-    const authorId = auth.session.user.id;
-    const own = await requireLandingOwnership(landingId, authorId);
-    if (!own.ok) return { success: false, error: own.error };
+    const authorId = auth.userId;
+    if (!isAdminRole(auth.role)) {
+      const own = await requireLandingOwnership(landingId, authorId);
+      if (!own.ok) return { success: false, error: own.error };
+    }
 
     await prisma.landingPage.delete({ where: { id: landingId } });
     revalidatePath("/dashboard/pagebuilder");
@@ -262,13 +249,18 @@ export async function setLandingPageActive(landingId, isActive) {
       return { success: false, error: "Nieprawidłowe ID landing page." };
     }
 
-    const authorId = auth.session.user.id;
-    const own = await requireLandingOwnership(landingId, authorId);
-    if (!own.ok) return { success: false, error: own.error };
+    const authorId = auth.userId;
+    if (!isAdminRole(auth.role)) {
+      const own = await requireLandingOwnership(landingId, authorId);
+      if (!own.ok) return { success: false, error: own.error };
+    }
 
     const page = await prisma.landingPage.update({
       where: { id: landingId },
-      data: { isActive: Boolean(isActive), authorId }, // claim legacy rows
+      data: {
+        isActive: Boolean(isActive),
+        ...(isAdminRole(auth.role) ? {} : { authorId }), // claim legacy rows
+      },
       select: { id: true, isActive: true, slug: true, updatedAt: true },
     });
 
@@ -329,12 +321,26 @@ export async function getLandingPageBySlug(slug) {
         htmlData: true,
         cssData: true,
         isActive: true,
+        isPublic: true,
+        authorId: true,
         updatedAt: true,
       },
     });
 
-    if (!page?.isActive) return null;
-    return page;
+    if (!page) return null;
+
+    // Publiczny widok: tylko gdy strona jest aktywna i publiczna
+    if (page.isActive && page.isPublic) return page;
+
+    // Prywatny widok: owner lub ADMIN (w tym podgląd draftów)
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id ?? null;
+    const role = session?.user?.role ?? null;
+
+    if (role === "ADMIN") return page;
+    if (userId && page.authorId && page.authorId === userId) return page;
+
+    return null;
   } catch (error) {
     console.error("Błąd pobierania Landing Page po slug:", error);
     return null;

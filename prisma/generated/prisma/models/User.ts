@@ -254,6 +254,9 @@ export type UserWhereInput = {
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
   landingPages?: Prisma.LandingPageListRelationFilter
+  ownedLeads?: Prisma.LeadListRelationFilter
+  courses?: Prisma.CourseListRelationFilter
+  funnels?: Prisma.FunnelListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -278,6 +281,9 @@ export type UserOrderByWithRelationInput = {
   enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
   landingPages?: Prisma.LandingPageOrderByRelationAggregateInput
+  ownedLeads?: Prisma.LeadOrderByRelationAggregateInput
+  courses?: Prisma.CourseOrderByRelationAggregateInput
+  funnels?: Prisma.FunnelOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +311,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   enrollments?: Prisma.EnrollmentListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
   landingPages?: Prisma.LandingPageListRelationFilter
+  ownedLeads?: Prisma.LeadListRelationFilter
+  courses?: Prisma.CourseListRelationFilter
+  funnels?: Prisma.FunnelListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -367,6 +376,9 @@ export type UserCreateInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -391,6 +403,9 @@ export type UserUncheckedCreateInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -415,6 +430,9 @@ export type UserUpdateInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -439,6 +457,9 @@ export type UserUncheckedUpdateInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -609,6 +630,22 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutOwnedLeadsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedLeadsInput, Prisma.UserUncheckedCreateWithoutOwnedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedLeadsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutOwnedLeadsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedLeadsInput, Prisma.UserUncheckedCreateWithoutOwnedLeadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedLeadsInput
+  upsert?: Prisma.UserUpsertWithoutOwnedLeadsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedLeadsInput, Prisma.UserUpdateWithoutOwnedLeadsInput>, Prisma.UserUncheckedUpdateWithoutOwnedLeadsInput>
+}
+
 export type UserCreateNestedOneWithoutLandingPagesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutLandingPagesInput, Prisma.UserUncheckedCreateWithoutLandingPagesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutLandingPagesInput
@@ -625,6 +662,22 @@ export type UserUpdateOneWithoutLandingPagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLandingPagesInput, Prisma.UserUpdateWithoutLandingPagesInput>, Prisma.UserUncheckedUpdateWithoutLandingPagesInput>
 }
 
+export type UserCreateNestedOneWithoutFunnelsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFunnelsInput, Prisma.UserUncheckedCreateWithoutFunnelsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFunnelsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutFunnelsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFunnelsInput, Prisma.UserUncheckedCreateWithoutFunnelsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFunnelsInput
+  upsert?: Prisma.UserUpsertWithoutFunnelsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFunnelsInput, Prisma.UserUpdateWithoutFunnelsInput>, Prisma.UserUncheckedUpdateWithoutFunnelsInput>
+}
+
 export type UserCreateNestedOneWithoutTasksInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTasksInput, Prisma.UserUncheckedCreateWithoutTasksInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksInput
@@ -637,6 +690,22 @@ export type UserUpdateOneRequiredWithoutTasksNestedInput = {
   upsert?: Prisma.UserUpsertWithoutTasksInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksInput, Prisma.UserUpdateWithoutTasksInput>, Prisma.UserUncheckedUpdateWithoutTasksInput>
+}
+
+export type UserCreateNestedOneWithoutCoursesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoursesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCoursesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoursesInput
+  upsert?: Prisma.UserUpsertWithoutCoursesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoursesInput, Prisma.UserUpdateWithoutCoursesInput>, Prisma.UserUncheckedUpdateWithoutCoursesInput>
 }
 
 export type UserCreateNestedOneWithoutEnrollmentsInput = {
@@ -702,6 +771,9 @@ export type UserCreateWithoutAccountsInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -725,6 +797,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -764,6 +839,9 @@ export type UserUpdateWithoutAccountsInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -787,6 +865,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutApiKeyIntegrationsInput = {
@@ -810,6 +891,9 @@ export type UserCreateWithoutApiKeyIntegrationsInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
@@ -833,6 +917,9 @@ export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutApiKeyIntegrationsInput = {
@@ -872,6 +959,9 @@ export type UserUpdateWithoutApiKeyIntegrationsInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
@@ -895,6 +985,9 @@ export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -918,6 +1011,9 @@ export type UserCreateWithoutSessionsInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -941,6 +1037,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -980,6 +1079,9 @@ export type UserUpdateWithoutSessionsInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1003,6 +1105,129 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutOwnedLeadsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutOwnedLeadsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutOwnedLeadsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedLeadsInput, Prisma.UserUncheckedCreateWithoutOwnedLeadsInput>
+}
+
+export type UserUpsertWithoutOwnedLeadsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedLeadsInput, Prisma.UserUncheckedUpdateWithoutOwnedLeadsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedLeadsInput, Prisma.UserUncheckedCreateWithoutOwnedLeadsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnedLeadsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedLeadsInput, Prisma.UserUncheckedUpdateWithoutOwnedLeadsInput>
+}
+
+export type UserUpdateWithoutOwnedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnedLeadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutLandingPagesInput = {
@@ -1026,6 +1251,9 @@ export type UserCreateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutLandingPagesInput = {
@@ -1049,6 +1277,9 @@ export type UserUncheckedCreateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutLandingPagesInput = {
@@ -1088,6 +1319,9 @@ export type UserUpdateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLandingPagesInput = {
@@ -1111,6 +1345,129 @@ export type UserUncheckedUpdateWithoutLandingPagesInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutFunnelsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutFunnelsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutFunnelsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFunnelsInput, Prisma.UserUncheckedCreateWithoutFunnelsInput>
+}
+
+export type UserUpsertWithoutFunnelsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFunnelsInput, Prisma.UserUncheckedUpdateWithoutFunnelsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFunnelsInput, Prisma.UserUncheckedCreateWithoutFunnelsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFunnelsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFunnelsInput, Prisma.UserUncheckedUpdateWithoutFunnelsInput>
+}
+
+export type UserUpdateWithoutFunnelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFunnelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutTasksInput = {
@@ -1134,6 +1491,9 @@ export type UserCreateWithoutTasksInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutTasksInput = {
@@ -1157,6 +1517,9 @@ export type UserUncheckedCreateWithoutTasksInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutTasksInput = {
@@ -1196,6 +1559,9 @@ export type UserUpdateWithoutTasksInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksInput = {
@@ -1219,6 +1585,129 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutCoursesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutCoursesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutCoursesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+}
+
+export type UserUpsertWithoutCoursesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCoursesInput, Prisma.UserUncheckedUpdateWithoutCoursesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCoursesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCoursesInput, Prisma.UserUncheckedUpdateWithoutCoursesInput>
+}
+
+export type UserUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutEnrollmentsInput = {
@@ -1242,6 +1731,9 @@ export type UserCreateWithoutEnrollmentsInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutEnrollmentsInput = {
@@ -1265,6 +1757,9 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutEnrollmentsInput = {
@@ -1304,6 +1799,9 @@ export type UserUpdateWithoutEnrollmentsInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEnrollmentsInput = {
@@ -1327,6 +1825,9 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutCertificatesInput = {
@@ -1350,6 +1851,9 @@ export type UserCreateWithoutCertificatesInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutCertificatesInput = {
@@ -1373,6 +1877,9 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCertificatesInput = {
@@ -1412,6 +1919,9 @@ export type UserUpdateWithoutCertificatesInput = {
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCertificatesInput = {
@@ -1435,6 +1945,9 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutOrganizedMeetingsInput = {
@@ -1458,6 +1971,9 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
@@ -1481,6 +1997,9 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
   landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutOrganizedMeetingsInput = {
@@ -1520,6 +2039,9 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
@@ -1543,6 +2065,9 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
   landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -1559,6 +2084,9 @@ export type UserCountOutputType = {
   enrollments: number
   certificates: number
   landingPages: number
+  ownedLeads: number
+  courses: number
+  funnels: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1570,6 +2098,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
   certificates?: boolean | UserCountOutputTypeCountCertificatesArgs
   landingPages?: boolean | UserCountOutputTypeCountLandingPagesArgs
+  ownedLeads?: boolean | UserCountOutputTypeCountOwnedLeadsArgs
+  courses?: boolean | UserCountOutputTypeCountCoursesArgs
+  funnels?: boolean | UserCountOutputTypeCountFunnelsArgs
 }
 
 /**
@@ -1638,6 +2169,27 @@ export type UserCountOutputTypeCountLandingPagesArgs<ExtArgs extends runtime.Typ
   where?: Prisma.LandingPageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCoursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CourseWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFunnelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FunnelWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1661,6 +2213,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
   landingPages?: boolean | Prisma.User$landingPagesArgs<ExtArgs>
+  ownedLeads?: boolean | Prisma.User$ownedLeadsArgs<ExtArgs>
+  courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
+  funnels?: boolean | Prisma.User$funnelsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1722,6 +2277,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
   landingPages?: boolean | Prisma.User$landingPagesArgs<ExtArgs>
+  ownedLeads?: boolean | Prisma.User$ownedLeadsArgs<ExtArgs>
+  courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
+  funnels?: boolean | Prisma.User$funnelsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1738,6 +2296,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
     landingPages: Prisma.$LandingPagePayload<ExtArgs>[]
+    ownedLeads: Prisma.$LeadPayload<ExtArgs>[]
+    courses: Prisma.$CoursePayload<ExtArgs>[]
+    funnels: Prisma.$FunnelPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2155,6 +2716,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   certificates<T extends Prisma.User$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   landingPages<T extends Prisma.User$landingPagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$landingPagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandingPagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownedLeads<T extends Prisma.User$ownedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  courses<T extends Prisma.User$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  funnels<T extends Prisma.User$funnelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$funnelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FunnelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2779,6 +3343,78 @@ export type User$landingPagesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.LandingPageScalarFieldEnum | Prisma.LandingPageScalarFieldEnum[]
+}
+
+/**
+ * User.ownedLeads
+ */
+export type User$ownedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lead
+   */
+  select?: Prisma.LeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lead
+   */
+  omit?: Prisma.LeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadInclude<ExtArgs> | null
+  where?: Prisma.LeadWhereInput
+  orderBy?: Prisma.LeadOrderByWithRelationInput | Prisma.LeadOrderByWithRelationInput[]
+  cursor?: Prisma.LeadWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+}
+
+/**
+ * User.courses
+ */
+export type User$coursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Course
+   */
+  select?: Prisma.CourseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Course
+   */
+  omit?: Prisma.CourseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseInclude<ExtArgs> | null
+  where?: Prisma.CourseWhereInput
+  orderBy?: Prisma.CourseOrderByWithRelationInput | Prisma.CourseOrderByWithRelationInput[]
+  cursor?: Prisma.CourseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CourseScalarFieldEnum | Prisma.CourseScalarFieldEnum[]
+}
+
+/**
+ * User.funnels
+ */
+export type User$funnelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Funnel
+   */
+  select?: Prisma.FunnelSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Funnel
+   */
+  omit?: Prisma.FunnelOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FunnelInclude<ExtArgs> | null
+  where?: Prisma.FunnelWhereInput
+  orderBy?: Prisma.FunnelOrderByWithRelationInput | Prisma.FunnelOrderByWithRelationInput[]
+  cursor?: Prisma.FunnelWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FunnelScalarFieldEnum | Prisma.FunnelScalarFieldEnum[]
 }
 
 /**

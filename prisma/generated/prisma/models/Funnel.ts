@@ -26,6 +26,7 @@ export type AggregateFunnel = {
 
 export type FunnelMinAggregateOutputType = {
   id: string | null
+  ownerId: string | null
   name: string | null
   slug: string | null
   status: $Enums.FunnelStatus | null
@@ -36,6 +37,7 @@ export type FunnelMinAggregateOutputType = {
 
 export type FunnelMaxAggregateOutputType = {
   id: string | null
+  ownerId: string | null
   name: string | null
   slug: string | null
   status: $Enums.FunnelStatus | null
@@ -46,6 +48,7 @@ export type FunnelMaxAggregateOutputType = {
 
 export type FunnelCountAggregateOutputType = {
   id: number
+  ownerId: number
   name: number
   slug: number
   status: number
@@ -58,6 +61,7 @@ export type FunnelCountAggregateOutputType = {
 
 export type FunnelMinAggregateInputType = {
   id?: true
+  ownerId?: true
   name?: true
   slug?: true
   status?: true
@@ -68,6 +72,7 @@ export type FunnelMinAggregateInputType = {
 
 export type FunnelMaxAggregateInputType = {
   id?: true
+  ownerId?: true
   name?: true
   slug?: true
   status?: true
@@ -78,6 +83,7 @@ export type FunnelMaxAggregateInputType = {
 
 export type FunnelCountAggregateInputType = {
   id?: true
+  ownerId?: true
   name?: true
   slug?: true
   status?: true
@@ -161,6 +167,7 @@ export type FunnelGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type FunnelGroupByOutputType = {
   id: string
+  ownerId: string | null
   name: string
   slug: string
   status: $Enums.FunnelStatus
@@ -192,23 +199,27 @@ export type FunnelWhereInput = {
   OR?: Prisma.FunnelWhereInput[]
   NOT?: Prisma.FunnelWhereInput | Prisma.FunnelWhereInput[]
   id?: Prisma.StringFilter<"Funnel"> | string
+  ownerId?: Prisma.StringNullableFilter<"Funnel"> | string | null
   name?: Prisma.StringFilter<"Funnel"> | string
   slug?: Prisma.StringFilter<"Funnel"> | string
   status?: Prisma.EnumFunnelStatusFilter<"Funnel"> | $Enums.FunnelStatus
   description?: Prisma.StringNullableFilter<"Funnel"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   steps?: Prisma.FunnelStepListRelationFilter
 }
 
 export type FunnelOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  owner?: Prisma.UserOrderByWithRelationInput
   steps?: Prisma.FunnelStepOrderByRelationAggregateInput
 }
 
@@ -218,16 +229,19 @@ export type FunnelWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FunnelWhereInput | Prisma.FunnelWhereInput[]
   OR?: Prisma.FunnelWhereInput[]
   NOT?: Prisma.FunnelWhereInput | Prisma.FunnelWhereInput[]
+  ownerId?: Prisma.StringNullableFilter<"Funnel"> | string | null
   name?: Prisma.StringFilter<"Funnel"> | string
   status?: Prisma.EnumFunnelStatusFilter<"Funnel"> | $Enums.FunnelStatus
   description?: Prisma.StringNullableFilter<"Funnel"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   steps?: Prisma.FunnelStepListRelationFilter
 }, "id" | "slug">
 
 export type FunnelOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -244,6 +258,7 @@ export type FunnelScalarWhereWithAggregatesInput = {
   OR?: Prisma.FunnelScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FunnelScalarWhereWithAggregatesInput | Prisma.FunnelScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Funnel"> | string
+  ownerId?: Prisma.StringNullableWithAggregatesFilter<"Funnel"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"Funnel"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Funnel"> | string
   status?: Prisma.EnumFunnelStatusWithAggregatesFilter<"Funnel"> | $Enums.FunnelStatus
@@ -260,11 +275,13 @@ export type FunnelCreateInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutFunnelsInput
   steps?: Prisma.FunnelStepCreateNestedManyWithoutFunnelInput
 }
 
 export type FunnelUncheckedCreateInput = {
   id?: string
+  ownerId?: string | null
   name: string
   slug: string
   status?: $Enums.FunnelStatus
@@ -282,11 +299,13 @@ export type FunnelUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutFunnelsNestedInput
   steps?: Prisma.FunnelStepUpdateManyWithoutFunnelNestedInput
 }
 
 export type FunnelUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumFunnelStatusFieldUpdateOperationsInput | $Enums.FunnelStatus
@@ -298,6 +317,7 @@ export type FunnelUncheckedUpdateInput = {
 
 export type FunnelCreateManyInput = {
   id?: string
+  ownerId?: string | null
   name: string
   slug: string
   status?: $Enums.FunnelStatus
@@ -318,6 +338,7 @@ export type FunnelUpdateManyMutationInput = {
 
 export type FunnelUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumFunnelStatusFieldUpdateOperationsInput | $Enums.FunnelStatus
@@ -326,8 +347,19 @@ export type FunnelUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type FunnelListRelationFilter = {
+  every?: Prisma.FunnelWhereInput
+  some?: Prisma.FunnelWhereInput
+  none?: Prisma.FunnelWhereInput
+}
+
+export type FunnelOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type FunnelCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -338,6 +370,7 @@ export type FunnelCountOrderByAggregateInput = {
 
 export type FunnelMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -348,6 +381,7 @@ export type FunnelMaxOrderByAggregateInput = {
 
 export type FunnelMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -359,6 +393,48 @@ export type FunnelMinOrderByAggregateInput = {
 export type FunnelScalarRelationFilter = {
   is?: Prisma.FunnelWhereInput
   isNot?: Prisma.FunnelWhereInput
+}
+
+export type FunnelCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput> | Prisma.FunnelCreateWithoutOwnerInput[] | Prisma.FunnelUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.FunnelCreateOrConnectWithoutOwnerInput | Prisma.FunnelCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.FunnelCreateManyOwnerInputEnvelope
+  connect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+}
+
+export type FunnelUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput> | Prisma.FunnelCreateWithoutOwnerInput[] | Prisma.FunnelUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.FunnelCreateOrConnectWithoutOwnerInput | Prisma.FunnelCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.FunnelCreateManyOwnerInputEnvelope
+  connect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+}
+
+export type FunnelUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput> | Prisma.FunnelCreateWithoutOwnerInput[] | Prisma.FunnelUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.FunnelCreateOrConnectWithoutOwnerInput | Prisma.FunnelCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.FunnelUpsertWithWhereUniqueWithoutOwnerInput | Prisma.FunnelUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.FunnelCreateManyOwnerInputEnvelope
+  set?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  disconnect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  delete?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  connect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  update?: Prisma.FunnelUpdateWithWhereUniqueWithoutOwnerInput | Prisma.FunnelUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.FunnelUpdateManyWithWhereWithoutOwnerInput | Prisma.FunnelUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.FunnelScalarWhereInput | Prisma.FunnelScalarWhereInput[]
+}
+
+export type FunnelUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput> | Prisma.FunnelCreateWithoutOwnerInput[] | Prisma.FunnelUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.FunnelCreateOrConnectWithoutOwnerInput | Prisma.FunnelCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.FunnelUpsertWithWhereUniqueWithoutOwnerInput | Prisma.FunnelUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.FunnelCreateManyOwnerInputEnvelope
+  set?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  disconnect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  delete?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  connect?: Prisma.FunnelWhereUniqueInput | Prisma.FunnelWhereUniqueInput[]
+  update?: Prisma.FunnelUpdateWithWhereUniqueWithoutOwnerInput | Prisma.FunnelUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.FunnelUpdateManyWithWhereWithoutOwnerInput | Prisma.FunnelUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.FunnelScalarWhereInput | Prisma.FunnelScalarWhereInput[]
 }
 
 export type EnumFunnelStatusFieldUpdateOperationsInput = {
@@ -379,6 +455,68 @@ export type FunnelUpdateOneRequiredWithoutStepsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FunnelUpdateToOneWithWhereWithoutStepsInput, Prisma.FunnelUpdateWithoutStepsInput>, Prisma.FunnelUncheckedUpdateWithoutStepsInput>
 }
 
+export type FunnelCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.FunnelStatus
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  steps?: Prisma.FunnelStepCreateNestedManyWithoutFunnelInput
+}
+
+export type FunnelUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.FunnelStatus
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  steps?: Prisma.FunnelStepUncheckedCreateNestedManyWithoutFunnelInput
+}
+
+export type FunnelCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.FunnelWhereUniqueInput
+  create: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput>
+}
+
+export type FunnelCreateManyOwnerInputEnvelope = {
+  data: Prisma.FunnelCreateManyOwnerInput | Prisma.FunnelCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type FunnelUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.FunnelWhereUniqueInput
+  update: Prisma.XOR<Prisma.FunnelUpdateWithoutOwnerInput, Prisma.FunnelUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.FunnelCreateWithoutOwnerInput, Prisma.FunnelUncheckedCreateWithoutOwnerInput>
+}
+
+export type FunnelUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.FunnelWhereUniqueInput
+  data: Prisma.XOR<Prisma.FunnelUpdateWithoutOwnerInput, Prisma.FunnelUncheckedUpdateWithoutOwnerInput>
+}
+
+export type FunnelUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.FunnelScalarWhereInput
+  data: Prisma.XOR<Prisma.FunnelUpdateManyMutationInput, Prisma.FunnelUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type FunnelScalarWhereInput = {
+  AND?: Prisma.FunnelScalarWhereInput | Prisma.FunnelScalarWhereInput[]
+  OR?: Prisma.FunnelScalarWhereInput[]
+  NOT?: Prisma.FunnelScalarWhereInput | Prisma.FunnelScalarWhereInput[]
+  id?: Prisma.StringFilter<"Funnel"> | string
+  ownerId?: Prisma.StringNullableFilter<"Funnel"> | string | null
+  name?: Prisma.StringFilter<"Funnel"> | string
+  slug?: Prisma.StringFilter<"Funnel"> | string
+  status?: Prisma.EnumFunnelStatusFilter<"Funnel"> | $Enums.FunnelStatus
+  description?: Prisma.StringNullableFilter<"Funnel"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Funnel"> | Date | string
+}
+
 export type FunnelCreateWithoutStepsInput = {
   id?: string
   name: string
@@ -387,10 +525,12 @@ export type FunnelCreateWithoutStepsInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutFunnelsInput
 }
 
 export type FunnelUncheckedCreateWithoutStepsInput = {
   id?: string
+  ownerId?: string | null
   name: string
   slug: string
   status?: $Enums.FunnelStatus
@@ -423,9 +563,53 @@ export type FunnelUpdateWithoutStepsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutFunnelsNestedInput
 }
 
 export type FunnelUncheckedUpdateWithoutStepsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFunnelStatusFieldUpdateOperationsInput | $Enums.FunnelStatus
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type FunnelCreateManyOwnerInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.FunnelStatus
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type FunnelUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFunnelStatusFieldUpdateOperationsInput | $Enums.FunnelStatus
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  steps?: Prisma.FunnelStepUpdateManyWithoutFunnelNestedInput
+}
+
+export type FunnelUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFunnelStatusFieldUpdateOperationsInput | $Enums.FunnelStatus
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  steps?: Prisma.FunnelStepUncheckedUpdateManyWithoutFunnelNestedInput
+}
+
+export type FunnelUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -468,38 +652,45 @@ export type FunnelCountOutputTypeCountStepsArgs<ExtArgs extends runtime.Types.Ex
 
 export type FunnelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  ownerId?: boolean
   name?: boolean
   slug?: boolean
   status?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
   steps?: boolean | Prisma.Funnel$stepsArgs<ExtArgs>
   _count?: boolean | Prisma.FunnelCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["funnel"]>
 
 export type FunnelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  ownerId?: boolean
   name?: boolean
   slug?: boolean
   status?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["funnel"]>
 
 export type FunnelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  ownerId?: boolean
   name?: boolean
   slug?: boolean
   status?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["funnel"]>
 
 export type FunnelSelectScalar = {
   id?: boolean
+  ownerId?: boolean
   name?: boolean
   slug?: boolean
   status?: boolean
@@ -508,21 +699,28 @@ export type FunnelSelectScalar = {
   updatedAt?: boolean
 }
 
-export type FunnelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["funnel"]>
+export type FunnelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "status" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["funnel"]>
 export type FunnelInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
   steps?: boolean | Prisma.Funnel$stepsArgs<ExtArgs>
   _count?: boolean | Prisma.FunnelCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type FunnelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type FunnelIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type FunnelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
+}
+export type FunnelIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.Funnel$ownerArgs<ExtArgs>
+}
 
 export type $FunnelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Funnel"
   objects: {
+    owner: Prisma.$UserPayload<ExtArgs> | null
     steps: Prisma.$FunnelStepPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    ownerId: string | null
     name: string
     slug: string
     status: $Enums.FunnelStatus
@@ -923,6 +1121,7 @@ readonly fields: FunnelFieldRefs;
  */
 export interface Prisma__FunnelClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  owner<T extends Prisma.Funnel$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Funnel$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   steps<T extends Prisma.Funnel$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Funnel$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FunnelStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -954,6 +1153,7 @@ export interface Prisma__FunnelClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface FunnelFieldRefs {
   readonly id: Prisma.FieldRef<"Funnel", 'String'>
+  readonly ownerId: Prisma.FieldRef<"Funnel", 'String'>
   readonly name: Prisma.FieldRef<"Funnel", 'String'>
   readonly slug: Prisma.FieldRef<"Funnel", 'String'>
   readonly status: Prisma.FieldRef<"Funnel", 'FunnelStatus'>
@@ -1214,6 +1414,10 @@ export type FunnelCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.FunnelCreateManyInput | Prisma.FunnelCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FunnelIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1284,6 +1488,10 @@ export type FunnelUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Funnels to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FunnelIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1350,6 +1558,25 @@ export type FunnelDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Funnels to delete.
    */
   limit?: number
+}
+
+/**
+ * Funnel.owner
+ */
+export type Funnel$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

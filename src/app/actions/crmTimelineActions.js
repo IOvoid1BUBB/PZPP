@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 
 function toDateSafe(value) {
   const date = new Date(value);
@@ -14,6 +15,10 @@ export async function getLead360Profile(leadId) {
   }
 
   try {
+    const baseLead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, email: true, ownerId: true } });
+    const access = await canAccessLead(baseLead);
+    if (!access.ok) return { success: false, error: access.error };
+
     let lead;
     try {
       lead = await prisma.lead.findUnique({
@@ -120,6 +125,14 @@ export async function addNoteToLead(leadId, content) {
   }
 
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { ownerId: true } });
+    if (!lead) return { success: false, error: "Lead nie istnieje." };
+    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak dostępu do tego leada." };
+    }
+
     const note = await prisma.note.create({
       data: {
         content: content.trim(),
@@ -164,6 +177,14 @@ export async function addTaskToLead(leadId, taskData) {
   }
 
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { ownerId: true } });
+    if (!lead) return { success: false, error: "Lead nie istnieje." };
+    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
+      return { success: false, error: "Brak dostępu do tego leada." };
+    }
+
     const task = await prisma.task.create({
       data: {
         title,
@@ -171,7 +192,7 @@ export async function addTaskToLead(leadId, taskData) {
         dueDate,
         isCompleted,
         leadId,
-        userId,
+        userId: isAdminRole(auth.role) ? userId : auth.userId,
       },
     });
 

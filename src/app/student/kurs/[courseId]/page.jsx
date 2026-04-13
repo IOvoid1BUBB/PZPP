@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
+import { requireStudentOrAdmin, isAdminRole } from '@/lib/rbac'
 import {
   Bell,
   BookMarked,
@@ -45,11 +46,8 @@ function getYoutubeIdFromUrl(url) {
 export default async function StudentCoursePage({ params, searchParams }) {
   const { courseId } = await params
   const normalizedCourseId = getNormalizedId(courseId)
-
-  const devMode =
-    process.env.NEXT_PUBLIC_COURSE_DEV_MODE === 'true' ||
-    process.env.NEXT_PUBLIC_DEV_MODE === 'true' ||
-    process.env.NODE_ENV !== 'production'
+  const auth = await requireStudentOrAdmin()
+  if (!auth.ok) notFound()
 
   const course = await prisma.course.findUnique({
     where: { id: normalizedCourseId },
@@ -67,7 +65,15 @@ export default async function StudentCoursePage({ params, searchParams }) {
   })
 
   if (!course) notFound()
-  if (!course.isPublished && !devMode) notFound()
+  if (!course.isPublished && !isAdminRole(auth.role)) notFound()
+
+  if (!isAdminRole(auth.role)) {
+    const enrollment = await prisma.enrollment.findUnique({
+      where: { userId_courseId: { userId: auth.userId, courseId: normalizedCourseId } },
+      select: { id: true },
+    })
+    if (!enrollment) notFound()
+  }
 
   const courseTitle = course.title || 'Kurs'
   const modules = course.modules ?? []

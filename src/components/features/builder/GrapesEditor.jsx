@@ -15,8 +15,8 @@ import {
   checkLandingSlugAvailability,
   getLandingPageForEditor,
   saveLandingPage,
-} from "src/app/actions/landingPageActions";
-import { getCourses } from "src/app/actions/courseActions";
+} from "@/app/actions/landingPageActions";
+import { getCourses } from "@/app/actions/courseActions";
 import { Button } from "@/components/ui/button";
 
 export default function GrapesEditor({ landingId }) {

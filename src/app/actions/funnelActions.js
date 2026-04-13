@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireCreatorOrAdmin } from "@/lib/rbac";
 
 function hasFunnelModels() {
   return Boolean(
@@ -67,7 +68,11 @@ function normalizeVariantWeights(variants) {
 
 export async function getFunnelsWithDetails() {
   if (!hasFunnelModels()) return [];
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) return [];
+
   return prisma.funnel.findMany({
+    where: { ownerId: auth.userId },
     orderBy: { createdAt: "desc" },
     include: FUNNEL_INCLUDE,
   });
@@ -76,8 +81,11 @@ export async function getFunnelsWithDetails() {
 export async function getFunnelById(funnelId) {
   if (!funnelId) return null;
   if (!hasFunnelModels()) return null;
-  return prisma.funnel.findUnique({
-    where: { id: funnelId },
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) return null;
+
+  return prisma.funnel.findFirst({
+    where: { id: funnelId, ownerId: auth.userId },
     include: FUNNEL_INCLUDE,
   });
 }
@@ -92,6 +100,9 @@ export async function getLandingPagesForVariants() {
 
 export async function createFunnel(formData) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const name = String(formData.get("name") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
   const status = String(formData.get("status") || "DRAFT");
@@ -101,7 +112,7 @@ export async function createFunnel(formData) {
   }
 
   await prisma.funnel.create({
-    data: { name, slug, status },
+    data: { name, slug, status, ownerId: auth.userId },
   });
 
   revalidatePath("/dashboard/lejki");
@@ -109,6 +120,9 @@ export async function createFunnel(formData) {
 
 export async function updateFunnel(formData) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const id = String(formData.get("id") || "");
   const name = String(formData.get("name") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
@@ -118,10 +132,14 @@ export async function updateFunnel(formData) {
     throw new Error("Brakuje wymaganych danych lejka.");
   }
 
-  await prisma.funnel.update({
-    where: { id },
+  const updated = await prisma.funnel.updateMany({
+    where: { id, ownerId: auth.userId },
     data: { name, slug, status },
   });
+
+  if (updated.count === 0) {
+    throw new Error("Lejek nie istnieje lub nie masz do niego dostepu.");
+  }
 
   revalidatePath("/dashboard/lejki");
   revalidatePath(`/dashboard/lejki/${id}`);
@@ -129,15 +147,26 @@ export async function updateFunnel(formData) {
 
 export async function deleteFunnel(formData) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const id = String(formData.get("id") || "");
   if (!id) throw new Error("Brak id lejka.");
 
-  await prisma.funnel.delete({ where: { id } });
+  const deleted = await prisma.funnel.deleteMany({
+    where: { id, ownerId: auth.userId },
+  });
+  if (deleted.count === 0) {
+    throw new Error("Lejek nie istnieje lub nie masz do niego dostepu.");
+  }
   revalidatePath("/dashboard/lejki");
 }
 
 export async function addFunnelStep(formData) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const funnelId = String(formData.get("funnelId") || "");
   const name = String(formData.get("name") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
@@ -147,6 +176,14 @@ export async function addFunnelStep(formData) {
 
   if (!funnelId || !name || !slug) {
     throw new Error("Brakuje wymaganych danych kroku.");
+  }
+
+  const funnel = await prisma.funnel.findFirst({
+    where: { id: funnelId, ownerId: auth.userId },
+    select: { id: true },
+  });
+  if (!funnel) {
+    throw new Error("Lejek nie istnieje lub nie masz do niego dostepu.");
   }
 
   const existingSteps = await prisma.funnelStep.findMany({
@@ -182,8 +219,19 @@ export async function addFunnelStep(formData) {
 
 export async function reorderFunnelSteps(funnelId, orderedStepIds) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   if (!funnelId || !Array.isArray(orderedStepIds) || orderedStepIds.length === 0) {
     throw new Error("Brakuje danych do zmiany kolejnosci krokow.");
+  }
+
+  const funnel = await prisma.funnel.findFirst({
+    where: { id: funnelId, ownerId: auth.userId },
+    select: { id: true },
+  });
+  if (!funnel) {
+    throw new Error("Lejek nie istnieje lub nie masz do niego dostepu.");
   }
 
   await prisma.$transaction(
@@ -200,11 +248,22 @@ export async function reorderFunnelSteps(funnelId, orderedStepIds) {
 
 async function moveFunnelStep(formData, direction) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const funnelId = String(formData.get("funnelId") || "");
   const stepId = String(formData.get("stepId") || "");
 
   if (!funnelId || !stepId) {
     throw new Error("Brakuje danych do zmiany kolejnosci.");
+  }
+
+  const funnel = await prisma.funnel.findFirst({
+    where: { id: funnelId, ownerId: auth.userId },
+    select: { id: true },
+  });
+  if (!funnel) {
+    throw new Error("Lejek nie istnieje lub nie masz do niego dostepu.");
   }
 
   await prisma.$transaction(async (tx) => {
@@ -251,6 +310,9 @@ export async function moveFunnelStepDown(formData) {
 
 export async function createABTestForStep(formData) {
   assertFunnelModelsAvailable();
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) throw new Error(auth.error);
+
   const funnelId = String(formData.get("funnelId") || "");
   const funnelStepId = String(formData.get("funnelStepId") || "");
   const name = String(formData.get("name") || "").trim();
@@ -265,6 +327,14 @@ export async function createABTestForStep(formData) {
 
   if (!funnelStepId || !name || !variantAId || !variantBId) {
     throw new Error("Brakuje wymaganych danych testu A/B.");
+  }
+
+  const step = await prisma.funnelStep.findFirst({
+    where: { id: funnelStepId, funnel: { ownerId: auth.userId } },
+    select: { id: true },
+  });
+  if (!step) {
+    throw new Error("Krok lejka nie istnieje lub nie masz do niego dostepu.");
   }
 
   const variants = normalizeVariantWeights([

@@ -1,21 +1,39 @@
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
-  const response = NextResponse.next();
+export default withAuth(
+  function middleware(req) {
+    const token = req.nextauth.token;
+    const path = req.nextUrl.pathname;
 
-  if (!request.cookies.get("funnel_visitor_id")) {
-    response.cookies.set("funnel_visitor_id", crypto.randomUUID(), {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 365,
-    });
+    // Panel Kreatora
+    if (
+      path.startsWith("/dashboard") &&
+      token?.role !== "KREATOR" &&
+      token?.role !== "ADMIN"
+    ) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    // Portal Studenta
+    if (
+      path.startsWith("/student") &&
+      token?.role !== "UCZESTNIK" &&
+      token?.role !== "ADMIN"
+    ) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
   }
-
-  return response;
-}
+);
 
 export const config = {
-  matcher: ["/f/:path*"],
+  matcher: ["/dashboard/:path*", "/student/:path*"],
 };
+

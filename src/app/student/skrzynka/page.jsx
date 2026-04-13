@@ -2,17 +2,14 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import InboxContainer from "@/components/crm/inbox/InboxContainer";
+import { notFound } from "next/navigation";
 
 export default async function StudentSkrzynkaPage() {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
 
   if (!email) {
-    return (
-      <div className="rounded-xl border border-dashed border-border bg-muted/30 p-8 text-center text-sm text-muted-foreground">
-        Zaloguj się, aby zobaczyć skrzynkę wiadomości.
-      </div>
-    );
+    notFound();
   }
 
   const lead = await prisma.lead.findUnique({

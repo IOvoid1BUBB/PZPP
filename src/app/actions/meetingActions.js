@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { addLeadActivity } from "@/app/actions/scoringActions";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 
 function toDate(value, fieldName) {
   if (value instanceof Date) return value;
@@ -24,6 +25,9 @@ function toDate(value, fieldName) {
  */
 export async function getMeetings(startDate, endDate) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
+
     const start = toDate(startDate, "startDate");
     const end = toDate(endDate, "endDate");
 
@@ -33,6 +37,7 @@ export async function getMeetings(startDate, endDate) {
       where: {
         startTime: { lt: end },
         endTime: { gt: start },
+        ...(isAdminRole(auth.role) ? {} : { organizerId: auth.userId }),
       },
       orderBy: { startTime: "asc" },
       select: {
@@ -306,16 +311,15 @@ export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
  */
 export async function createMeeting(data) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     const title = typeof data?.title === "string" ? data.title.trim() : "";
     const meetLinkRaw = data?.meetLink;
 
     if (!title) return { success: false, error: "Tytuł spotkania jest wymagany." };
 
-    const session = await getServerSession(authOptions);
-    const organizerId = session?.user?.id;
-    if (!organizerId) {
-      return { success: false, error: "Brak dostępu. Zaloguj się ponownie." };
-    }
+    const organizerId = auth.userId;
 
     const startTime = toDate(data?.startTime, "startTime");
     const endTime = toDate(data?.endTime, "endTime");
@@ -398,20 +402,17 @@ export async function createMeeting(data) {
  */
 export async function deleteMeeting(meetingId) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     if (!meetingId || typeof meetingId !== "string") {
       return { success: false, error: "Nieprawidłowe ID spotkania." };
-    }
-
-    const session = await getServerSession(authOptions);
-    const organizerId = session?.user?.id;
-    if (!organizerId) {
-      return { success: false, error: "Brak dostępu. Zaloguj się ponownie." };
     }
 
     const result = await prisma.meeting.deleteMany({
       where: {
         id: meetingId,
-        organizerId,
+        ...(isAdminRole(auth.role) ? {} : { organizerId: auth.userId }),
       },
     });
 

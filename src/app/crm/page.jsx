@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { redirect } from "next/navigation";
 
 // Importujemy Twoje zagubione komponenty z ich faktycznej ścieżki
 import  LeadsTable  from "@/components/crm/LeadsTable"; 
@@ -8,8 +10,12 @@ import  LeadForm  from "@/components/crm/LeadForm";
 export const dynamic = "force-dynamic";
 
 export default async function CrmPage() {
+  const auth = await requireCreatorOrAdmin();
+  if (!auth.ok) redirect("/login");
+
   // 1. Serwer pobiera listę kontaktów z bazy danych
   const leads = await prisma.lead.findMany({
+    where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId },
     orderBy: {
       createdAt: "desc", // Najnowsze na górze
     },
