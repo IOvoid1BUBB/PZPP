@@ -10,8 +10,9 @@ const registerSchema = z.object({
   email: z.string().email("Niepoprawny format email"),
   password: z.string().min(8, "Hasło musi mieć min. 8 znaków"),
   role: z.enum(["KREATOR", "UCZESTNIK"], {
-    errorMap: () => ({ message: "Nieprawidłowa rola" })
+    errorMap: () => ({ message: "Nieprawidłowa rola" }),
   }),
+  inviteCode: z.string().optional(),
 });
 
 export async function registerUser(formData) {
@@ -24,7 +25,13 @@ export async function registerUser(formData) {
   }
 
   // 2. Pobieramy zwalidowaną rolę (role) ze zmiennych
-  const { email, password, name, role } = validated.data;
+  const { email, password, name, role, inviteCode } = validated.data;
+
+  if (role === "KREATOR") {
+    if (inviteCode !== process.env.CREATOR_INVITE_CODE) {
+      return { error: "Nieprawidłowy kod zaproszenia dla Kreatora." };
+    }
+  }
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -37,7 +44,11 @@ export async function registerUser(formData) {
         email,
         name,
         password: hashedPassword,
-        role: role, // 3. Używamy roli wybranej na frontendzie (zamiast hardcodowanego "UCZESTNIK")
+        role:
+          role === "KREATOR" &&
+          formData.get("inviteCode") === process.env.CREATOR_INVITE_CODE
+            ? "KREATOR"
+            : "UCZESTNIK",
       },
     });
 

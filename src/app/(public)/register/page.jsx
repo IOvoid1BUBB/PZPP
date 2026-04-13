@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +18,7 @@ import {
 
 // Importujemy Twoją akcję z backendu
 import { registerUser } from "./actions";
+import { Toaster, toast } from "sonner";
 
 // ------------------------------------------------------------------
 // Tła
@@ -64,7 +64,6 @@ const LineChartBackground = () => (
 // ------------------------------------------------------------------
 export default function RegisterPage() {
   const router = useRouter();
-  const { toast } = useToast();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -73,21 +72,19 @@ export default function RegisterPage() {
   const [role, setRole] = useState(null); // 'teacher' | 'student' | null
   const [isLoading, setIsLoading] = useState(false);
 
+  const [inviteCode, setInviteCode] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Front-endowa walidacja UX
     if (!role) {
-      return toast({
-        variant: "destructive",
-        title: "Wybierz rolę",
+      return toast.error("Wybierz rolę", {
         description: "Zaznacz, czy jesteś uczniem, czy chcesz tworzyć kursy.",
       });
     }
     if (password !== confirmPassword) {
-      return toast({
-        variant: "destructive",
-        title: "Błąd hasła",
+      return toast.error("Błąd hasła", {
         description: "Podane hasła nie są identyczne.",
       });
     }
@@ -104,27 +101,22 @@ export default function RegisterPage() {
       formData.append("email", email);
       formData.append("password", password);
       formData.append("role", dbRole);
-
+      formData.append("inviteCode", inviteCode);
       // Wywołanie Twojego backendu
       const result = await registerUser(formData);
 
       if (result?.error) {
-        toast({
-          variant: "destructive",
-          title: "Błąd rejestracji",
+        toast.error("Błąd rejestracji", {
           description: result.error, // Treść błędu prosto z backendu/zod
         });
       } else if (result?.success) {
-        toast({
-          title: "Sukces!",
+        toast.success("Sukces!", {
           description: "Konto zostało utworzone. Możesz się teraz zalogować.",
         });
         router.push("/login"); // Przekierowanie na logowanie
       }
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Krytyczny błąd",
+      toast.error("Krytyczny błąd", {
         description: "Brak połączenia z serwerem bazy danych.",
       });
     } finally {
@@ -134,6 +126,7 @@ export default function RegisterPage() {
 
   return (
     <section className="relative flex-grow flex items-center justify-center py-20 px-4 w-full overflow-hidden">
+      <Toaster />
       <BlurredBlobBackground />
       <LineChartBackground />
 
@@ -253,7 +246,29 @@ export default function RegisterPage() {
                 </Button>
               </div>
             </div>
-
+            {role === "teacher" && (
+              <div className="space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
+                <Label
+                  htmlFor="inviteCode"
+                  className="text-sm font-semibold text-slate-900"
+                >
+                  Kod Zaproszenia (wymagany)
+                </Label>
+                <Input
+                  id="inviteCode"
+                  type="text"
+                  placeholder="Wpisz kod, aby zostać kreatorem"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  className="font-medium px-4 py-3 border-green-200 focus:border-green-500 bg-green-50/30"
+                />
+                <p className="text-xs text-slate-500">
+                  Tylko uprawnieni użytkownicy mogą tworzyć kursy.
+                </p>
+              </div>
+            )}
             <Button
               type="submit"
               disabled={isLoading}
