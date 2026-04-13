@@ -158,6 +158,39 @@ export async function updateLeadStatus(leadId, newStatus) {
   }
 }
 
+/**
+ * Usuwa leada wraz z danymi powiązanymi (cascade w DB).
+ * KREATOR może usuwać tylko swoje leady, ADMIN dowolne.
+ * @param {string} leadId
+ */
+export async function deleteLead(leadId) {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    if (!leadId || typeof leadId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID leada." };
+    }
+
+    const result = isAdminRole(auth.role)
+      ? await prisma.lead.deleteMany({ where: { id: leadId } })
+      : await prisma.lead.deleteMany({ where: { id: leadId, ownerId: auth.userId } });
+
+    if (!result?.count) {
+      return { success: false, error: "Lead nie istnieje lub nie masz do niego dostępu." };
+    }
+
+    revalidatePath("/crm");
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/skrzynka");
+    revalidatePath("/dashboard/kanban");
+    return { success: true };
+  } catch (error) {
+    console.error("deleteLead:", error);
+    return { success: false, error: "Nie udało się usunąć leada." };
+  }
+}
+
 export async function createOrUpdateLead(data) {
   const auth = await requireCreatorOrAdmin();
   if (!auth.ok) throw new Error(auth.error || "Unauthorized");
