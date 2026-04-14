@@ -139,17 +139,18 @@ export default function GrapesEditor({ landingId }) {
       editor.DomComponents.addType("stripe-checkout-button", {
         model: {
           defaults: {
-            tagName: "a",
+            tagName: "button",
             classes: ["pzpp-checkout-btn"],
             attributes: {
-              href: "/api/stripe/checkout?courseId=",
+              type: "button",
               "data-course-id": "",
             },
             content: "Kup teraz",
             traits: [
               {
                 type: "select",
-                name: "courseId",
+                // Trait writes directly into HTML attribute (persisted in published page)
+                name: "data-course-id",
                 label: "Kurs",
                 options: [{ id: "", name: "— wybierz kurs —" }].concat(
                   coursesForTraits.map((c) => ({ id: c.id, name: c.title }))
@@ -157,23 +158,16 @@ export default function GrapesEditor({ landingId }) {
               },
               { type: "text", name: "buttonText", label: "Tekst przycisku" },
             ],
-            script: function () {
-              const courseId = this.getAttribute("data-course-id");
-              const base = "/api/stripe/checkout?courseId=";
-              this.setAttribute("href", `${base}${encodeURIComponent(courseId || "")}`);
-            },
           },
 
           init() {
             const sync = () => {
-              const courseId = this.get("courseId") || "";
               const text = this.get("buttonText");
-              this.addAttributes({ "data-course-id": courseId });
               if (typeof text === "string" && text.trim().length) {
                 this.components(text);
               }
             };
-            this.on("change:courseId change:buttonText", sync);
+            this.on("change:buttonText", sync);
             sync();
           },
         },
@@ -184,9 +178,45 @@ export default function GrapesEditor({ landingId }) {
         category: "E-commerce",
         attributes: { class: "fa fa-shopping-cart" },
         content: `
-          <a class="pzpp-checkout-btn" data-gjs-type="stripe-checkout-button" data-course-id="">
+          <button class="pzpp-checkout-btn" data-gjs-type="stripe-checkout-button" data-course-id="" type="button">
             Kup teraz
-          </a>
+          </button>
+          <script>
+            (function () {
+              if (window.__pzppStripeCheckoutBound) return;
+              window.__pzppStripeCheckoutBound = true;
+
+              document.addEventListener('click', async function (e) {
+                var btn = e.target && e.target.closest ? e.target.closest('.pzpp-checkout-btn') : null;
+                if (!btn) return;
+                e.preventDefault();
+
+                var courseId = btn.getAttribute('data-course-id') || '';
+                if (!courseId) {
+                  alert('Wybierz kurs (courseId).');
+                  return;
+                }
+
+                try {
+                  var res = await fetch('/api/stripe/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ courseId: courseId })
+                  });
+                  var data = {};
+                  try { data = await res.json(); } catch (_) {}
+                  if (!res.ok || !data || !data.url) {
+                    alert((data && data.error) || 'Nie udało się rozpocząć płatności.');
+                    return;
+                  }
+                  window.location.href = data.url;
+                } catch (err) {
+                  console.error('checkout click error', err);
+                  alert('Błąd sieci. Spróbuj ponownie.');
+                }
+              }, true);
+            })();
+          </script>
           <style>
             .pzpp-checkout-btn{
               display:inline-flex;
