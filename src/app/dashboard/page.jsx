@@ -36,6 +36,7 @@ import LeadProfileSheet from "@/components/crm/lead-profile/LeadProfileSheet";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -179,13 +180,17 @@ export default function DashboardPage() {
               </Button>
             </DialogTrigger>
             
-            <DialogContent className="sm:max-w-[500px]">
-              <DialogHeader>
+            <DialogContent className="sm:max-w-2xl">
+              <DialogHeader className="-mx-6 -mt-6 rounded-t-lg border-b bg-muted/30 px-6 py-4">
                 <DialogTitle className="text-xl">Dodaj nowego leada</DialogTitle>
+                <DialogDescription>
+                  Wprowadź dane nowego potencjalnego klienta, aby dodać go do bazy
+                  i rozpocząć scoring.
+                </DialogDescription>
               </DialogHeader>
               
               {/* Tu ładujemy Twój gotowy formularz! */}
-              <div className="mt-4">
+              <div className="mt-2">
                 <LeadForm />
               </div>
               
