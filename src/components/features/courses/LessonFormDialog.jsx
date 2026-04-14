@@ -78,12 +78,32 @@ const lessonSchema = z.object({
   questions: z
     .array(
       z.object({
+        type: z.enum(["OPEN_TEXT", "MULTIPLE_CHOICE_ABC"]).default("OPEN_TEXT"),
         question: z.string().trim().min(1, "Podaj treść pytania."),
         answer: z
           .string()
           .trim()
           .optional()
           .transform((v) => (v && v.length ? v : null)),
+        optionA: z
+          .string()
+          .trim()
+          .optional()
+          .transform((v) => (v && v.length ? v : null)),
+        optionB: z
+          .string()
+          .trim()
+          .optional()
+          .transform((v) => (v && v.length ? v : null)),
+        optionC: z
+          .string()
+          .trim()
+          .optional()
+          .transform((v) => (v && v.length ? v : null)),
+        correctOption: z
+          .enum(["A", "B", "C"])
+          .optional()
+          .transform((v) => (v ? v : null)),
         order: z
           .union([z.number(), z.string()])
           .optional()
@@ -124,8 +144,13 @@ export default function LessonFormDialog({
           : [],
         questions: Array.isArray(lesson.questions)
           ? lesson.questions.map((q) => ({
+              type: q.type ?? "OPEN_TEXT",
               question: q.question ?? "",
               answer: q.answer ?? "",
+              optionA: q.optionA ?? "",
+              optionB: q.optionB ?? "",
+              optionC: q.optionC ?? "",
+              correctOption: q.correctOption ?? "",
               order: q.order ?? "",
             }))
           : [],
@@ -169,7 +194,7 @@ export default function LessonFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="w-[96vw] sm:w-[92vw] max-w-5xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -177,7 +202,7 @@ export default function LessonFormDialog({
 
         <Form {...form}>
           <form
-            className="grid gap-4"
+            className="grid gap-6"
             onSubmit={form.handleSubmit(async (values) => {
               await onSubmit(values);
               setOpen(false);
@@ -405,8 +430,13 @@ export default function LessonFormDialog({
                   size="sm"
                   onClick={() =>
                     questionsFieldArray.append({
+                      type: "OPEN_TEXT",
                       question: "",
                       answer: "",
+                      optionA: "",
+                      optionB: "",
+                      optionC: "",
+                      correctOption: "",
                       order: "",
                     })
                   }
@@ -420,12 +450,34 @@ export default function LessonFormDialog({
               ) : (
                 <div className="space-y-3">
                   {questionsFieldArray.fields.map((f, idx) => (
-                    <div key={f.id} className="grid gap-3 rounded-md border p-3 sm:grid-cols-6">
+                    <div key={f.id} className="grid gap-4 rounded-md border p-4 sm:grid-cols-12">
+                      <FormField
+                        control={form.control}
+                        name={`questions.${idx}.type`}
+                        render={({ field }) => (
+                          <FormItem className="min-w-0 sm:col-span-4">
+                            <FormLabel>Typ</FormLabel>
+                            <Select value={field.value} onValueChange={field.onChange}>
+                              <FormControl>
+                                <SelectTrigger className="w-full overflow-hidden">
+                                  <SelectValue placeholder="Wybierz" className="truncate" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="OPEN_TEXT">Pytanie otwarte</SelectItem>
+                                <SelectItem value="MULTIPLE_CHOICE_ABC">Wielokrotny wybór (A/B/C)</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
                       <FormField
                         control={form.control}
                         name={`questions.${idx}.question`}
                         render={({ field }) => (
-                          <FormItem className="sm:col-span-4">
+                          <FormItem className="min-w-0 sm:col-span-8">
                             <FormLabel>Pytanie</FormLabel>
                             <FormControl>
                               <Input placeholder="Np. Co to jest JOIN?" {...field} />
@@ -439,7 +491,7 @@ export default function LessonFormDialog({
                         control={form.control}
                         name={`questions.${idx}.order`}
                         render={({ field }) => (
-                          <FormItem className="sm:col-span-1">
+                          <FormItem className="sm:col-span-2">
                             <FormLabel>Kolejność</FormLabel>
                             <FormControl>
                               <Input
@@ -454,7 +506,7 @@ export default function LessonFormDialog({
                         )}
                       />
 
-                      <div className="flex items-end justify-end sm:col-span-1">
+                      <div className="flex items-end justify-end sm:col-span-2">
                         <Button
                           type="button"
                           variant="ghost"
@@ -468,15 +520,82 @@ export default function LessonFormDialog({
                         control={form.control}
                         name={`questions.${idx}.answer`}
                         render={({ field }) => (
-                          <FormItem className="sm:col-span-6">
-                            <FormLabel>Odpowiedź (opcjonalnie)</FormLabel>
+                          <FormItem className="sm:col-span-12">
+                            <FormLabel>Wyjaśnienie / odpowiedź (opcjonalnie)</FormLabel>
                             <FormControl>
-                              <Textarea rows={3} placeholder="Dodaj odpowiedź dla studenta" {...field} />
+                              <Textarea rows={3} placeholder="Tekst wyjaśniający dla studenta (opcjonalnie)" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+
+                      {form.watch(`questions.${idx}.type`) === "MULTIPLE_CHOICE_ABC" ? (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name={`questions.${idx}.optionA`}
+                            render={({ field }) => (
+                              <FormItem className="min-w-0 sm:col-span-4">
+                                <FormLabel>Odpowiedź A</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Treść odpowiedzi A" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`questions.${idx}.optionB`}
+                            render={({ field }) => (
+                              <FormItem className="min-w-0 sm:col-span-4">
+                                <FormLabel>Odpowiedź B</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Treść odpowiedzi B" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`questions.${idx}.optionC`}
+                            render={({ field }) => (
+                              <FormItem className="min-w-0 sm:col-span-4">
+                                <FormLabel>Odpowiedź C</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Treść odpowiedzi C" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={`questions.${idx}.correctOption`}
+                            render={({ field }) => (
+                              <FormItem className="min-w-0 sm:col-span-6">
+                                <FormLabel>Poprawna odpowiedź</FormLabel>
+                                <Select value={field.value || ""} onValueChange={field.onChange}>
+                                  <FormControl>
+                                    <SelectTrigger className="w-full overflow-hidden">
+                                      <SelectValue placeholder="Wybierz" className="truncate" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="A">A</SelectItem>
+                                    <SelectItem value="B">B</SelectItem>
+                                    <SelectItem value="C">C</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      ) : null}
                     </div>
                   ))}
                 </div>
