@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { calculateCourseProgress } from "@/lib/course-progress";
 import { findNextLessonId, getOrderedCourseLessons } from "@/lib/course-navigation";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 async function requireCreator() {
   const auth = await requireCreatorOrAdmin();
