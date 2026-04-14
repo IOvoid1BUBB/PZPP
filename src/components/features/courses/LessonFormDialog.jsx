@@ -33,6 +33,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import RichTextEditor from "@/components/features/courses/RichTextEditor";
 
 const lessonSchema = z.object({
   title: z.string().trim().min(1, "Podaj tytuł lekcji."),
@@ -262,7 +263,7 @@ export default function LessonFormDialog({
               name="videoText"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tekst do wideo (transkrypcja)</FormLabel>
+                  <FormLabel>Tekst do wideo (transkrypcja / notatki)</FormLabel>
                   <FormControl>
                     <Textarea
                       rows={6}
@@ -283,12 +284,12 @@ export default function LessonFormDialog({
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Treść</FormLabel>
+                  <FormLabel>Treść lekcji</FormLabel>
                   <FormControl>
-                    <Textarea
-                      rows={6}
-                      placeholder="Notatki/treść lekcji (opcjonalnie)"
-                      {...field}
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Treść lekcji (możesz używać pogrubienia, kursywy oraz list)."
                     />
                   </FormControl>
                   <FormDescription>
