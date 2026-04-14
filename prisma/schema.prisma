@@ -47,11 +47,13 @@ model User {
   lessonNotes       StudentLessonNote[]
   lessonQuestionsAuthored LessonQuestion[] @relation("LessonQuestionAuthor")
   landingPages      LandingPage[]
-  ownedLeads        Lead[]        @relation("LeadOwner")
-  tags             Tag[]         @relation("TagOwner")
+  ownedLeads        Lead[]             @relation("LeadOwner")
+  tags              Tag[]              @relation("TagOwner")
   courses           Course[]
-  funnels           Funnel[]      @relation("FunnelOwner")
+  funnels           Funnel[]           @relation("FunnelOwner")
   orders            Order[]
+  ownedDeals        Deal[]             @relation("DealOwner")
+  automationRules   AutomationRule[]   @relation("AutomationOwner")
 }
 
 model Account {
@@ -133,6 +135,29 @@ enum ABTestStatus {
   COMPLETED
 }
 
+enum DealStage {
+  DISCOVERY
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskType {
+  FOLLOW_UP
+  CALL
+  EMAIL
+  MEETING
+  OTHER
+}
+
 model Lead {
   id        String     @id @default(cuid())
   firstName String
@@ -156,6 +181,7 @@ model Lead {
   meetings     Meeting[]
   messages     Message[]
   tasks        Task[]
+  deals        Deal[]
   @@index([ownerId])
   @@unique([ownerId, email])
 }
@@ -287,22 +313,87 @@ model Message {
 }
 
 model Task {
-  id          String   @id @default(cuid())
+  id          String       @id @default(cuid())
   title       String
-  description String?  @db.Text
+  description String?      @db.Text
   dueDate     DateTime
-  isCompleted Boolean  @default(false)
+  isCompleted Boolean      @default(false)
+  priority    TaskPriority @default(MEDIUM)
+  type        TaskType     @default(OTHER)
   leadId      String
   userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  dealId      String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lead Lead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deal Deal? @relation(fields: [dealId], references: [id], onDelete: SetNull)
 
   @@index([leadId])
   @@index([userId])
   @@index([dueDate])
+  @@index([dealId])
+}
+
+model Deal {
+  id                String    @id @default(cuid())
+  name              String
+  value             Float     @default(0)
+  currency          String    @default("PLN")
+  probability       Int       @default(50)
+  expectedCloseDate DateTime?
+  stage             DealStage @default(DISCOVERY)
+  notes             String?   @db.Text
+
+  leadId  String
+  lead    Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  ownerId String
+  owner   User @relation("DealOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([leadId])
+  @@index([ownerId])
+  @@index([stage])
+}
+
+model AutomationRule {
+  id            String  @id @default(cuid())
+  name          String
+  isActive      Boolean @default(true)
+  triggerType   String
+  triggerConfig Json
+  actionType    String
+  actionConfig  Json
+
+  ownerId String
+  owner   User @relation("AutomationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  logs AutomationLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([triggerType])
+}
+
+model AutomationLog {
+  id           String         @id @default(cuid())
+  automationId String
+  automation   AutomationRule @relation(fields: [automationId], references: [id], onDelete: Cascade)
+  leadId       String?
+  dealId       String?
+  status       String
+  details      String?        @db.Text
+  executedAt   DateTime       @default(now())
+
+  @@index([automationId])
 }
 
 //MODUŁ D: KURSY I PORTAL CZŁONKOWSKI

@@ -69,6 +69,38 @@ export const ABTestStatus = {
 export type ABTestStatus = (typeof ABTestStatus)[keyof typeof ABTestStatus]
 
 
+export const DealStage = {
+  DISCOVERY: 'DISCOVERY',
+  PROPOSAL: 'PROPOSAL',
+  NEGOTIATION: 'NEGOTIATION',
+  WON: 'WON',
+  LOST: 'LOST'
+} as const
+
+export type DealStage = (typeof DealStage)[keyof typeof DealStage]
+
+
+export const TaskPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+} as const
+
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+
+export const TaskType = {
+  FOLLOW_UP: 'FOLLOW_UP',
+  CALL: 'CALL',
+  EMAIL: 'EMAIL',
+  MEETING: 'MEETING',
+  OTHER: 'OTHER'
+} as const
+
+export type TaskType = (typeof TaskType)[keyof typeof TaskType]
+
+
 export const LessonQuestionType = {
   OPEN_TEXT: 'OPEN_TEXT',
   MULTIPLE_CHOICE_ABC: 'MULTIPLE_CHOICE_ABC'

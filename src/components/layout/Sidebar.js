@@ -20,6 +20,9 @@ import {
   User,
   Menu,
   X,
+  Handshake,
+  ListChecks,
+  Zap,
 } from 'lucide-react'
 import StudentCertificateWidget from '@/components/features/courses/StudentCertificateWidget'
 
@@ -29,6 +32,9 @@ const NAV_ITEMS = [
   { href: '/dashboard/pagebuilder', label: 'Page builder', icon: LayoutGrid },
   { href: '/dashboard/lejki', label: 'Lejki', icon: Filter },
   { href: '/dashboard/kanban', label: 'Tablica Kanban', icon: Table2 },
+  { href: '/dashboard/deals', label: 'Deals', icon: Handshake },
+  { href: '/dashboard/zadania', label: 'Zadania', icon: ListChecks },
+  { href: '/dashboard/automatyzacje', label: 'Automatyzacje', icon: Zap },
   { href: '/dashboard/skrzynka', label: 'Skrzynka', icon: Mail },
   { href: '/dashboard/calendar', label: 'Kalendarz', icon: Calendar },
   { href: '/dashboard/kursy', label: 'Kursy', icon: BookMarked },

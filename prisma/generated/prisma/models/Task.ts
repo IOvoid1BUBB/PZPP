@@ -30,8 +30,11 @@ export type TaskMinAggregateOutputType = {
   description: string | null
   dueDate: Date | null
   isCompleted: boolean | null
+  priority: $Enums.TaskPriority | null
+  type: $Enums.TaskType | null
   leadId: string | null
   userId: string | null
+  dealId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,8 +45,11 @@ export type TaskMaxAggregateOutputType = {
   description: string | null
   dueDate: Date | null
   isCompleted: boolean | null
+  priority: $Enums.TaskPriority | null
+  type: $Enums.TaskType | null
   leadId: string | null
   userId: string | null
+  dealId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,8 +60,11 @@ export type TaskCountAggregateOutputType = {
   description: number
   dueDate: number
   isCompleted: number
+  priority: number
+  type: number
   leadId: number
   userId: number
+  dealId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -68,8 +77,11 @@ export type TaskMinAggregateInputType = {
   description?: true
   dueDate?: true
   isCompleted?: true
+  priority?: true
+  type?: true
   leadId?: true
   userId?: true
+  dealId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -80,8 +92,11 @@ export type TaskMaxAggregateInputType = {
   description?: true
   dueDate?: true
   isCompleted?: true
+  priority?: true
+  type?: true
   leadId?: true
   userId?: true
+  dealId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,8 +107,11 @@ export type TaskCountAggregateInputType = {
   description?: true
   dueDate?: true
   isCompleted?: true
+  priority?: true
+  type?: true
   leadId?: true
   userId?: true
+  dealId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -177,8 +195,11 @@ export type TaskGroupByOutputType = {
   description: string | null
   dueDate: Date
   isCompleted: boolean
+  priority: $Enums.TaskPriority
+  type: $Enums.TaskType
   leadId: string
   userId: string
+  dealId: string | null
   createdAt: Date
   updatedAt: Date
   _count: TaskCountAggregateOutputType | null
@@ -210,12 +231,16 @@ export type TaskWhereInput = {
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string
   isCompleted?: Prisma.BoolFilter<"Task"> | boolean
+  priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFilter<"Task"> | $Enums.TaskType
   leadId?: Prisma.StringFilter<"Task"> | string
   userId?: Prisma.StringFilter<"Task"> | string
+  dealId?: Prisma.StringNullableFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   lead?: Prisma.XOR<Prisma.LeadScalarRelationFilter, Prisma.LeadWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  deal?: Prisma.XOR<Prisma.DealNullableScalarRelationFilter, Prisma.DealWhereInput> | null
 }
 
 export type TaskOrderByWithRelationInput = {
@@ -224,12 +249,16 @@ export type TaskOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lead?: Prisma.LeadOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  deal?: Prisma.DealOrderByWithRelationInput
 }
 
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
@@ -241,12 +270,16 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string
   isCompleted?: Prisma.BoolFilter<"Task"> | boolean
+  priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFilter<"Task"> | $Enums.TaskType
   leadId?: Prisma.StringFilter<"Task"> | string
   userId?: Prisma.StringFilter<"Task"> | string
+  dealId?: Prisma.StringNullableFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   lead?: Prisma.XOR<Prisma.LeadScalarRelationFilter, Prisma.LeadWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  deal?: Prisma.XOR<Prisma.DealNullableScalarRelationFilter, Prisma.DealWhereInput> | null
 }, "id">
 
 export type TaskOrderByWithAggregationInput = {
@@ -255,8 +288,11 @@ export type TaskOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TaskCountOrderByAggregateInput
@@ -273,8 +309,11 @@ export type TaskScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   dueDate?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
   isCompleted?: Prisma.BoolWithAggregatesFilter<"Task"> | boolean
+  priority?: Prisma.EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeWithAggregatesFilter<"Task"> | $Enums.TaskType
   leadId?: Prisma.StringWithAggregatesFilter<"Task"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Task"> | string
+  dealId?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
 }
@@ -285,10 +324,13 @@ export type TaskCreateInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   createdAt?: Date | string
   updatedAt?: Date | string
   lead: Prisma.LeadCreateNestedOneWithoutTasksInput
   user: Prisma.UserCreateNestedOneWithoutTasksInput
+  deal?: Prisma.DealCreateNestedOneWithoutTasksInput
 }
 
 export type TaskUncheckedCreateInput = {
@@ -297,8 +339,11 @@ export type TaskUncheckedCreateInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   leadId: string
   userId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -309,10 +354,13 @@ export type TaskUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lead?: Prisma.LeadUpdateOneRequiredWithoutTasksNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskUncheckedUpdateInput = {
@@ -321,8 +369,11 @@ export type TaskUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -333,8 +384,11 @@ export type TaskCreateManyInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   leadId: string
   userId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -345,6 +399,8 @@ export type TaskUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,8 +411,11 @@ export type TaskUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -377,8 +436,11 @@ export type TaskCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -389,8 +451,11 @@ export type TaskMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -401,8 +466,11 @@ export type TaskMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -491,15 +559,68 @@ export type TaskUncheckedUpdateManyWithoutLeadNestedInput = {
   deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
 }
 
+export type EnumTaskPriorityFieldUpdateOperationsInput = {
+  set?: $Enums.TaskPriority
+}
+
+export type EnumTaskTypeFieldUpdateOperationsInput = {
+  set?: $Enums.TaskType
+}
+
+export type TaskCreateNestedManyWithoutDealInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput> | Prisma.TaskCreateWithoutDealInput[] | Prisma.TaskUncheckedCreateWithoutDealInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutDealInput | Prisma.TaskCreateOrConnectWithoutDealInput[]
+  createMany?: Prisma.TaskCreateManyDealInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
+export type TaskUncheckedCreateNestedManyWithoutDealInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput> | Prisma.TaskCreateWithoutDealInput[] | Prisma.TaskUncheckedCreateWithoutDealInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutDealInput | Prisma.TaskCreateOrConnectWithoutDealInput[]
+  createMany?: Prisma.TaskCreateManyDealInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
+export type TaskUpdateManyWithoutDealNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput> | Prisma.TaskCreateWithoutDealInput[] | Prisma.TaskUncheckedCreateWithoutDealInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutDealInput | Prisma.TaskCreateOrConnectWithoutDealInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutDealInput | Prisma.TaskUpsertWithWhereUniqueWithoutDealInput[]
+  createMany?: Prisma.TaskCreateManyDealInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutDealInput | Prisma.TaskUpdateWithWhereUniqueWithoutDealInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutDealInput | Prisma.TaskUpdateManyWithWhereWithoutDealInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
+export type TaskUncheckedUpdateManyWithoutDealNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput> | Prisma.TaskCreateWithoutDealInput[] | Prisma.TaskUncheckedCreateWithoutDealInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutDealInput | Prisma.TaskCreateOrConnectWithoutDealInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutDealInput | Prisma.TaskUpsertWithWhereUniqueWithoutDealInput[]
+  createMany?: Prisma.TaskCreateManyDealInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutDealInput | Prisma.TaskUpdateWithWhereUniqueWithoutDealInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutDealInput | Prisma.TaskUpdateManyWithWhereWithoutDealInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
 export type TaskCreateWithoutUserInput = {
   id?: string
   title: string
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   createdAt?: Date | string
   updatedAt?: Date | string
   lead: Prisma.LeadCreateNestedOneWithoutTasksInput
+  deal?: Prisma.DealCreateNestedOneWithoutTasksInput
 }
 
 export type TaskUncheckedCreateWithoutUserInput = {
@@ -508,7 +629,10 @@ export type TaskUncheckedCreateWithoutUserInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   leadId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -548,8 +672,11 @@ export type TaskScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Task"> | string | null
   dueDate?: Prisma.DateTimeFilter<"Task"> | Date | string
   isCompleted?: Prisma.BoolFilter<"Task"> | boolean
+  priority?: Prisma.EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFilter<"Task"> | $Enums.TaskType
   leadId?: Prisma.StringFilter<"Task"> | string
   userId?: Prisma.StringFilter<"Task"> | string
+  dealId?: Prisma.StringNullableFilter<"Task"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
 }
@@ -560,9 +687,12 @@ export type TaskCreateWithoutLeadInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutTasksInput
+  deal?: Prisma.DealCreateNestedOneWithoutTasksInput
 }
 
 export type TaskUncheckedCreateWithoutLeadInput = {
@@ -571,7 +701,10 @@ export type TaskUncheckedCreateWithoutLeadInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   userId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -602,13 +735,70 @@ export type TaskUpdateManyWithWhereWithoutLeadInput = {
   data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutLeadInput>
 }
 
+export type TaskCreateWithoutDealInput = {
+  id?: string
+  title: string
+  description?: string | null
+  dueDate: Date | string
+  isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lead: Prisma.LeadCreateNestedOneWithoutTasksInput
+  user: Prisma.UserCreateNestedOneWithoutTasksInput
+}
+
+export type TaskUncheckedCreateWithoutDealInput = {
+  id?: string
+  title: string
+  description?: string | null
+  dueDate: Date | string
+  isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
+  leadId: string
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TaskCreateOrConnectWithoutDealInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput>
+}
+
+export type TaskCreateManyDealInputEnvelope = {
+  data: Prisma.TaskCreateManyDealInput | Prisma.TaskCreateManyDealInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskUpsertWithWhereUniqueWithoutDealInput = {
+  where: Prisma.TaskWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutDealInput, Prisma.TaskUncheckedUpdateWithoutDealInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutDealInput, Prisma.TaskUncheckedCreateWithoutDealInput>
+}
+
+export type TaskUpdateWithWhereUniqueWithoutDealInput = {
+  where: Prisma.TaskWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutDealInput, Prisma.TaskUncheckedUpdateWithoutDealInput>
+}
+
+export type TaskUpdateManyWithWhereWithoutDealInput = {
+  where: Prisma.TaskScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutDealInput>
+}
+
 export type TaskCreateManyUserInput = {
   id?: string
   title: string
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   leadId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -619,9 +809,12 @@ export type TaskUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lead?: Prisma.LeadUpdateOneRequiredWithoutTasksNestedInput
+  deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutUserInput = {
@@ -630,7 +823,10 @@ export type TaskUncheckedUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -641,7 +837,10 @@ export type TaskUncheckedUpdateManyWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -652,7 +851,10 @@ export type TaskCreateManyLeadInput = {
   description?: string | null
   dueDate: Date | string
   isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
   userId: string
+  dealId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -663,9 +865,12 @@ export type TaskUpdateWithoutLeadInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+  deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutLeadInput = {
@@ -674,7 +879,10 @@ export type TaskUncheckedUpdateWithoutLeadInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -685,6 +893,65 @@ export type TaskUncheckedUpdateManyWithoutLeadInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TaskCreateManyDealInput = {
+  id?: string
+  title: string
+  description?: string | null
+  dueDate: Date | string
+  isCompleted?: boolean
+  priority?: $Enums.TaskPriority
+  type?: $Enums.TaskType
+  leadId: string
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TaskUpdateWithoutDealInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lead?: Prisma.LeadUpdateOneRequiredWithoutTasksNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutTasksNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutDealInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
+  leadId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TaskUncheckedUpdateManyWithoutDealInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  type?: Prisma.EnumTaskTypeFieldUpdateOperationsInput | $Enums.TaskType
+  leadId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -698,12 +965,16 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   dueDate?: boolean
   isCompleted?: boolean
+  priority?: boolean
+  type?: boolean
   leadId?: boolean
   userId?: boolean
+  dealId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -712,12 +983,16 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   dueDate?: boolean
   isCompleted?: boolean
+  priority?: boolean
+  type?: boolean
   leadId?: boolean
   userId?: boolean
+  dealId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -726,12 +1001,16 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   dueDate?: boolean
   isCompleted?: boolean
+  priority?: boolean
+  type?: boolean
   leadId?: boolean
   userId?: boolean
+  dealId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectScalar = {
@@ -740,24 +1019,30 @@ export type TaskSelectScalar = {
   description?: boolean
   dueDate?: boolean
   isCompleted?: boolean
+  priority?: boolean
+  type?: boolean
   leadId?: boolean
   userId?: boolean
+  dealId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "dueDate" | "isCompleted" | "leadId" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "dueDate" | "isCompleted" | "priority" | "type" | "leadId" | "userId" | "dealId" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }
 export type TaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  deal?: boolean | Prisma.Task$dealArgs<ExtArgs>
 }
 
 export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -765,6 +1050,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     lead: Prisma.$LeadPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
+    deal: Prisma.$DealPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -772,8 +1058,11 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     description: string | null
     dueDate: Date
     isCompleted: boolean
+    priority: $Enums.TaskPriority
+    type: $Enums.TaskType
     leadId: string
     userId: string
+    dealId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["task"]>
@@ -1172,6 +1461,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   lead<T extends Prisma.LeadDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LeadDefaultArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  deal<T extends Prisma.Task$dealArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$dealArgs<ExtArgs>>): Prisma.Prisma__DealClient<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1206,8 +1496,11 @@ export interface TaskFieldRefs {
   readonly description: Prisma.FieldRef<"Task", 'String'>
   readonly dueDate: Prisma.FieldRef<"Task", 'DateTime'>
   readonly isCompleted: Prisma.FieldRef<"Task", 'Boolean'>
+  readonly priority: Prisma.FieldRef<"Task", 'TaskPriority'>
+  readonly type: Prisma.FieldRef<"Task", 'TaskType'>
   readonly leadId: Prisma.FieldRef<"Task", 'String'>
   readonly userId: Prisma.FieldRef<"Task", 'String'>
+  readonly dealId: Prisma.FieldRef<"Task", 'String'>
   readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Task", 'DateTime'>
 }
@@ -1608,6 +1901,25 @@ export type TaskDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Tasks to delete.
    */
   limit?: number
+}
+
+/**
+ * Task.deal
+ */
+export type Task$dealArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Deal
+   */
+  select?: Prisma.DealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Deal
+   */
+  omit?: Prisma.DealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DealInclude<ExtArgs> | null
+  where?: Prisma.DealWhereInput
 }
 
 /**
