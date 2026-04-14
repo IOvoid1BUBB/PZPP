@@ -7,7 +7,8 @@ export function getSubject({ courseTitle } = {}) {
 }
 
 export default function CourseEnrollmentConfirmation(props) {
-  const { userName, courseTitle, loginUrl } = props || {};
+  const { userName, courseTitle, loginUrl, settingsUrl, loginEmail, temporaryPassword, temporaryNickname } = props || {};
+  const showCredentials = Boolean(loginEmail) && Boolean(temporaryPassword);
 
   return (
     <Layout preheader="Potwierdzamy dostęp do kursu">
@@ -30,6 +31,29 @@ export default function CourseEnrollmentConfirmation(props) {
         <Text style={{ fontSize: "14px", lineHeight: "22px", margin: "14px 0 0", color: "#344054" }}>
           Zaloguj się, aby rozpocząć naukę.
         </Text>
+
+        {showCredentials ? (
+          <Section style={{ paddingTop: 14 }}>
+            <Text style={{ fontSize: "14px", lineHeight: "22px", margin: 0, color: "#344054" }}>
+              Dane logowania (hasło tymczasowe):
+            </Text>
+            <Text style={{ fontSize: "14px", lineHeight: "22px", margin: "8px 0 0", color: "#344054" }}>
+              Nick: <strong>{temporaryNickname || userName || "—"}</strong>
+              <br />
+              Login (email): <strong>{loginEmail}</strong>
+              <br />
+              Hasło: <strong>{temporaryPassword}</strong>
+            </Text>
+            <Text style={{ fontSize: "12px", lineHeight: "18px", margin: "10px 0 0", color: "#667085" }}>
+              To hasło wyświetlamy tylko w tej wiadomości. Po zalogowaniu zmień je w panelu studenta w Ustawieniach konta.
+            </Text>
+            {settingsUrl ? (
+              <Text style={{ fontSize: "12px", lineHeight: "18px", margin: "8px 0 0", color: "#667085" }}>
+                Link do ustawień: <a href={settingsUrl}>{settingsUrl}</a>
+              </Text>
+            ) : null}
+          </Section>
+        ) : null}
 
         {loginUrl ? (
           <Section style={{ paddingTop: 18 }}>
