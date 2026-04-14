@@ -143,7 +143,7 @@ export default function CourseList({ initialCourses }) {
                         {course.title}
                       </Link>
                       {course.description ? (
-                        <span className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                        <span className="mt-1 line-clamp-2 text-xs font-normal text-muted-foreground">
                           {course.description}
                         </span>
                       ) : null}

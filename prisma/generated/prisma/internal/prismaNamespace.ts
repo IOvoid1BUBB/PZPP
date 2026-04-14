@@ -2815,7 +2815,12 @@ export const LessonQuestionScalarFieldEnum = {
   id: 'id',
   lessonId: 'lessonId',
   question: 'question',
+  type: 'type',
   answer: 'answer',
+  optionA: 'optionA',
+  optionB: 'optionB',
+  optionC: 'optionC',
+  correctOption: 'correctOption',
   order: 'order',
   createdById: 'createdById',
   createdAt: 'createdAt',
@@ -3082,6 +3087,20 @@ export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'OrderStatus[]'
  */
 export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LessonQuestionType'
+ */
+export type EnumLessonQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LessonQuestionType'>
+    
+
+
+/**
+ * Reference to a field of type 'LessonQuestionType[]'
+ */
+export type ListEnumLessonQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LessonQuestionType[]'>
     
 
 

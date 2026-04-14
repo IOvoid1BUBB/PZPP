@@ -194,11 +194,17 @@ export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
       html,
     });
 
+    const preview =
+      typeof text === "string" && text.trim()
+        ? text.replace(/\s+/g, " ").trim().slice(0, 300)
+        : "[HTML email sent]";
+
     const savedMessage = await prisma.message.create({
       data: {
         leadId,
         subject,
-        body: html,
+        // Store only a short preview for mailbox/history (do not store full HTML).
+        body: preview,
         type: "EMAIL",
         direction: "OUTBOUND",
       },

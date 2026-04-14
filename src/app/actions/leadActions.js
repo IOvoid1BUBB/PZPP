@@ -67,9 +67,15 @@ export async function getDashboardStats() {
     const leadWhere = isAdminRole(auth.role) ? {} : { ownerId: auth.userId };
     const [totalLeads, wonLeads, activeCourses, pendingSignatures] =
       await Promise.all([
-        prisma.lead.count({ where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId } }),
-        prisma.lead.count({ where: isAdminRole(auth.role) ? { status: "WON" } : { ownerId: auth.userId, status: "WON" } }),
-        prisma.course.count({ where: { isPublished: true } }),
+        prisma.lead.count({ where: leadWhere }),
+        prisma.lead.count({
+          where: isAdminRole(auth.role) ? { status: "WON" } : { ...leadWhere, status: "WON" },
+        }),
+        prisma.course.count({
+          where: isAdminRole(auth.role)
+            ? { isPublished: true }
+            : { isPublished: true, authorId: auth.userId },
+        }),
         prisma.document.count({
           where: isAdminRole(auth.role)
             ? { isSigned: false }

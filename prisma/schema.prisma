@@ -384,12 +384,22 @@ model StudentLessonNote {
   @@index([lessonId])
 }
 
+enum LessonQuestionType {
+  OPEN_TEXT
+  MULTIPLE_CHOICE_ABC
+}
+
 model LessonQuestion {
   id          String   @id @default(cuid())
   lessonId    String
   lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   question    String   @db.Text
+  type        LessonQuestionType @default(OPEN_TEXT)
   answer      String?  @db.Text
+  optionA     String?  @db.Text
+  optionB     String?  @db.Text
+  optionC     String?  @db.Text
+  correctOption String?
   order       Int      @default(1)
   createdById String?
   createdBy   User?    @relation("LessonQuestionAuthor", fields: [createdById], references: [id], onDelete: SetNull)

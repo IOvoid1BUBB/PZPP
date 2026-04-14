@@ -38,7 +38,12 @@ export type LessonQuestionMinAggregateOutputType = {
   id: string | null
   lessonId: string | null
   question: string | null
+  type: $Enums.LessonQuestionType | null
   answer: string | null
+  optionA: string | null
+  optionB: string | null
+  optionC: string | null
+  correctOption: string | null
   order: number | null
   createdById: string | null
   createdAt: Date | null
@@ -49,7 +54,12 @@ export type LessonQuestionMaxAggregateOutputType = {
   id: string | null
   lessonId: string | null
   question: string | null
+  type: $Enums.LessonQuestionType | null
   answer: string | null
+  optionA: string | null
+  optionB: string | null
+  optionC: string | null
+  correctOption: string | null
   order: number | null
   createdById: string | null
   createdAt: Date | null
@@ -60,7 +70,12 @@ export type LessonQuestionCountAggregateOutputType = {
   id: number
   lessonId: number
   question: number
+  type: number
   answer: number
+  optionA: number
+  optionB: number
+  optionC: number
+  correctOption: number
   order: number
   createdById: number
   createdAt: number
@@ -81,7 +96,12 @@ export type LessonQuestionMinAggregateInputType = {
   id?: true
   lessonId?: true
   question?: true
+  type?: true
   answer?: true
+  optionA?: true
+  optionB?: true
+  optionC?: true
+  correctOption?: true
   order?: true
   createdById?: true
   createdAt?: true
@@ -92,7 +112,12 @@ export type LessonQuestionMaxAggregateInputType = {
   id?: true
   lessonId?: true
   question?: true
+  type?: true
   answer?: true
+  optionA?: true
+  optionB?: true
+  optionC?: true
+  correctOption?: true
   order?: true
   createdById?: true
   createdAt?: true
@@ -103,7 +128,12 @@ export type LessonQuestionCountAggregateInputType = {
   id?: true
   lessonId?: true
   question?: true
+  type?: true
   answer?: true
+  optionA?: true
+  optionB?: true
+  optionC?: true
+  correctOption?: true
   order?: true
   createdById?: true
   createdAt?: true
@@ -201,7 +231,12 @@ export type LessonQuestionGroupByOutputType = {
   id: string
   lessonId: string
   question: string
+  type: $Enums.LessonQuestionType
   answer: string | null
+  optionA: string | null
+  optionB: string | null
+  optionC: string | null
+  correctOption: string | null
   order: number
   createdById: string | null
   createdAt: Date
@@ -235,7 +270,12 @@ export type LessonQuestionWhereInput = {
   id?: Prisma.StringFilter<"LessonQuestion"> | string
   lessonId?: Prisma.StringFilter<"LessonQuestion"> | string
   question?: Prisma.StringFilter<"LessonQuestion"> | string
+  type?: Prisma.EnumLessonQuestionTypeFilter<"LessonQuestion"> | $Enums.LessonQuestionType
   answer?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionA?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionB?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionC?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  correctOption?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   order?: Prisma.IntFilter<"LessonQuestion"> | number
   createdById?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LessonQuestion"> | Date | string
@@ -248,7 +288,12 @@ export type LessonQuestionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   lessonId?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionA?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionB?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionC?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctOption?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -264,7 +309,12 @@ export type LessonQuestionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LessonQuestionWhereInput | Prisma.LessonQuestionWhereInput[]
   lessonId?: Prisma.StringFilter<"LessonQuestion"> | string
   question?: Prisma.StringFilter<"LessonQuestion"> | string
+  type?: Prisma.EnumLessonQuestionTypeFilter<"LessonQuestion"> | $Enums.LessonQuestionType
   answer?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionA?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionB?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionC?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  correctOption?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   order?: Prisma.IntFilter<"LessonQuestion"> | number
   createdById?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LessonQuestion"> | Date | string
@@ -277,7 +327,12 @@ export type LessonQuestionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   lessonId?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionA?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionB?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionC?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctOption?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -296,7 +351,12 @@ export type LessonQuestionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"LessonQuestion"> | string
   lessonId?: Prisma.StringWithAggregatesFilter<"LessonQuestion"> | string
   question?: Prisma.StringWithAggregatesFilter<"LessonQuestion"> | string
+  type?: Prisma.EnumLessonQuestionTypeWithAggregatesFilter<"LessonQuestion"> | $Enums.LessonQuestionType
   answer?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
+  optionA?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
+  optionB?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
+  optionC?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
+  correctOption?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"LessonQuestion"> | number
   createdById?: Prisma.StringNullableWithAggregatesFilter<"LessonQuestion"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LessonQuestion"> | Date | string
@@ -306,7 +366,12 @@ export type LessonQuestionScalarWhereWithAggregatesInput = {
 export type LessonQuestionCreateInput = {
   id?: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -318,7 +383,12 @@ export type LessonQuestionUncheckedCreateInput = {
   id?: string
   lessonId: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdById?: string | null
   createdAt?: Date | string
@@ -328,7 +398,12 @@ export type LessonQuestionUncheckedCreateInput = {
 export type LessonQuestionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,7 +415,12 @@ export type LessonQuestionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,7 +431,12 @@ export type LessonQuestionCreateManyInput = {
   id?: string
   lessonId: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdById?: string | null
   createdAt?: Date | string
@@ -361,7 +446,12 @@ export type LessonQuestionCreateManyInput = {
 export type LessonQuestionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,7 +461,12 @@ export type LessonQuestionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,7 +487,12 @@ export type LessonQuestionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   lessonId?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  optionA?: Prisma.SortOrder
+  optionB?: Prisma.SortOrder
+  optionC?: Prisma.SortOrder
+  correctOption?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -407,7 +507,12 @@ export type LessonQuestionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   lessonId?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  optionA?: Prisma.SortOrder
+  optionB?: Prisma.SortOrder
+  optionC?: Prisma.SortOrder
+  correctOption?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,7 +523,12 @@ export type LessonQuestionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   lessonId?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  optionA?: Prisma.SortOrder
+  optionB?: Prisma.SortOrder
+  optionC?: Prisma.SortOrder
+  correctOption?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -513,10 +623,19 @@ export type LessonQuestionUncheckedUpdateManyWithoutLessonNestedInput = {
   deleteMany?: Prisma.LessonQuestionScalarWhereInput | Prisma.LessonQuestionScalarWhereInput[]
 }
 
+export type EnumLessonQuestionTypeFieldUpdateOperationsInput = {
+  set?: $Enums.LessonQuestionType
+}
+
 export type LessonQuestionCreateWithoutCreatedByInput = {
   id?: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -527,7 +646,12 @@ export type LessonQuestionUncheckedCreateWithoutCreatedByInput = {
   id?: string
   lessonId: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -566,7 +690,12 @@ export type LessonQuestionScalarWhereInput = {
   id?: Prisma.StringFilter<"LessonQuestion"> | string
   lessonId?: Prisma.StringFilter<"LessonQuestion"> | string
   question?: Prisma.StringFilter<"LessonQuestion"> | string
+  type?: Prisma.EnumLessonQuestionTypeFilter<"LessonQuestion"> | $Enums.LessonQuestionType
   answer?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionA?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionB?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  optionC?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
+  correctOption?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   order?: Prisma.IntFilter<"LessonQuestion"> | number
   createdById?: Prisma.StringNullableFilter<"LessonQuestion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LessonQuestion"> | Date | string
@@ -576,7 +705,12 @@ export type LessonQuestionScalarWhereInput = {
 export type LessonQuestionCreateWithoutLessonInput = {
   id?: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -586,7 +720,12 @@ export type LessonQuestionCreateWithoutLessonInput = {
 export type LessonQuestionUncheckedCreateWithoutLessonInput = {
   id?: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdById?: string | null
   createdAt?: Date | string
@@ -623,7 +762,12 @@ export type LessonQuestionCreateManyCreatedByInput = {
   id?: string
   lessonId: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -632,7 +776,12 @@ export type LessonQuestionCreateManyCreatedByInput = {
 export type LessonQuestionUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -643,7 +792,12 @@ export type LessonQuestionUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -653,7 +807,12 @@ export type LessonQuestionUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -662,7 +821,12 @@ export type LessonQuestionUncheckedUpdateManyWithoutCreatedByInput = {
 export type LessonQuestionCreateManyLessonInput = {
   id?: string
   question: string
+  type?: $Enums.LessonQuestionType
   answer?: string | null
+  optionA?: string | null
+  optionB?: string | null
+  optionC?: string | null
+  correctOption?: string | null
   order?: number
   createdById?: string | null
   createdAt?: Date | string
@@ -672,7 +836,12 @@ export type LessonQuestionCreateManyLessonInput = {
 export type LessonQuestionUpdateWithoutLessonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -682,7 +851,12 @@ export type LessonQuestionUpdateWithoutLessonInput = {
 export type LessonQuestionUncheckedUpdateWithoutLessonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -692,7 +866,12 @@ export type LessonQuestionUncheckedUpdateWithoutLessonInput = {
 export type LessonQuestionUncheckedUpdateManyWithoutLessonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLessonQuestionTypeFieldUpdateOperationsInput | $Enums.LessonQuestionType
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionA?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  optionC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctOption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -705,7 +884,12 @@ export type LessonQuestionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   lessonId?: boolean
   question?: boolean
+  type?: boolean
   answer?: boolean
+  optionA?: boolean
+  optionB?: boolean
+  optionC?: boolean
+  correctOption?: boolean
   order?: boolean
   createdById?: boolean
   createdAt?: boolean
@@ -718,7 +902,12 @@ export type LessonQuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   lessonId?: boolean
   question?: boolean
+  type?: boolean
   answer?: boolean
+  optionA?: boolean
+  optionB?: boolean
+  optionC?: boolean
+  correctOption?: boolean
   order?: boolean
   createdById?: boolean
   createdAt?: boolean
@@ -731,7 +920,12 @@ export type LessonQuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   lessonId?: boolean
   question?: boolean
+  type?: boolean
   answer?: boolean
+  optionA?: boolean
+  optionB?: boolean
+  optionC?: boolean
+  correctOption?: boolean
   order?: boolean
   createdById?: boolean
   createdAt?: boolean
@@ -744,14 +938,19 @@ export type LessonQuestionSelectScalar = {
   id?: boolean
   lessonId?: boolean
   question?: boolean
+  type?: boolean
   answer?: boolean
+  optionA?: boolean
+  optionB?: boolean
+  optionC?: boolean
+  correctOption?: boolean
   order?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LessonQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "lessonId" | "question" | "answer" | "order" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["lessonQuestion"]>
+export type LessonQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "lessonId" | "question" | "type" | "answer" | "optionA" | "optionB" | "optionC" | "correctOption" | "order" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["lessonQuestion"]>
 export type LessonQuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.LessonQuestion$createdByArgs<ExtArgs>
@@ -775,7 +974,12 @@ export type $LessonQuestionPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     lessonId: string
     question: string
+    type: $Enums.LessonQuestionType
     answer: string | null
+    optionA: string | null
+    optionB: string | null
+    optionC: string | null
+    correctOption: string | null
     order: number
     createdById: string | null
     createdAt: Date
@@ -1208,7 +1412,12 @@ export interface LessonQuestionFieldRefs {
   readonly id: Prisma.FieldRef<"LessonQuestion", 'String'>
   readonly lessonId: Prisma.FieldRef<"LessonQuestion", 'String'>
   readonly question: Prisma.FieldRef<"LessonQuestion", 'String'>
+  readonly type: Prisma.FieldRef<"LessonQuestion", 'LessonQuestionType'>
   readonly answer: Prisma.FieldRef<"LessonQuestion", 'String'>
+  readonly optionA: Prisma.FieldRef<"LessonQuestion", 'String'>
+  readonly optionB: Prisma.FieldRef<"LessonQuestion", 'String'>
+  readonly optionC: Prisma.FieldRef<"LessonQuestion", 'String'>
+  readonly correctOption: Prisma.FieldRef<"LessonQuestion", 'String'>
   readonly order: Prisma.FieldRef<"LessonQuestion", 'Int'>
   readonly createdById: Prisma.FieldRef<"LessonQuestion", 'String'>
   readonly createdAt: Prisma.FieldRef<"LessonQuestion", 'DateTime'>

@@ -69,6 +69,14 @@ export const ABTestStatus = {
 export type ABTestStatus = (typeof ABTestStatus)[keyof typeof ABTestStatus]
 
 
+export const LessonQuestionType = {
+  OPEN_TEXT: 'OPEN_TEXT',
+  MULTIPLE_CHOICE_ABC: 'MULTIPLE_CHOICE_ABC'
+} as const
+
+export type LessonQuestionType = (typeof LessonQuestionType)[keyof typeof LessonQuestionType]
+
+
 export const LessonResourceType = {
   LINK: 'LINK',
   PDF: 'PDF'

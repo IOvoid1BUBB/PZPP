@@ -330,8 +330,16 @@ export async function createLesson(moduleId, input) {
         questions: {
           create: questions
             .map((q, idx) => ({
+              type: q?.type === "MULTIPLE_CHOICE_ABC" ? "MULTIPLE_CHOICE_ABC" : "OPEN_TEXT",
               question: normalizeString(q?.question),
               answer: normalizeOptionalString(q?.answer),
+              optionA: normalizeOptionalString(q?.optionA),
+              optionB: normalizeOptionalString(q?.optionB),
+              optionC: normalizeOptionalString(q?.optionC),
+              correctOption:
+                q?.type === "MULTIPLE_CHOICE_ABC"
+                  ? normalizeOptionalString(q?.correctOption)
+                  : null,
               order: normalizeInt(q?.order, idx + 1),
               createdById: auth.userId,
             }))
@@ -403,8 +411,16 @@ export async function updateLesson(lessonId, input) {
           questions: {
             create: questions
               .map((q, idx) => ({
+                type: q?.type === "MULTIPLE_CHOICE_ABC" ? "MULTIPLE_CHOICE_ABC" : "OPEN_TEXT",
                 question: normalizeString(q?.question),
                 answer: normalizeOptionalString(q?.answer),
+                optionA: normalizeOptionalString(q?.optionA),
+                optionB: normalizeOptionalString(q?.optionB),
+                optionC: normalizeOptionalString(q?.optionC),
+                correctOption:
+                  q?.type === "MULTIPLE_CHOICE_ABC"
+                    ? normalizeOptionalString(q?.correctOption)
+                    : null,
                 order: normalizeInt(q?.order, idx + 1),
                 createdById: auth.userId,
               }))

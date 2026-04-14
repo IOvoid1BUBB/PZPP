@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import CourseYouTubePlayer from '@/components/course/CourseYouTubePlayer'
 import NextLessonButton from '@/components/features/courses/NextLessonButton'
 import StudentLessonNotesEditor from '@/components/features/courses/StudentLessonNotesEditor'
+import LessonQuestionsQuiz from '@/components/course/LessonQuestionsQuiz'
 import DbErrorToast from '@/components/student/DbErrorToast'
 import { Progress } from '@/components/ui/progress'
 
@@ -330,6 +331,8 @@ export default async function StudentCoursePage({ params, searchParams }) {
               </div>
             </div>
           </div>
+
+          <LessonQuestionsQuiz questions={activeLessonQuestions} />
 
           {/* Notatki */}
           <div className="rounded-xl border border-[#e5e7eb] bg-white p-5">

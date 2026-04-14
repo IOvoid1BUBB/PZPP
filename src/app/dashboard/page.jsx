@@ -87,7 +87,7 @@ export default function DashboardPage() {
     {
       title: "Łącznie leadów",
       value: totalLeads.toLocaleString("pl-PL"),
-      subtext: "Wszystkie leady w systemie",
+      subtext: "Leady przypisane do Twojego konta",
     },
     {
       title: "Konwersja lejków",
@@ -97,7 +97,7 @@ export default function DashboardPage() {
     {
       title: "Aktywne kursy",
       value: String(activeCourses),
-      subtext: "Opublikowane kursy w ofercie",
+      subtext: "Opublikowane kursy przypisane do Twojego konta",
     },
     {
       title: "Oczekujące podpisy",

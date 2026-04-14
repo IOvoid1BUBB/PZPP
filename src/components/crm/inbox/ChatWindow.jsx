@@ -12,6 +12,15 @@ function stripHtmlForPreview(html) {
     .trim();
 }
 
+function truncatePreview(text, maxLen = 240) {
+  const safe = String(text || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!safe) return "";
+  if (safe.length <= maxLen) return safe;
+  return `${safe.slice(0, maxLen - 1)}…`;
+}
+
 /**
  * @param {{ messages: Array<{ id: string; direction: string; type: string; body: string; subject?: string | null; createdAt: Date | string }> }} props
  */
@@ -35,9 +44,10 @@ export default function ChatWindow({ messages }) {
           {messages.map((msg) => {
             const outbound = msg.direction === "OUTBOUND";
             const typeLabel = msg.type === "SMS" ? "SMS" : "E-mail";
-            const displayBody = outbound && msg.body?.includes("<")
-              ? stripHtmlForPreview(msg.body)
-              : msg.body;
+            const isOutboundEmail = outbound && msg.type === "EMAIL";
+            const normalizedBody =
+              outbound && msg.body?.includes("<") ? stripHtmlForPreview(msg.body) : msg.body;
+            const displayBody = isOutboundEmail ? "" : truncatePreview(normalizedBody, 800);
 
             return (
               <div
@@ -73,7 +83,9 @@ export default function ChatWindow({ messages }) {
                       </span>
                     ) : null}
                   </div>
-                  <p className="whitespace-pre-wrap break-words leading-relaxed">{displayBody}</p>
+                  {!isOutboundEmail ? (
+                    <p className="whitespace-pre-wrap wrap-break-word leading-relaxed">{displayBody}</p>
+                  ) : null}
                 </div>
               </div>
             );
