@@ -1,9 +1,21 @@
-require("dotenv/config");
-const { PrismaClient } = require("@prisma/client");
-const { PrismaPg } = require("@prisma/adapter-pg");
-const bcrypt = require("bcryptjs");
+import "dotenv/config";
+import bcrypt from "bcryptjs";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const connectionString = process.env.DIRECT_URL || process.env.DATABASE_URL;
+import { PrismaClient } from "./generated/prisma/client";
+
+function withSchema(urlString: string | undefined, schema: string) {
+  if (!urlString) return urlString;
+  try {
+    const u = new URL(urlString);
+    u.searchParams.set("schema", schema);
+    return u.toString();
+  } catch {
+    return urlString;
+  }
+}
+
+const connectionString = withSchema(process.env.DIRECT_URL || process.env.DATABASE_URL, "public");
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
@@ -56,9 +68,7 @@ async function main() {
       password,
       role: "KREATOR",
       courses: {
-        create: [
-          { title: "Masterclass Sprzedaży", description: "Jak domykać deale." },
-        ],
+        create: [{ title: "Masterclass Sprzedaży", description: "Jak domykać deale." }],
       },
     },
   });
@@ -104,3 +114,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
