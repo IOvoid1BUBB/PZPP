@@ -137,6 +137,12 @@ export async function updateLeadStatus(leadId, newStatus) {
       return { success: false, error: "Nieprawidłowy status Kanban." };
     }
 
+    const previousLead = await prisma.lead.findUnique({
+      where: { id: leadId },
+      select: { status: true, ownerId: true },
+    });
+    const previousStatus = previousLead?.status;
+
     if (!isAdminRole(auth.role)) {
       const updated = await prisma.lead.updateMany({
         where: { id: leadId, ownerId: auth.userId },
@@ -153,6 +159,20 @@ export async function updateLeadStatus(leadId, newStatus) {
     }
 
     const updatedLead = await prisma.lead.findUnique({ where: { id: leadId } });
+
+    if (previousStatus && previousStatus !== newStatus) {
+      try {
+        const { executeAutomations } = await import("@/lib/automationEngine");
+        await executeAutomations("LEAD_STATUS_CHANGE", {
+          leadId,
+          fromStatus: previousStatus,
+          toStatus: newStatus,
+          ownerId: auth.userId,
+        });
+      } catch (_) {
+        // best-effort
+      }
+    }
 
     revalidatePath("/dashboard/kanban");
     revalidatePath("/dashboard");

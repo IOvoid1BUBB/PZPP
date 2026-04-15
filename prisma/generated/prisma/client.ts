@@ -117,6 +117,21 @@ export type Message = Prisma.MessageModel
  */
 export type Task = Prisma.TaskModel
 /**
+ * Model Deal
+ * 
+ */
+export type Deal = Prisma.DealModel
+/**
+ * Model AutomationRule
+ * 
+ */
+export type AutomationRule = Prisma.AutomationRuleModel
+/**
+ * Model AutomationLog
+ * 
+ */
+export type AutomationLog = Prisma.AutomationLogModel
+/**
  * Model Course
  * 
  */
