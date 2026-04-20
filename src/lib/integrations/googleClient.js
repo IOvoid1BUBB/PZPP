@@ -3,7 +3,22 @@ import { decryptSecret, encryptSecret } from "@/lib/integrations/tokenCrypto";
 
 const PROVIDER = "GOOGLE";
 const DEFAULT_SCOPES =
-  "openid email profile https://www.googleapis.com/auth/calendar.readonly";
+  "openid email profile https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/contacts.readonly";
+
+const REQUIRED_SCOPES = [
+  "openid",
+  "email",
+  "profile",
+  "https://www.googleapis.com/auth/calendar.readonly",
+  "https://www.googleapis.com/auth/contacts.readonly",
+];
+
+function normalizeScopes(scopesValue) {
+  const raw = typeof scopesValue === "string" ? scopesValue : "";
+  const scopes = new Set(raw.split(/\s+/).map((s) => s.trim()).filter(Boolean));
+  REQUIRED_SCOPES.forEach((scope) => scopes.add(scope));
+  return Array.from(scopes).join(" ");
+}
 
 function getDefaultGoogleCallbackUrl() {
   const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
@@ -25,7 +40,7 @@ function getGoogleOAuthConfig() {
     clientId: process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET,
     redirectUri: normalizeGoogleRedirectUri(process.env.GOOGLE_OAUTH_REDIRECT_URI),
-    scopes: process.env.GOOGLE_OAUTH_SCOPES || DEFAULT_SCOPES,
+    scopes: normalizeScopes(process.env.GOOGLE_OAUTH_SCOPES || DEFAULT_SCOPES),
   };
 }
 
@@ -156,7 +171,14 @@ export async function fetchGoogleCalendarEvents(userId, rangeStart, rangeEnd) {
   );
 
   if (!response.ok) {
-    throw new Error(`Google Calendar API error: ${response.status}`);
+    let details = "";
+    try {
+      const text = await response.text();
+      details = text ? ` - ${text.slice(0, 500)}` : "";
+    } catch {
+      details = "";
+    }
+    throw new Error(`Google Calendar API error: ${response.status}${details}`);
   }
 
   const body = await response.json();
