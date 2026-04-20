@@ -55,6 +55,9 @@ export const ModelName = {
   Account: 'Account',
   ApiKeyIntegration: 'ApiKeyIntegration',
   Session: 'Session',
+  OAuthState: 'OAuthState',
+  OAuthIntegration: 'OAuthIntegration',
+  Notification: 'Notification',
   VerificationToken: 'VerificationToken',
   Lead: 'Lead',
   Tag: 'Tag',
@@ -156,6 +159,60 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const OAuthStateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  stateHash: 'stateHash',
+  nonceHash: 'nonceHash',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OAuthStateScalarFieldEnum = (typeof OAuthStateScalarFieldEnum)[keyof typeof OAuthStateScalarFieldEnum]
+
+
+export const OAuthIntegrationScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  provider: 'provider',
+  externalAccountId: 'externalAccountId',
+  externalEmail: 'externalEmail',
+  jiraCloudId: 'jiraCloudId',
+  jiraSiteUrl: 'jiraSiteUrl',
+  scopes: 'scopes',
+  encryptedAccessToken: 'encryptedAccessToken',
+  encryptedRefreshToken: 'encryptedRefreshToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  status: 'status',
+  lastSyncedAt: 'lastSyncedAt',
+  calendarLastSyncedAt: 'calendarLastSyncedAt',
+  contactsLastSyncedAt: 'contactsLastSyncedAt',
+  ticketsLastSyncedAt: 'ticketsLastSyncedAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OAuthIntegrationScalarFieldEnum = (typeof OAuthIntegrationScalarFieldEnum)[keyof typeof OAuthIntegrationScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  url: 'url',
+  entityId: 'entityId',
+  createdAt: 'createdAt',
+  readAt: 'readAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const VerificationTokenScalarFieldEnum = {

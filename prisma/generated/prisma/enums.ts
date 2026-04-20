@@ -28,6 +28,35 @@ export const OrderStatus = {
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 
 
+export const OAuthProvider = {
+  GOOGLE: 'GOOGLE',
+  JIRA: 'JIRA'
+} as const
+
+export type OAuthProvider = (typeof OAuthProvider)[keyof typeof OAuthProvider]
+
+
+export const IntegrationConnectionStatus = {
+  CONNECTED: 'CONNECTED',
+  ERROR: 'ERROR',
+  REVOKED: 'REVOKED',
+  DISCONNECTED: 'DISCONNECTED'
+} as const
+
+export type IntegrationConnectionStatus = (typeof IntegrationConnectionStatus)[keyof typeof IntegrationConnectionStatus]
+
+
+export const NotificationType = {
+  ORDER_CREATED: 'ORDER_CREATED',
+  MESSAGE_RECEIVED: 'MESSAGE_RECEIVED',
+  TASK_CREATED: 'TASK_CREATED',
+  MEETING_CREATED: 'MEETING_CREATED',
+  CALENDAR_EVENT_CREATED: 'CALENDAR_EVENT_CREATED'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
 export const LeadStatus = {
   NEW: 'NEW',
   CONTACTED: 'CONTACTED',

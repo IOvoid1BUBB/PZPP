@@ -249,6 +249,8 @@ export type UserWhereInput = {
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationListRelationFilter
+  oauthStates?: Prisma.OAuthStateListRelationFilter
+  oauthIntegrations?: Prisma.OAuthIntegrationListRelationFilter
   organizedMeetings?: Prisma.MeetingListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
@@ -263,6 +265,7 @@ export type UserWhereInput = {
   orders?: Prisma.OrderListRelationFilter
   ownedDeals?: Prisma.DealListRelationFilter
   automationRules?: Prisma.AutomationRuleListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -282,6 +285,8 @@ export type UserOrderByWithRelationInput = {
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationOrderByRelationAggregateInput
+  oauthStates?: Prisma.OAuthStateOrderByRelationAggregateInput
+  oauthIntegrations?: Prisma.OAuthIntegrationOrderByRelationAggregateInput
   organizedMeetings?: Prisma.MeetingOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
@@ -296,6 +301,7 @@ export type UserOrderByWithRelationInput = {
   orders?: Prisma.OrderOrderByRelationAggregateInput
   ownedDeals?: Prisma.DealOrderByRelationAggregateInput
   automationRules?: Prisma.AutomationRuleOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -318,6 +324,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationListRelationFilter
+  oauthStates?: Prisma.OAuthStateListRelationFilter
+  oauthIntegrations?: Prisma.OAuthIntegrationListRelationFilter
   organizedMeetings?: Prisma.MeetingListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
@@ -332,6 +340,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   orders?: Prisma.OrderListRelationFilter
   ownedDeals?: Prisma.DealListRelationFilter
   automationRules?: Prisma.AutomationRuleListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -389,6 +398,8 @@ export type UserCreateInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -403,6 +414,7 @@ export type UserCreateInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -422,6 +434,8 @@ export type UserUncheckedCreateInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -436,6 +450,7 @@ export type UserUncheckedCreateInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -455,6 +470,8 @@ export type UserUpdateInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -469,6 +486,7 @@ export type UserUpdateInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -488,6 +506,8 @@ export type UserUncheckedUpdateInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -502,6 +522,7 @@ export type UserUncheckedUpdateInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -670,6 +691,48 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutOauthStatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOauthStatesInput, Prisma.UserUncheckedCreateWithoutOauthStatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOauthStatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOauthStatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOauthStatesInput, Prisma.UserUncheckedCreateWithoutOauthStatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOauthStatesInput
+  upsert?: Prisma.UserUpsertWithoutOauthStatesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOauthStatesInput, Prisma.UserUpdateWithoutOauthStatesInput>, Prisma.UserUncheckedUpdateWithoutOauthStatesInput>
+}
+
+export type UserCreateNestedOneWithoutOauthIntegrationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOauthIntegrationsInput, Prisma.UserUncheckedCreateWithoutOauthIntegrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOauthIntegrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOauthIntegrationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOauthIntegrationsInput, Prisma.UserUncheckedCreateWithoutOauthIntegrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOauthIntegrationsInput
+  upsert?: Prisma.UserUpsertWithoutOauthIntegrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOauthIntegrationsInput, Prisma.UserUpdateWithoutOauthIntegrationsInput>, Prisma.UserUncheckedUpdateWithoutOauthIntegrationsInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
 }
 
 export type UserCreateNestedOneWithoutOwnedLeadsInput = {
@@ -898,6 +961,8 @@ export type UserCreateWithoutAccountsInput = {
   jiraSelectedCloudId?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -912,6 +977,7 @@ export type UserCreateWithoutAccountsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -930,6 +996,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   jiraSelectedCloudId?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -944,6 +1012,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -978,6 +1047,8 @@ export type UserUpdateWithoutAccountsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -992,6 +1063,7 @@ export type UserUpdateWithoutAccountsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1010,6 +1082,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1024,6 +1098,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApiKeyIntegrationsInput = {
@@ -1042,6 +1117,8 @@ export type UserCreateWithoutApiKeyIntegrationsInput = {
   jiraSelectedCloudId?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1056,6 +1133,7 @@ export type UserCreateWithoutApiKeyIntegrationsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
@@ -1074,6 +1152,8 @@ export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
   jiraSelectedCloudId?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1088,6 +1168,7 @@ export type UserUncheckedCreateWithoutApiKeyIntegrationsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApiKeyIntegrationsInput = {
@@ -1122,6 +1203,8 @@ export type UserUpdateWithoutApiKeyIntegrationsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1136,6 +1219,7 @@ export type UserUpdateWithoutApiKeyIntegrationsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
@@ -1154,6 +1238,8 @@ export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1168,6 +1254,7 @@ export type UserUncheckedUpdateWithoutApiKeyIntegrationsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1186,6 +1273,8 @@ export type UserCreateWithoutSessionsInput = {
   jiraSelectedCloudId?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1200,6 +1289,7 @@ export type UserCreateWithoutSessionsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1218,6 +1308,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   jiraSelectedCloudId?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1232,6 +1324,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1266,6 +1359,8 @@ export type UserUpdateWithoutSessionsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1280,6 +1375,7 @@ export type UserUpdateWithoutSessionsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1298,6 +1394,477 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOauthStatesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOauthStatesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOauthStatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOauthStatesInput, Prisma.UserUncheckedCreateWithoutOauthStatesInput>
+}
+
+export type UserUpsertWithoutOauthStatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOauthStatesInput, Prisma.UserUncheckedUpdateWithoutOauthStatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOauthStatesInput, Prisma.UserUncheckedCreateWithoutOauthStatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOauthStatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOauthStatesInput, Prisma.UserUncheckedUpdateWithoutOauthStatesInput>
+}
+
+export type UserUpdateWithoutOauthStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOauthStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOauthIntegrationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOauthIntegrationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOauthIntegrationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOauthIntegrationsInput, Prisma.UserUncheckedCreateWithoutOauthIntegrationsInput>
+}
+
+export type UserUpsertWithoutOauthIntegrationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOauthIntegrationsInput, Prisma.UserUncheckedUpdateWithoutOauthIntegrationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOauthIntegrationsInput, Prisma.UserUncheckedCreateWithoutOauthIntegrationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOauthIntegrationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOauthIntegrationsInput, Prisma.UserUncheckedUpdateWithoutOauthIntegrationsInput>
+}
+
+export type UserUpdateWithoutOauthIntegrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOauthIntegrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUncheckedUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUncheckedUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
+  organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  password?: string | null
+  timezone?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  jiraSelectedProjectKey?: string | null
+  jiraSelectedProjectName?: string | null
+  jiraSelectedCloudId?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
+  organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  lessonNotes?: Prisma.StudentLessonNoteUncheckedCreateNestedManyWithoutUserInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUncheckedCreateNestedManyWithoutCreatedByInput
+  landingPages?: Prisma.LandingPageUncheckedCreateNestedManyWithoutAuthorInput
+  ownedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutOwnerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutAuthorInput
+  funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
+  automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
+  organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  lessonNotes?: Prisma.StudentLessonNoteUpdateManyWithoutUserNestedInput
+  lessonQuestionsAuthored?: Prisma.LessonQuestionUpdateManyWithoutCreatedByNestedInput
+  landingPages?: Prisma.LandingPageUpdateManyWithoutAuthorNestedInput
+  ownedLeads?: Prisma.LeadUpdateManyWithoutOwnerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutAuthorNestedInput
+  funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
+  automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jiraSelectedProjectKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedProjectName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jiraSelectedCloudId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1331,6 +1898,8 @@ export type UserCreateWithoutOwnedLeadsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1344,6 +1913,7 @@ export type UserCreateWithoutOwnedLeadsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOwnedLeadsInput = {
@@ -1363,6 +1933,8 @@ export type UserUncheckedCreateWithoutOwnedLeadsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1376,6 +1948,7 @@ export type UserUncheckedCreateWithoutOwnedLeadsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOwnedLeadsInput = {
@@ -1411,6 +1984,8 @@ export type UserUpdateWithoutOwnedLeadsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1424,6 +1999,7 @@ export type UserUpdateWithoutOwnedLeadsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOwnedLeadsInput = {
@@ -1443,6 +2019,8 @@ export type UserUncheckedUpdateWithoutOwnedLeadsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1456,6 +2034,7 @@ export type UserUncheckedUpdateWithoutOwnedLeadsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTagsInput = {
@@ -1475,6 +2054,8 @@ export type UserCreateWithoutTagsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1488,6 +2069,7 @@ export type UserCreateWithoutTagsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTagsInput = {
@@ -1507,6 +2089,8 @@ export type UserUncheckedCreateWithoutTagsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1520,6 +2104,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTagsInput = {
@@ -1555,6 +2140,8 @@ export type UserUpdateWithoutTagsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1568,6 +2155,7 @@ export type UserUpdateWithoutTagsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTagsInput = {
@@ -1587,6 +2175,8 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1600,6 +2190,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLandingPagesInput = {
@@ -1619,6 +2210,8 @@ export type UserCreateWithoutLandingPagesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1632,6 +2225,7 @@ export type UserCreateWithoutLandingPagesInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLandingPagesInput = {
@@ -1651,6 +2245,8 @@ export type UserUncheckedCreateWithoutLandingPagesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1664,6 +2260,7 @@ export type UserUncheckedCreateWithoutLandingPagesInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLandingPagesInput = {
@@ -1699,6 +2296,8 @@ export type UserUpdateWithoutLandingPagesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1712,6 +2311,7 @@ export type UserUpdateWithoutLandingPagesInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLandingPagesInput = {
@@ -1731,6 +2331,8 @@ export type UserUncheckedUpdateWithoutLandingPagesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1744,6 +2346,7 @@ export type UserUncheckedUpdateWithoutLandingPagesInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFunnelsInput = {
@@ -1763,6 +2366,8 @@ export type UserCreateWithoutFunnelsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -1776,6 +2381,7 @@ export type UserCreateWithoutFunnelsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFunnelsInput = {
@@ -1795,6 +2401,8 @@ export type UserUncheckedCreateWithoutFunnelsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -1808,6 +2416,7 @@ export type UserUncheckedCreateWithoutFunnelsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFunnelsInput = {
@@ -1843,6 +2452,8 @@ export type UserUpdateWithoutFunnelsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -1856,6 +2467,7 @@ export type UserUpdateWithoutFunnelsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFunnelsInput = {
@@ -1875,6 +2487,8 @@ export type UserUncheckedUpdateWithoutFunnelsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -1888,6 +2502,7 @@ export type UserUncheckedUpdateWithoutFunnelsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTasksInput = {
@@ -1907,6 +2522,8 @@ export type UserCreateWithoutTasksInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -1920,6 +2537,7 @@ export type UserCreateWithoutTasksInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTasksInput = {
@@ -1939,6 +2557,8 @@ export type UserUncheckedCreateWithoutTasksInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -1952,6 +2572,7 @@ export type UserUncheckedCreateWithoutTasksInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTasksInput = {
@@ -1987,6 +2608,8 @@ export type UserUpdateWithoutTasksInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -2000,6 +2623,7 @@ export type UserUpdateWithoutTasksInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksInput = {
@@ -2019,6 +2643,8 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
@@ -2032,6 +2658,7 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOwnedDealsInput = {
@@ -2051,6 +2678,8 @@ export type UserCreateWithoutOwnedDealsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2064,6 +2693,7 @@ export type UserCreateWithoutOwnedDealsInput = {
   funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOwnedDealsInput = {
@@ -2083,6 +2713,8 @@ export type UserUncheckedCreateWithoutOwnedDealsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2096,6 +2728,7 @@ export type UserUncheckedCreateWithoutOwnedDealsInput = {
   funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOwnedDealsInput = {
@@ -2131,6 +2764,8 @@ export type UserUpdateWithoutOwnedDealsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2144,6 +2779,7 @@ export type UserUpdateWithoutOwnedDealsInput = {
   funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOwnedDealsInput = {
@@ -2163,6 +2799,8 @@ export type UserUncheckedUpdateWithoutOwnedDealsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2176,6 +2814,7 @@ export type UserUncheckedUpdateWithoutOwnedDealsInput = {
   funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAutomationRulesInput = {
@@ -2195,6 +2834,8 @@ export type UserCreateWithoutAutomationRulesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2208,6 +2849,7 @@ export type UserCreateWithoutAutomationRulesInput = {
   funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAutomationRulesInput = {
@@ -2227,6 +2869,8 @@ export type UserUncheckedCreateWithoutAutomationRulesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2240,6 +2884,7 @@ export type UserUncheckedCreateWithoutAutomationRulesInput = {
   funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAutomationRulesInput = {
@@ -2275,6 +2920,8 @@ export type UserUpdateWithoutAutomationRulesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2288,6 +2935,7 @@ export type UserUpdateWithoutAutomationRulesInput = {
   funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAutomationRulesInput = {
@@ -2307,6 +2955,8 @@ export type UserUncheckedUpdateWithoutAutomationRulesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2320,6 +2970,7 @@ export type UserUncheckedUpdateWithoutAutomationRulesInput = {
   funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCoursesInput = {
@@ -2339,6 +2990,8 @@ export type UserCreateWithoutCoursesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2352,6 +3005,7 @@ export type UserCreateWithoutCoursesInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCoursesInput = {
@@ -2371,6 +3025,8 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2384,6 +3040,7 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCoursesInput = {
@@ -2419,6 +3076,8 @@ export type UserUpdateWithoutCoursesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2432,6 +3091,7 @@ export type UserUpdateWithoutCoursesInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoursesInput = {
@@ -2451,6 +3111,8 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2464,6 +3126,7 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -2483,6 +3146,8 @@ export type UserCreateWithoutOrdersInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2496,6 +3161,7 @@ export type UserCreateWithoutOrdersInput = {
   funnels?: Prisma.FunnelCreateNestedManyWithoutOwnerInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -2515,6 +3181,8 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2528,6 +3196,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   funnels?: Prisma.FunnelUncheckedCreateNestedManyWithoutOwnerInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -2563,6 +3232,8 @@ export type UserUpdateWithoutOrdersInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2576,6 +3247,7 @@ export type UserUpdateWithoutOrdersInput = {
   funnels?: Prisma.FunnelUpdateManyWithoutOwnerNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -2595,6 +3267,8 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2608,6 +3282,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   funnels?: Prisma.FunnelUncheckedUpdateManyWithoutOwnerNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLessonNotesInput = {
@@ -2627,6 +3302,8 @@ export type UserCreateWithoutLessonNotesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2640,6 +3317,7 @@ export type UserCreateWithoutLessonNotesInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLessonNotesInput = {
@@ -2659,6 +3337,8 @@ export type UserUncheckedCreateWithoutLessonNotesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2672,6 +3352,7 @@ export type UserUncheckedCreateWithoutLessonNotesInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLessonNotesInput = {
@@ -2707,6 +3388,8 @@ export type UserUpdateWithoutLessonNotesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2720,6 +3403,7 @@ export type UserUpdateWithoutLessonNotesInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLessonNotesInput = {
@@ -2739,6 +3423,8 @@ export type UserUncheckedUpdateWithoutLessonNotesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2752,6 +3438,7 @@ export type UserUncheckedUpdateWithoutLessonNotesInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLessonQuestionsAuthoredInput = {
@@ -2771,6 +3458,8 @@ export type UserCreateWithoutLessonQuestionsAuthoredInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -2784,6 +3473,7 @@ export type UserCreateWithoutLessonQuestionsAuthoredInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLessonQuestionsAuthoredInput = {
@@ -2803,6 +3493,8 @@ export type UserUncheckedCreateWithoutLessonQuestionsAuthoredInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -2816,6 +3508,7 @@ export type UserUncheckedCreateWithoutLessonQuestionsAuthoredInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLessonQuestionsAuthoredInput = {
@@ -2851,6 +3544,8 @@ export type UserUpdateWithoutLessonQuestionsAuthoredInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -2864,6 +3559,7 @@ export type UserUpdateWithoutLessonQuestionsAuthoredInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput = {
@@ -2883,6 +3579,8 @@ export type UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -2896,6 +3594,7 @@ export type UserUncheckedUpdateWithoutLessonQuestionsAuthoredInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEnrollmentsInput = {
@@ -2915,6 +3614,8 @@ export type UserCreateWithoutEnrollmentsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -2928,6 +3629,7 @@ export type UserCreateWithoutEnrollmentsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEnrollmentsInput = {
@@ -2947,6 +3649,8 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -2960,6 +3664,7 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEnrollmentsInput = {
@@ -2995,6 +3700,8 @@ export type UserUpdateWithoutEnrollmentsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -3008,6 +3715,7 @@ export type UserUpdateWithoutEnrollmentsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEnrollmentsInput = {
@@ -3027,6 +3735,8 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
@@ -3040,6 +3750,7 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCertificatesInput = {
@@ -3059,6 +3770,8 @@ export type UserCreateWithoutCertificatesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
@@ -3072,6 +3785,7 @@ export type UserCreateWithoutCertificatesInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCertificatesInput = {
@@ -3091,6 +3805,8 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   organizedMeetings?: Prisma.MeetingUncheckedCreateNestedManyWithoutOrganizerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -3104,6 +3820,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCertificatesInput = {
@@ -3139,6 +3856,8 @@ export type UserUpdateWithoutCertificatesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
@@ -3152,6 +3871,7 @@ export type UserUpdateWithoutCertificatesInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCertificatesInput = {
@@ -3171,6 +3891,8 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   organizedMeetings?: Prisma.MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -3184,6 +3906,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrganizedMeetingsInput = {
@@ -3203,6 +3926,8 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationCreateNestedManyWithoutOwnerInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
@@ -3216,6 +3941,7 @@ export type UserCreateWithoutOrganizedMeetingsInput = {
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
@@ -3235,6 +3961,8 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedCreateNestedManyWithoutUserInput
+  oauthStates?: Prisma.OAuthStateUncheckedCreateNestedManyWithoutUserInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedCreateNestedManyWithoutOwnerInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
@@ -3248,6 +3976,7 @@ export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   ownedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutOwnerInput
   automationRules?: Prisma.AutomationRuleUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizedMeetingsInput = {
@@ -3283,6 +4012,8 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUpdateManyWithoutOwnerNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
@@ -3296,6 +4027,7 @@ export type UserUpdateWithoutOrganizedMeetingsInput = {
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
@@ -3315,6 +4047,8 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   apiKeyIntegrations?: Prisma.ApiKeyIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  oauthStates?: Prisma.OAuthStateUncheckedUpdateManyWithoutUserNestedInput
+  oauthIntegrations?: Prisma.OAuthIntegrationUncheckedUpdateManyWithoutOwnerNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
@@ -3328,6 +4062,7 @@ export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   ownedDeals?: Prisma.DealUncheckedUpdateManyWithoutOwnerNestedInput
   automationRules?: Prisma.AutomationRuleUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -3339,6 +4074,8 @@ export type UserCountOutputType = {
   accounts: number
   sessions: number
   apiKeyIntegrations: number
+  oauthStates: number
+  oauthIntegrations: number
   organizedMeetings: number
   tasks: number
   enrollments: number
@@ -3353,12 +4090,15 @@ export type UserCountOutputType = {
   orders: number
   ownedDeals: number
   automationRules: number
+  notifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   apiKeyIntegrations?: boolean | UserCountOutputTypeCountApiKeyIntegrationsArgs
+  oauthStates?: boolean | UserCountOutputTypeCountOauthStatesArgs
+  oauthIntegrations?: boolean | UserCountOutputTypeCountOauthIntegrationsArgs
   organizedMeetings?: boolean | UserCountOutputTypeCountOrganizedMeetingsArgs
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
   enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
@@ -3373,6 +4113,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
   ownedDeals?: boolean | UserCountOutputTypeCountOwnedDealsArgs
   automationRules?: boolean | UserCountOutputTypeCountAutomationRulesArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -3404,6 +4145,20 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
  */
 export type UserCountOutputTypeCountApiKeyIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ApiKeyIntegrationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOauthStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OAuthStateWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOauthIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OAuthIntegrationWhereInput
 }
 
 /**
@@ -3504,6 +4259,13 @@ export type UserCountOutputTypeCountAutomationRulesArgs<ExtArgs extends runtime.
   where?: Prisma.AutomationRuleWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3522,6 +4284,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   apiKeyIntegrations?: boolean | Prisma.User$apiKeyIntegrationsArgs<ExtArgs>
+  oauthStates?: boolean | Prisma.User$oauthStatesArgs<ExtArgs>
+  oauthIntegrations?: boolean | Prisma.User$oauthIntegrationsArgs<ExtArgs>
   organizedMeetings?: boolean | Prisma.User$organizedMeetingsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
@@ -3536,6 +4300,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   ownedDeals?: boolean | Prisma.User$ownedDealsArgs<ExtArgs>
   automationRules?: boolean | Prisma.User$automationRulesArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3592,6 +4357,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   apiKeyIntegrations?: boolean | Prisma.User$apiKeyIntegrationsArgs<ExtArgs>
+  oauthStates?: boolean | Prisma.User$oauthStatesArgs<ExtArgs>
+  oauthIntegrations?: boolean | Prisma.User$oauthIntegrationsArgs<ExtArgs>
   organizedMeetings?: boolean | Prisma.User$organizedMeetingsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
@@ -3606,6 +4373,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   ownedDeals?: boolean | Prisma.User$ownedDealsArgs<ExtArgs>
   automationRules?: boolean | Prisma.User$automationRulesArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3617,6 +4385,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     apiKeyIntegrations: Prisma.$ApiKeyIntegrationPayload<ExtArgs>[]
+    oauthStates: Prisma.$OAuthStatePayload<ExtArgs>[]
+    oauthIntegrations: Prisma.$OAuthIntegrationPayload<ExtArgs>[]
     organizedMeetings: Prisma.$MeetingPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
@@ -3631,6 +4401,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     orders: Prisma.$OrderPayload<ExtArgs>[]
     ownedDeals: Prisma.$DealPayload<ExtArgs>[]
     automationRules: Prisma.$AutomationRulePayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4043,6 +4814,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   apiKeyIntegrations<T extends Prisma.User$apiKeyIntegrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apiKeyIntegrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  oauthStates<T extends Prisma.User$oauthStatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$oauthStatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OAuthStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  oauthIntegrations<T extends Prisma.User$oauthIntegrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$oauthIntegrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OAuthIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizedMeetings<T extends Prisma.User$organizedMeetingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizedMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4057,6 +4830,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedDeals<T extends Prisma.User$ownedDealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedDealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   automationRules<T extends Prisma.User$automationRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$automationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4564,6 +5338,54 @@ export type User$apiKeyIntegrationsArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * User.oauthStates
+ */
+export type User$oauthStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OAuthState
+   */
+  select?: Prisma.OAuthStateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OAuthState
+   */
+  omit?: Prisma.OAuthStateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OAuthStateInclude<ExtArgs> | null
+  where?: Prisma.OAuthStateWhereInput
+  orderBy?: Prisma.OAuthStateOrderByWithRelationInput | Prisma.OAuthStateOrderByWithRelationInput[]
+  cursor?: Prisma.OAuthStateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OAuthStateScalarFieldEnum | Prisma.OAuthStateScalarFieldEnum[]
+}
+
+/**
+ * User.oauthIntegrations
+ */
+export type User$oauthIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OAuthIntegration
+   */
+  select?: Prisma.OAuthIntegrationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OAuthIntegration
+   */
+  omit?: Prisma.OAuthIntegrationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OAuthIntegrationInclude<ExtArgs> | null
+  where?: Prisma.OAuthIntegrationWhereInput
+  orderBy?: Prisma.OAuthIntegrationOrderByWithRelationInput | Prisma.OAuthIntegrationOrderByWithRelationInput[]
+  cursor?: Prisma.OAuthIntegrationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OAuthIntegrationScalarFieldEnum | Prisma.OAuthIntegrationScalarFieldEnum[]
+}
+
+/**
  * User.organizedMeetings
  */
 export type User$organizedMeetingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4897,6 +5719,30 @@ export type User$automationRulesArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.AutomationRuleScalarFieldEnum | Prisma.AutomationRuleScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

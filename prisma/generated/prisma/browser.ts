@@ -38,6 +38,21 @@ export type ApiKeyIntegration = Prisma.ApiKeyIntegrationModel
  */
 export type Session = Prisma.SessionModel
 /**
+ * Model OAuthState
+ * 
+ */
+export type OAuthState = Prisma.OAuthStateModel
+/**
+ * Model OAuthIntegration
+ * 
+ */
+export type OAuthIntegration = Prisma.OAuthIntegrationModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
  * Model VerificationToken
  * 
  */
