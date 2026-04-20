@@ -32,6 +32,14 @@ enum IntegrationConnectionStatus {
   DISCONNECTED
 }
 
+enum NotificationType {
+  ORDER_CREATED
+  MESSAGE_RECEIVED
+  TASK_CREATED
+  MEETING_CREATED
+  CALENDAR_EVENT_CREATED
+}
+
 model User {
   id                      String    @id @default(cuid())
   name                    String?
@@ -68,6 +76,8 @@ model User {
   orders            Order[]
   ownedDeals        Deal[]             @relation("DealOwner")
   automationRules   AutomationRule[]   @relation("AutomationOwner")
+
+  notifications     Notification[]
 }
 
 model Account {
@@ -152,6 +162,23 @@ model OAuthIntegration {
 
   @@unique([ownerId, provider])
   @@index([ownerId, status])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String?          @db.Text
+  url       String?
+  entityId  String?
+  createdAt DateTime         @default(now())
+  readAt    DateTime?
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, readAt])
 }
 
 model VerificationToken {
