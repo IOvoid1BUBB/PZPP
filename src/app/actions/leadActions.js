@@ -118,6 +118,27 @@ export async function getLeads() {
   }
 }
 
+export async function getLeadsForSelect() {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
+
+    return await prisma.lead.findMany({
+      where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+      },
+    });
+  } catch (error) {
+    console.error("getLeadsForSelect:", error);
+    return [];
+  }
+}
+
 /**
  * Aktualizuje status leada z walidacją wspieranych kolumn Kanban.
  * @param {string} leadId
