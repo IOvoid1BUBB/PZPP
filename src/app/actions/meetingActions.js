@@ -2,10 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 import { addLeadActivity } from "@/app/actions/scoringActions";
 import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
+import { fetchGoogleCalendarEvents as fetchGoogleCalendarEventsByUser } from "@/lib/integrations/googleClient";
 
 function toDate(value, fieldName) {
   if (value instanceof Date) return value;
@@ -66,12 +66,6 @@ export async function getMeetings(startDate, endDate) {
   }
 }
 
-function isTokenExpired(expiresAt) {
-  if (!expiresAt) return false;
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-  return expiresAt <= nowInSeconds;
-}
-
 function toIsoDateOrNull(value) {
   if (!value) return null;
   const date = new Date(value);
@@ -93,72 +87,9 @@ function toUnifiedEvent(item) {
   };
 }
 
-async function fetchGoogleCalendarEvents(account, rangeStart, rangeEnd) {
-  try {
-    if (!account?.access_token) return [];
-    if (isTokenExpired(account.expires_at)) {
-      // TODO: Dodać refresh token rotation i ponowienie requestu do Google API.
-      throw new Error("Google token wygasł.");
-    }
-
-    const params = new URLSearchParams({
-      singleEvents: "true",
-      orderBy: "startTime",
-      maxResults: "200",
-      timeMin: rangeStart.toISOString(),
-      timeMax: rangeEnd.toISOString(),
-    });
-
-    const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params.toString()}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${account.access_token}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      }
-    );
-
-    if (response.status === 401) {
-      // TODO: Dodać flow odświeżania tokenu dla Google.
-      throw new Error("Google API 401.");
-    }
-
-    if (!response.ok) {
-      throw new Error(`Google API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const items = Array.isArray(data?.items) ? data.items : [];
-
-    return items
-      .map((event) =>
-        toUnifiedEvent({
-          id: `google-${event.id}`,
-          title: event.summary,
-          start: event?.start?.dateTime || event?.start?.date,
-          end: event?.end?.dateTime || event?.end?.date,
-          source: "google",
-          externalUrl: event?.htmlLink || null,
-        })
-      )
-      .filter(Boolean);
-  } catch (error) {
-    console.error("fetchGoogleCalendarEvents:", error);
-    throw error;
-  }
-}
-
 async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
   try {
     if (!account?.access_token) return [];
-    if (isTokenExpired(account.expires_at)) {
-      // TODO: Dodać refresh token rotation i ponowienie requestu do Microsoft Graph.
-      throw new Error("Outlook token wygasł.");
-    }
-
     const params = new URLSearchParams({
       $top: "200",
       $orderby: "start/dateTime",
@@ -178,11 +109,6 @@ async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
         cache: "no-store",
       }
     );
-
-    if (response.status === 401) {
-      // TODO: Dodać flow odświeżania tokenu dla Outlook/Graph.
-      throw new Error("Microsoft Graph API 401.");
-    }
 
     if (!response.ok) {
       throw new Error(`Microsoft Graph API error: ${response.status}`);
@@ -219,17 +145,18 @@ async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
  */
 export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
   try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
+
     const start = toDate(startDate, "startDate");
     const end = toDate(endDate, "endDate");
     if (end <= start) return [];
 
-    let resolvedUserId = userId;
-    if (!resolvedUserId) {
-      const session = await getServerSession(authOptions);
-      resolvedUserId = session?.user?.id;
-    }
+    const requestedUserId = typeof userId === "string" ? userId : null;
+    const resolvedUserId =
+      isAdminRole(auth.role) && requestedUserId ? requestedUserId : auth.userId;
 
-    const [localMeetings, accounts] = await Promise.all([
+    const [localMeetings, outlookAccountResult] = await Promise.all([
       prisma.meeting.findMany({
         where: {
           startTime: { lt: end },
@@ -246,26 +173,14 @@ export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
         },
       }),
       resolvedUserId
-        ? prisma.account.findMany({
-            where: {
-              userId: resolvedUserId,
-              provider: { in: ["google", "azure-ad"] },
-            },
-            select: {
-              provider: true,
-              access_token: true,
-              refresh_token: true,
-              expires_at: true,
-            },
-          })
-        : Promise.resolve([]),
+        ? getOAuthAccountOrThrow(resolvedUserId, "azure-ad").catch(() => null)
+        : Promise.resolve(null),
     ]);
 
-    const googleAccount = accounts.find((account) => account.provider === "google");
-    const outlookAccount = accounts.find((account) => account.provider === "azure-ad");
+    const outlookAccount = outlookAccountResult;
 
     const externalResults = await Promise.allSettled([
-      googleAccount ? fetchGoogleCalendarEvents(googleAccount, start, end) : [],
+      resolvedUserId ? fetchGoogleCalendarEventsByUser(resolvedUserId, start, end) : [],
       outlookAccount ? fetchOutlookCalendarEvents(outlookAccount, start, end) : [],
     ]);
 
