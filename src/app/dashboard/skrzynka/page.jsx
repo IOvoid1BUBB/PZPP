@@ -10,6 +10,7 @@ export default async function SkrzynkaPage() {
         <h1 className="text-2xl font-semibold tracking-tight">Skrzynka</h1>
         <p className="text-sm text-muted-foreground">
           Wszystkie wiadomości e-mail i SMS przypisane do leadów w jednym widoku.
+          Lista po lewej pokazuje wątki, a po prawej szczegóły rozmowy i notatki wewnętrzne.
         </p>
       </div>
       <div className="flex min-h-0 flex-1 flex-col">

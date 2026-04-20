@@ -60,6 +60,195 @@ export async function getLeadMessages(leadId) {
   }
 }
 
+function normalizeThreadKey(message) {
+  if (message?.threadId && typeof message.threadId === "string") return message.threadId;
+  return message?.leadId || "unknown-thread";
+}
+
+/**
+ * Pobiera wiadomości pogrupowane po threadId (lub fallbackowo po leadId).
+ */
+export async function getThreadedMessages() {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
+
+    const messages = await prisma.message.findMany({
+      where: {
+        ...(isAdminRole(auth.role) ? {} : { lead: { ownerId: auth.userId } }),
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        lead: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignedTo: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+    });
+
+    const grouped = new Map();
+    for (const msg of messages) {
+      const key = normalizeThreadKey(msg);
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          threadId: key,
+          leadId: msg.leadId,
+          lead: msg.lead,
+          status: msg.status || "OPEN",
+          assignedTo: msg.assignedTo || null,
+          lastMessageAt: msg.createdAt,
+          messages: [],
+        });
+      }
+
+      const thread = grouped.get(key);
+      thread.messages.push(msg);
+      thread.lastMessageAt = msg.createdAt;
+      if (!thread.assignedTo && msg.assignedTo) {
+        thread.assignedTo = msg.assignedTo;
+      }
+      if ((msg.status || "OPEN") !== "OPEN") {
+        thread.status = msg.status || "OPEN";
+      }
+    }
+
+    const threadIds = Array.from(grouped.keys());
+    const comments = await prisma.internalComment.findMany({
+      where: { threadId: { in: threadIds } },
+      orderBy: { createdAt: "asc" },
+      include: {
+        author: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+    });
+
+    for (const comment of comments) {
+      const thread = grouped.get(comment.threadId);
+      if (!thread) continue;
+      if (!thread.internalComments) thread.internalComments = [];
+      thread.internalComments.push(comment);
+    }
+
+    return Array.from(grouped.values()).sort(
+      (a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
+    );
+  } catch (error) {
+    console.error("getThreadedMessages:", error);
+    return [];
+  }
+}
+
+/**
+ * Przypisuje ownera do całego wątku.
+ */
+export async function assignThread(threadId, userId) {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    if (!threadId || typeof threadId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID wątku." };
+    }
+
+    const assigneeId = typeof userId === "string" && userId.trim() ? userId : null;
+    if (assigneeId) {
+      const userExists = await prisma.user.findUnique({
+        where: { id: assigneeId },
+        select: { id: true },
+      });
+      if (!userExists) return { success: false, error: "Wybrany użytkownik nie istnieje." };
+    }
+
+    const updateResult = await prisma.message.updateMany({
+      where: {
+        OR: [{ threadId }, { threadId: null, leadId: threadId }],
+        ...(isAdminRole(auth.role) ? {} : { lead: { ownerId: auth.userId } }),
+      },
+      data: {
+        assignedToId: assigneeId,
+      },
+    });
+
+    revalidatePath("/dashboard/skrzynka");
+    revalidatePath("/student/skrzynka");
+
+    return {
+      success: true,
+      updated: updateResult.count,
+    };
+  } catch (error) {
+    console.error("assignThread:", error);
+    return { success: false, error: "Nie udało się przypisać ownera do wątku." };
+  }
+}
+
+/**
+ * Dodaje notatkę wewnętrzną do wskazanego wątku.
+ */
+export async function addInternalComment(threadId, content) {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    if (!threadId || typeof threadId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID wątku." };
+    }
+
+    const normalizedContent = typeof content === "string" ? content.trim() : "";
+    if (!normalizedContent) {
+      return { success: false, error: "Treść komentarza jest wymagana." };
+    }
+
+    const created = await prisma.internalComment.create({
+      data: {
+        threadId,
+        content: normalizedContent,
+        authorId: auth.userId,
+      },
+    });
+
+    revalidatePath("/dashboard/skrzynka");
+    revalidatePath("/student/skrzynka");
+
+    return { success: true, data: created };
+  } catch (error) {
+    console.error("addInternalComment:", error);
+    return { success: false, error: "Nie udało się dodać komentarza wewnętrznego." };
+  }
+}
+
+export async function getAssignableInboxUsers() {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return [];
+
+    const users = await prisma.user.findMany({
+      where: {
+        role: { in: ["ADMIN", "KREATOR"] },
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return users;
+  } catch (error) {
+    console.error("getAssignableInboxUsers:", error);
+    return [];
+  }
+}
+
 /**
  * Wysyła prawdziwego maila przez Nodemailer i zapisuje go w historii leada.
  */
