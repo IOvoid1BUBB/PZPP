@@ -20,6 +20,18 @@ enum OrderStatus {
   CANCELED
 }
 
+enum OAuthProvider {
+  GOOGLE
+  JIRA
+}
+
+enum IntegrationConnectionStatus {
+  CONNECTED
+  ERROR
+  REVOKED
+  DISCONNECTED
+}
+
 model User {
   id                      String    @id @default(cuid())
   name                    String?
@@ -38,6 +50,8 @@ model User {
   accounts           Account[]
   sessions           Session[]
   apiKeyIntegrations ApiKeyIntegration[]
+  oauthStates        OAuthState[]
+  oauthIntegrations  OAuthIntegration[]
 
   // Relacje biznesowe
   organizedMeetings Meeting[]     @relation("MeetingOrganizer")
@@ -92,6 +106,50 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OAuthState {
+  id        String        @id @default(cuid())
+  userId    String
+  provider  OAuthProvider
+  stateHash String
+  nonceHash String?
+  expiresAt DateTime
+  consumedAt DateTime?
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, stateHash])
+  @@index([userId, provider])
+  @@index([expiresAt])
+}
+
+model OAuthIntegration {
+  id                    String                      @id @default(cuid())
+  ownerId               String
+  provider              OAuthProvider
+  externalAccountId     String?
+  externalEmail         String?
+  jiraCloudId           String?
+  jiraSiteUrl           String?
+  scopes                String?
+  encryptedAccessToken  String                      @db.Text
+  encryptedRefreshToken String?                     @db.Text
+  accessTokenExpiresAt  DateTime?
+  status                IntegrationConnectionStatus @default(CONNECTED)
+  lastSyncedAt          DateTime?
+  calendarLastSyncedAt  DateTime?
+  contactsLastSyncedAt  DateTime?
+  ticketsLastSyncedAt   DateTime?
+  lastError             String?                     @db.Text
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, provider])
+  @@index([ownerId, status])
 }
 
 model VerificationToken {
