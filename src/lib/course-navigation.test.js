@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { findNextLessonId, getOrderedCourseLessons } from "./course-navigation";
+import { findNextLessonId, findPreviousLessonId, getOrderedCourseLessons } from "./course-navigation";
 
 describe("course navigation helpers", () => {
   it("returns lessons sorted by module and lesson order", () => {
@@ -21,5 +21,11 @@ describe("course navigation helpers", () => {
   it("returns null when current lesson is the last one", () => {
     const ordered = [{ id: "l1" }, { id: "l2" }];
     expect(findNextLessonId(ordered, "l2")).toBeNull();
+  });
+
+  it("returns previous lesson id", () => {
+    const ordered = [{ id: "l1" }, { id: "l2" }, { id: "l3" }];
+    expect(findPreviousLessonId(ordered, "l2")).toBe("l1");
+    expect(findPreviousLessonId(ordered, "l1")).toBeNull();
   });
 });
