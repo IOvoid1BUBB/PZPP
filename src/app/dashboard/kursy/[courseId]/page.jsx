@@ -15,15 +15,52 @@ export default async function CourseDetailsPage({ params }) {
 
   const course = await prisma.course.findUnique({
     where: { id: courseId },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      isPublished: true,
+      authorId: true,
       modules: {
         orderBy: { order: "asc" },
-        include: {
+        select: {
+          id: true,
+          title: true,
+          order: true,
+          courseId: true,
           lessons: {
             orderBy: { order: "asc" },
-            include: {
-              resources: { orderBy: { order: "asc" } },
-              questions: { orderBy: { order: "asc" } },
+            select: {
+              id: true,
+              title: true,
+              order: true,
+              videoUrl: true,
+              videoText: true,
+              content: true,
+              resources: {
+                orderBy: { order: "asc" },
+                select: {
+                  id: true,
+                  type: true,
+                  title: true,
+                  url: true,
+                  order: true,
+                },
+              },
+              questions: {
+                orderBy: { order: "asc" },
+                select: {
+                  id: true,
+                  lessonId: true,
+                  question: true,
+                  type: true,
+                  answer: true,
+                  optionA: true,
+                  optionB: true,
+                  optionC: true,
+                  correctOption: true,
+                  order: true,
+                },
+              },
             },
           },
         },
