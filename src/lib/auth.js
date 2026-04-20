@@ -6,11 +6,14 @@ import AzureADProvider from "next-auth/providers/azure-ad";
 import AtlassianProvider from "next-auth/providers/atlassian";
 import bcrypt from "bcryptjs";
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
-  pages: { signIn: "/login" },
-  providers: [
+function isConfigured(...values) {
+  return values.every((value) => typeof value === "string" && value.trim().length > 0);
+}
+
+const oauthProviders = [];
+
+if (isConfigured(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET)) {
+  oauthProviders.push(
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -23,7 +26,18 @@ export const authOptions = {
           response_type: "code",
         },
       },
-    }),
+    })
+  );
+}
+
+if (
+  isConfigured(
+    process.env.AZURE_AD_CLIENT_ID,
+    process.env.AZURE_AD_CLIENT_SECRET,
+    process.env.AZURE_AD_TENANT_ID
+  )
+) {
+  oauthProviders.push(
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
@@ -34,7 +48,12 @@ export const authOptions = {
           prompt: "consent",
         },
       },
-    }),
+    })
+  );
+}
+
+if (isConfigured(process.env.ATLASSIAN_CLIENT_ID, process.env.ATLASSIAN_CLIENT_SECRET)) {
+  oauthProviders.push(
     AtlassianProvider({
       clientId: process.env.ATLASSIAN_CLIENT_ID,
       clientSecret: process.env.ATLASSIAN_CLIENT_SECRET,
@@ -44,7 +63,16 @@ export const authOptions = {
           prompt: "consent",
         },
       },
-    }),
+    })
+  );
+}
+
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
+  pages: { signIn: "/login" },
+  providers: [
+    ...oauthProviders,
     CredentialsProvider({
       name: "credentials",
       async authorize(credentials) {
@@ -72,23 +100,37 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ account, user }) {
+    async signIn({ account }) {
       if (!account || account.provider === "credentials") {
         return true;
       }
 
-      // Prevent creating/linking OAuth accounts when provider does not return email.
-      if (!user?.email) {
-        return "/login?error=OAuthEmailMissing";
-      }
-
+      // OAuth providers in integration mode (e.g. Atlassian) may not expose email.
+      // We still allow the flow so the currently logged-in user can connect provider account.
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
-        token.role = user.role;
-        token.id = user.id;
+        const preserveExistingSessionIdentity =
+          account?.provider !== "credentials" &&
+          Boolean(token?.id) &&
+          Boolean(token?.role) &&
+          !user?.role;
+
+        token.role = user.role ?? token.role;
+        if (!preserveExistingSessionIdentity) {
+          token.id = user.id ?? token.id;
+        }
       }
+
+      if (token?.id && !token?.role) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id },
+          select: { role: true },
+        });
+        token.role = dbUser?.role ?? token.role;
+      }
+
       return token;
     },
     async session({ session, token }) {
