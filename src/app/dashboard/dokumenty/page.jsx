@@ -1,4 +1,6 @@
 import { listDocuments } from "@/app/actions/documentActions";
+import { getLeadsForSelect } from "@/app/actions/leadActions";
+import DocumentUploadModal from "@/components/crm/DocumentUploadModal";
 
 export const dynamic = "force-dynamic";
 
@@ -11,14 +13,18 @@ function formatLeadName(lead) {
 
 export default async function DokumentyPage() {
   const documents = await listDocuments();
+  const leads = await getLeadsForSelect();
 
   return (
     <section className="space-y-4 pb-4">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">Dokumenty</h1>
-        <p className="text-sm text-muted-foreground">
-          Lista dokumentów przypisanych do Twoich leadów.
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Dokumenty</h1>
+          <p className="text-sm text-muted-foreground">
+            Lista dokumentów przypisanych do Twoich leadów.
+          </p>
+        </div>
+        <DocumentUploadModal leads={leads} />
       </header>
 
       <div className="overflow-hidden rounded-xl border bg-background">
