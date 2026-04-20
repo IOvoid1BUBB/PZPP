@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { getTasks, getTasksDashboard, toggleTaskComplete, deleteTask } from "@/app/actions/taskActions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -57,7 +56,6 @@ function TaskRow({ task, onToggle, onDelete }) {
 
   return (
     <div
-      data-task-id={task.id}
       className={cn(
         "flex items-center gap-3 rounded-lg border p-3 transition-colors",
         task.isCompleted ? "bg-accent/30 opacity-70" : "bg-background",
@@ -105,7 +103,6 @@ function TaskRow({ task, onToggle, onDelete }) {
 export default function ZadaniaPage() {
   const [activeTab, setActiveTab] = useState("today");
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams();
 
   const { data: stats } = useQuery({
     queryKey: ["tasks-dashboard"],
@@ -116,20 +113,6 @@ export default function ZadaniaPage() {
     queryKey: ["tasks", activeTab],
     queryFn: () => getTasks(activeTab),
   });
-
-  const highlightedTaskId = useMemo(() => searchParams?.get("taskId") || null, [searchParams]);
-
-  useEffect(() => {
-    if (!highlightedTaskId || isLoading) return;
-    const el = document.querySelector(`[data-task-id="${CSS.escape(highlightedTaskId)}"]`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("ring-2", "ring-primary/50");
-    const timer = window.setTimeout(() => {
-      el.classList.remove("ring-2", "ring-primary/50");
-    }, 3500);
-    return () => window.clearTimeout(timer);
-  }, [highlightedTaskId, isLoading, tasks]);
 
   const toggleMutation = useMutation({
     mutationFn: (taskId) => toggleTaskComplete(taskId),

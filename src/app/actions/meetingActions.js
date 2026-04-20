@@ -6,7 +6,6 @@ import { addLeadActivity } from "@/app/actions/scoringActions";
 import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
 import { fetchGoogleCalendarEvents as fetchGoogleCalendarEventsByUser } from "@/lib/integrations/googleClient";
-import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 function toDate(value, fieldName) {
   if (value instanceof Date) return value;
@@ -272,15 +271,6 @@ export async function createMeeting(data) {
         leadId: true,
       },
     });
-
-    await createNotification({
-      userId: organizerId,
-      type: NOTIFICATION_TYPES.MEETING_CREATED,
-      title: "Nowe spotkanie",
-      body: meeting.title,
-      url: `/dashboard/calendar?eventId=${encodeURIComponent(meeting.id)}`,
-      entityId: meeting.id,
-    }).catch(() => null);
 
     if (meeting.leadId) {
       // Importuj addLeadActivity na górze pliku meetingActions.js

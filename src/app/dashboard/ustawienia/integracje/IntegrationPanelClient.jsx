@@ -199,21 +199,6 @@ export default function IntegrationPanelClient({
   }, [isAtlassianConnected, selectedJiraProjectKey, startTransition]);
 
   function handleOpenIntegrationPage(url) {
-    // OAuth providers (Google/Jira) refuse being opened inside iframes.
-    // When this page is rendered inside an embed/preview iframe, force top-level navigation.
-    if (typeof window !== "undefined") {
-      try {
-        if (window.top && window.top !== window.self) {
-          window.top.location.href = url;
-          return;
-        }
-      } catch {
-        // If top navigation is blocked by browser policies, fallback to same-window navigation.
-      }
-      window.location.href = url;
-      return;
-    }
-
     router.push(url);
   }
 

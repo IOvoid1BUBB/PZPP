@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import {
   addInternalComment,
   assignThread,
@@ -22,7 +21,6 @@ import { cn } from "@/lib/utils";
  * }} props
  */
 export default function InboxContainer({ leads = [], isStudentView = false }) {
-  const searchParams = useSearchParams();
   const [activeThreadId, setActiveThreadId] = useState(null);
   const safeLeads = useMemo(() => (Array.isArray(leads) ? leads.filter(Boolean) : []), [leads]);
 
@@ -73,14 +71,6 @@ export default function InboxContainer({ leads = [], isStudentView = false }) {
       return threads[0].threadId;
     });
   }, [threads]);
-
-  // Deep-link support: /dashboard/skrzynka?leadId=...
-  useEffect(() => {
-    const leadId = searchParams?.get("leadId");
-    if (!leadId) return;
-    const matched = threads.find((t) => t.leadId === leadId);
-    if (matched) setActiveThreadId(matched.threadId);
-  }, [searchParams, threads]);
 
   const sidebarItems = useMemo(
     () =>

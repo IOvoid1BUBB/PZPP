@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
-import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 function toDateSafe(value) {
   const date = new Date(value);
@@ -196,15 +195,6 @@ export async function addTaskToLead(leadId, taskData) {
         userId: isAdminRole(auth.role) ? userId : auth.userId,
       },
     });
-
-    await createNotification({
-      userId: task.userId,
-      type: NOTIFICATION_TYPES.TASK_CREATED,
-      title: "Nowe zadanie",
-      body: title,
-      url: `/dashboard/zadania?taskId=${encodeURIComponent(task.id)}`,
-      entityId: task.id,
-    }).catch(() => null);
 
     revalidatePath("/crm");
     return { success: true, task };

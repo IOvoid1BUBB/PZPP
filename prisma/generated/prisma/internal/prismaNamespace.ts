@@ -388,9 +388,6 @@ export const ModelName = {
   Account: 'Account',
   ApiKeyIntegration: 'ApiKeyIntegration',
   Session: 'Session',
-  OAuthState: 'OAuthState',
-  OAuthIntegration: 'OAuthIntegration',
-  Notification: 'Notification',
   VerificationToken: 'VerificationToken',
   Lead: 'Lead',
   Tag: 'Tag',
@@ -433,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "apiKeyIntegration" | "session" | "oAuthState" | "oAuthIntegration" | "notification" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "funnel" | "funnelStep" | "aBTest" | "aBVariant" | "message" | "task" | "deal" | "automationRule" | "automationLog" | "course" | "order" | "module" | "lesson" | "studentLessonNote" | "lessonQuestion" | "lessonResource" | "enrollment" | "certificate" | "lessonCompletion" | "document" | "meeting" | "customField"
+    modelProps: "user" | "account" | "apiKeyIntegration" | "session" | "verificationToken" | "lead" | "tag" | "note" | "landingPage" | "funnel" | "funnelStep" | "aBTest" | "aBVariant" | "message" | "task" | "deal" | "automationRule" | "automationLog" | "course" | "order" | "module" | "lesson" | "studentLessonNote" | "lessonQuestion" | "lessonResource" | "enrollment" | "certificate" | "lessonCompletion" | "document" | "meeting" | "customField"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -730,228 +727,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SessionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SessionCountAggregateOutputType> | number
-        }
-      }
-    }
-    OAuthState: {
-      payload: Prisma.$OAuthStatePayload<ExtArgs>
-      fields: Prisma.OAuthStateFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OAuthStateFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OAuthStateFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        findFirst: {
-          args: Prisma.OAuthStateFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OAuthStateFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        findMany: {
-          args: Prisma.OAuthStateFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>[]
-        }
-        create: {
-          args: Prisma.OAuthStateCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        createMany: {
-          args: Prisma.OAuthStateCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OAuthStateCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>[]
-        }
-        delete: {
-          args: Prisma.OAuthStateDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        update: {
-          args: Prisma.OAuthStateUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        deleteMany: {
-          args: Prisma.OAuthStateDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OAuthStateUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OAuthStateUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>[]
-        }
-        upsert: {
-          args: Prisma.OAuthStateUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
-        }
-        aggregate: {
-          args: Prisma.OAuthStateAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOAuthState>
-        }
-        groupBy: {
-          args: Prisma.OAuthStateGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OAuthStateGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OAuthStateCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OAuthStateCountAggregateOutputType> | number
-        }
-      }
-    }
-    OAuthIntegration: {
-      payload: Prisma.$OAuthIntegrationPayload<ExtArgs>
-      fields: Prisma.OAuthIntegrationFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OAuthIntegrationFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OAuthIntegrationFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        findFirst: {
-          args: Prisma.OAuthIntegrationFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OAuthIntegrationFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        findMany: {
-          args: Prisma.OAuthIntegrationFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>[]
-        }
-        create: {
-          args: Prisma.OAuthIntegrationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        createMany: {
-          args: Prisma.OAuthIntegrationCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OAuthIntegrationCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>[]
-        }
-        delete: {
-          args: Prisma.OAuthIntegrationDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        update: {
-          args: Prisma.OAuthIntegrationUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        deleteMany: {
-          args: Prisma.OAuthIntegrationDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OAuthIntegrationUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OAuthIntegrationUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>[]
-        }
-        upsert: {
-          args: Prisma.OAuthIntegrationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthIntegrationPayload>
-        }
-        aggregate: {
-          args: Prisma.OAuthIntegrationAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOAuthIntegration>
-        }
-        groupBy: {
-          args: Prisma.OAuthIntegrationGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OAuthIntegrationGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OAuthIntegrationCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OAuthIntegrationCountAggregateOutputType> | number
-        }
-      }
-    }
-    Notification: {
-      payload: Prisma.$NotificationPayload<ExtArgs>
-      fields: Prisma.NotificationFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.NotificationFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        findFirst: {
-          args: Prisma.NotificationFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        findMany: {
-          args: Prisma.NotificationFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
-        }
-        create: {
-          args: Prisma.NotificationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        createMany: {
-          args: Prisma.NotificationCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
-        }
-        delete: {
-          args: Prisma.NotificationDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        update: {
-          args: Prisma.NotificationUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        deleteMany: {
-          args: Prisma.NotificationDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.NotificationUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
-        }
-        upsert: {
-          args: Prisma.NotificationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
-        }
-        aggregate: {
-          args: Prisma.NotificationAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>
-        }
-        groupBy: {
-          args: Prisma.NotificationGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.NotificationCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
         }
       }
     }
@@ -3050,60 +2825,6 @@ export const SessionScalarFieldEnum = {
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
-export const OAuthStateScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  provider: 'provider',
-  stateHash: 'stateHash',
-  nonceHash: 'nonceHash',
-  expiresAt: 'expiresAt',
-  consumedAt: 'consumedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type OAuthStateScalarFieldEnum = (typeof OAuthStateScalarFieldEnum)[keyof typeof OAuthStateScalarFieldEnum]
-
-
-export const OAuthIntegrationScalarFieldEnum = {
-  id: 'id',
-  ownerId: 'ownerId',
-  provider: 'provider',
-  externalAccountId: 'externalAccountId',
-  externalEmail: 'externalEmail',
-  jiraCloudId: 'jiraCloudId',
-  jiraSiteUrl: 'jiraSiteUrl',
-  scopes: 'scopes',
-  encryptedAccessToken: 'encryptedAccessToken',
-  encryptedRefreshToken: 'encryptedRefreshToken',
-  accessTokenExpiresAt: 'accessTokenExpiresAt',
-  status: 'status',
-  lastSyncedAt: 'lastSyncedAt',
-  calendarLastSyncedAt: 'calendarLastSyncedAt',
-  contactsLastSyncedAt: 'contactsLastSyncedAt',
-  ticketsLastSyncedAt: 'ticketsLastSyncedAt',
-  lastError: 'lastError',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OAuthIntegrationScalarFieldEnum = (typeof OAuthIntegrationScalarFieldEnum)[keyof typeof OAuthIntegrationScalarFieldEnum]
-
-
-export const NotificationScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  type: 'type',
-  title: 'title',
-  body: 'body',
-  url: 'url',
-  entityId: 'entityId',
-  createdAt: 'createdAt',
-  readAt: 'readAt'
-} as const
-
-export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
-
-
 export const VerificationTokenScalarFieldEnum = {
   identifier: 'identifier',
   token: 'token',
@@ -3570,48 +3291,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'OAuthProvider'
- */
-export type EnumOAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OAuthProvider'>
-    
-
-
-/**
- * Reference to a field of type 'OAuthProvider[]'
- */
-export type ListEnumOAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OAuthProvider[]'>
-    
-
-
-/**
- * Reference to a field of type 'IntegrationConnectionStatus'
- */
-export type EnumIntegrationConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationConnectionStatus'>
-    
-
-
-/**
- * Reference to a field of type 'IntegrationConnectionStatus[]'
- */
-export type ListEnumIntegrationConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationConnectionStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'NotificationType'
- */
-export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
-    
-
-
-/**
- * Reference to a field of type 'NotificationType[]'
- */
-export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
-    
-
-
-/**
  * Reference to a field of type 'LeadStatus'
  */
 export type EnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus'>
@@ -3884,9 +3563,6 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   apiKeyIntegration?: Prisma.ApiKeyIntegrationOmit
   session?: Prisma.SessionOmit
-  oAuthState?: Prisma.OAuthStateOmit
-  oAuthIntegration?: Prisma.OAuthIntegrationOmit
-  notification?: Prisma.NotificationOmit
   verificationToken?: Prisma.VerificationTokenOmit
   lead?: Prisma.LeadOmit
   tag?: Prisma.TagOmit
