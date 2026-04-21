@@ -102,7 +102,9 @@ function TaskRow({ task, onToggle, onDelete }) {
   );
 }
 
-export default function ZadaniaPage() {
+import { Suspense } from "react";
+
+function ZadaniaDashboard() {
   const [activeTab, setActiveTab] = useState("today");
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -224,3 +226,4 @@ export default function ZadaniaPage() {
     </section>
   );
 }
+export default function ZadaniaPage() { return <Suspense fallback={<div className="p-4 text-sm text-muted-foreground">Ładowanie zadań...</div>}><ZadaniaDashboard /></Suspense>; }

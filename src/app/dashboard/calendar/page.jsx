@@ -1,4 +1,5 @@
 import CalendarBoard from "@/components/features/calendar/CalendarBoard";
+import { Suspense } from "react";
 
 /**
  * Strona widoku kalendarza w panelu zarządzania.
@@ -16,7 +17,9 @@ export default function CalendarPage() {
       </header>
 
       <div className="min-h-0 flex-1">
-        <CalendarBoard />
+        <Suspense fallback={<div className="p-4 text-sm text-muted-foreground">Ładowanie kalendarza...</div>}>
+          <CalendarBoard />
+        </Suspense>
       </div>
     </section>
   );

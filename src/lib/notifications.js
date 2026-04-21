@@ -8,6 +8,16 @@ export const NOTIFICATION_TYPES = {
   CALENDAR_EVENT_CREATED: "CALENDAR_EVENT_CREATED",
 };
 
+/**
+ * @param {{
+ *   userId: string;
+ *   type: string;
+ *   title: string;
+ *   body?: string | null;
+ *   url?: string | null;
+ *   entityId?: string | null;
+ * }} param0
+ */
 export async function createNotification({
   userId,
   type,

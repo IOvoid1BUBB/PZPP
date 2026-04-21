@@ -39,8 +39,8 @@ export default function NextLessonButton({ courseId, lessonId }) {
   };
 
   return (
-    <Button type="button" onClick={handleNextLesson} disabled={isPending} variant="ghost">
-      {isPending ? "Zapisywanie..." : "Następna lekcja ->"}
+    <Button type="button" onClick={handleNextLesson} disabled={isPending} variant="outline" size="sm">
+      {isPending ? "Zapisywanie..." : "Następna lekcja →"}
     </Button>
   );
 }

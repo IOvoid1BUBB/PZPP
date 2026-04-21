@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { calculateCourseProgress } from "@/lib/course-progress";
 import { findNextLessonId, getOrderedCourseLessons } from "@/lib/course-navigation";
+import { upsertLessonCompletionCompat } from "@/lib/lesson-completion-compat";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -188,6 +189,7 @@ export async function createModule(courseId, input) {
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
+    const unlockDaysAfterEnrollment = Math.max(0, normalizeInt(input?.unlockDaysAfterEnrollment, 0));
 
     if (!title) {
       return { success: false, error: "Tytuł modułu jest wymagany." };
@@ -197,6 +199,7 @@ export async function createModule(courseId, input) {
       data: {
         title,
         order,
+        unlockDaysAfterEnrollment,
         courseId,
       },
     });
@@ -219,6 +222,7 @@ export async function updateModule(moduleId, input) {
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
+    const unlockDaysAfterEnrollment = Math.max(0, normalizeInt(input?.unlockDaysAfterEnrollment, 0));
 
     if (!title) {
       return { success: false, error: "Tytuł modułu jest wymagany." };
@@ -226,8 +230,8 @@ export async function updateModule(moduleId, input) {
 
     const moduleRecord = await prisma.module.update({
       where: { id: moduleId },
-      data: { title, order },
-      select: { id: true, courseId: true, title: true, order: true },
+      data: { title, order, unlockDaysAfterEnrollment },
+      select: { id: true, courseId: true, title: true, order: true, unlockDaysAfterEnrollment: true },
     });
 
     revalidatePath(`/dashboard/kursy/${moduleRecord.courseId}`);
@@ -520,7 +524,8 @@ export async function getStudentCertificateProgress(courseId) {
       select: {
         title: true,
         modules: {
-          include: {
+          select: {
+            id: true,
             lessons: {
               select: { id: true },
             },
@@ -581,7 +586,9 @@ export async function completeLessonAndProceed({ courseId, lessonId }) {
           title: true,
           modules: {
             orderBy: { order: "asc" },
-            include: {
+            select: {
+              id: true,
+              order: true,
               lessons: {
                 orderBy: { order: "asc" },
                 select: { id: true, order: true },
@@ -609,13 +616,9 @@ export async function completeLessonAndProceed({ courseId, lessonId }) {
     const totalLessons = orderedLessons.length;
     const nextLessonId = findNextLessonId(orderedLessons, lessonId);
 
-    const result = await prisma.$transaction(async (tx) => {
-      await tx.lessonCompletion.upsert({
-        where: { enrollmentId_lessonId: { enrollmentId: enrollment.id, lessonId } },
-        update: {},
-        create: { enrollmentId: enrollment.id, lessonId },
-      });
+    await upsertLessonCompletionCompat(prisma, enrollment.id, lessonId);
 
+    const result = await prisma.$transaction(async (tx) => {
       const completedLessons = await tx.lessonCompletion.count({
         where: { enrollmentId: enrollment.id },
       });

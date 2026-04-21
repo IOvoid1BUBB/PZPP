@@ -29,3 +29,12 @@ export function findNextLessonId(orderedLessons, currentLessonId) {
 
   return orderedLessons[currentIndex + 1]?.id ?? null;
 }
+
+export function findPreviousLessonId(orderedLessons, currentLessonId) {
+  if (!Array.isArray(orderedLessons) || !currentLessonId) return null;
+
+  const currentIndex = orderedLessons.findIndex((lesson) => lesson.id === currentLessonId);
+  if (currentIndex <= 0) return null;
+
+  return orderedLessons[currentIndex - 1]?.id ?? null;
+}
