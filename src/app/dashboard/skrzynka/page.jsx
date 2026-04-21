@@ -1,5 +1,6 @@
 import { getLeads } from "@/app/actions/leadActions";
 import InboxContainer from "@/components/crm/inbox/InboxContainer";
+import { Suspense } from "react";
 
 export default async function SkrzynkaPage() {
   const leads = await getLeads();
@@ -13,7 +14,9 @@ export default async function SkrzynkaPage() {
         </p>
       </div>
       <div className="flex min-h-0 flex-1 flex-col">
-        <InboxContainer leads={leads} isStudentView={false} />
+        <Suspense fallback={<div className="p-4 text-sm text-muted-foreground">Wczytywanie skrzynki...</div>}>
+          <InboxContainer leads={leads} isStudentView={false} />
+        </Suspense>
       </div>
     </section>
   );
