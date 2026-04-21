@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
@@ -27,6 +28,7 @@ import {
 } from "@/app/actions/meetingActions";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -136,6 +138,8 @@ function CalendarToolbar(toolbarProps) {
 }
 
 export default function CalendarBoard({ className }) {
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
   const initialDate = useMemo(() => new Date(), []);
 
   
@@ -151,6 +155,7 @@ export default function CalendarBoard({ className }) {
   const [rangeVersion, setRangeVersion] = useState(0);
 
   const [events, setEvents] = useState([]);
+  const seenExternalIdsRef = useRef(new Set());
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState(null);
 
@@ -252,8 +257,7 @@ export default function CalendarBoard({ className }) {
           start.toISOString(),
           end.toISOString()
         );
-        setEvents(
-          (result || []).map((event) => ({
+        const nextEvents = (result || []).map((event) => ({
             id: event.id,
             title: event.title,
             start: new Date(event.start),
@@ -261,8 +265,51 @@ export default function CalendarBoard({ className }) {
             source: event.source,
             externalUrl: event.externalUrl,
             meetLink: event.externalUrl,
-          }))
-        );
+          }));
+
+        // Detect new external events (Google/Outlook) and create in-app notifications.
+        const newlySeen = [];
+        for (const ev of nextEvents) {
+          if (!ev?.id) continue;
+          if (ev.source !== "google" && ev.source !== "outlook") continue;
+          if (seenExternalIdsRef.current.has(ev.id)) continue;
+          newlySeen.push(ev);
+          seenExternalIdsRef.current.add(ev.id);
+        }
+
+        // Avoid firing notifications on the initial load.
+        if (events.length > 0 && newlySeen.length > 0) {
+          newlySeen.slice(0, 3).forEach((ev) => {
+            toast({
+              title: `Nowe wydarzenie (${ev.source})`,
+              description: ev.title,
+            });
+          });
+          await Promise.allSettled(
+            newlySeen.slice(0, 10).map((ev) =>
+              fetch("/api/notifications", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  action: "createCalendarEvent",
+                  eventId: ev.id,
+                  title: ev.title,
+                  source: ev.source,
+                  url: `/dashboard/calendar?eventId=${encodeURIComponent(ev.id)}`,
+                }),
+              })
+            )
+          );
+        } else if (events.length === 0) {
+          // Prime the set on first load so existing events don't create notifications.
+          nextEvents.forEach((ev) => {
+            if (ev?.id && (ev.source === "google" || ev.source === "outlook")) {
+              seenExternalIdsRef.current.add(ev.id);
+            }
+          });
+        }
+
+        setEvents(nextEvents);
       } catch (e) {
         console.error(e);
         setLoadError("Nie udało się pobrać spotkań.");
@@ -271,13 +318,60 @@ export default function CalendarBoard({ className }) {
         setIsLoading(false);
       }
     },
-    []
+    [events.length, toast]
   );
 
   useEffect(() => {
     if (!range?.start || !range?.end) return;
     fetchMeetings(range.start, range.end);
   }, [fetchMeetings, range, rangeVersion]);
+
+  // Deep-link support: /dashboard/calendar?eventId=...
+  useEffect(() => {
+    const eventId = searchParams?.get("eventId");
+    if (!eventId) return;
+    const match = events.find((e) => e?.id === eventId) || null;
+    if (!match) return;
+    setSelectedEvent(match);
+    setDetailsDialogOpen(true);
+  }, [searchParams, events]);
+
+  const refresh = useCallback(() => {
+    setRangeVersion((v) => v + 1);
+  }, []);
+
+  // Background refresh so external integrations (e.g. Google) appear automatically.
+  useEffect(() => {
+    const intervalMs = 10_000;
+    let timer = null;
+
+    const tick = () => {
+      if (typeof document === "undefined") {
+        refresh();
+        return;
+      }
+      if (document.visibilityState === "visible") {
+        refresh();
+      }
+    };
+
+    timer = window.setInterval(tick, intervalMs);
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        refresh();
+      }
+    };
+
+    window.addEventListener("focus", tick);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      if (timer) window.clearInterval(timer);
+      window.removeEventListener("focus", tick);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [refresh]);
 
   const handleSelectSlot = useCallback((slotInfo) => {
     const start = slotInfo?.start;
@@ -296,10 +390,6 @@ export default function CalendarBoard({ className }) {
     }
     setSelectedEvent(event);
     setDetailsDialogOpen(true);
-  }, []);
-
-  const refresh = useCallback(() => {
-    setRangeVersion((v) => v + 1);
   }, []);
 
   const weekDays = useMemo(() => {
@@ -697,7 +787,8 @@ export default function CalendarBoard({ className }) {
                     href={selectedEvent.meetLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-xl border border-primary/15 bg-accent/30 px-4 py-3 text-primary underline-offset-4 hover:underline"
+                    title={selectedEvent.meetLink}
+                    className="max-w-full overflow-hidden text-ellipsis break-all rounded-xl border border-primary/15 bg-accent/30 px-4 py-3 text-primary underline-offset-4 hover:underline"
                   >
                     {selectedEvent.meetLink}
                   </a>

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 export async function POST(request) {
   try {
@@ -34,7 +35,7 @@ export async function POST(request) {
     const lead = hintedOwnerId
       ? await prisma.lead.findFirst({
           where: { ownerId: hintedOwnerId, email },
-          select: { id: true },
+          select: { id: true, ownerId: true },
         })
       : null;
 
@@ -46,7 +47,7 @@ export async function POST(request) {
         take: 2,
       });
       if (candidates.length === 1) {
-        resolvedLead = { id: candidates[0].id };
+        resolvedLead = { id: candidates[0].id, ownerId: candidates[0].ownerId };
       } else if (candidates.length > 1) {
         return NextResponse.json(
           {
@@ -63,7 +64,7 @@ export async function POST(request) {
       return NextResponse.json({ success: true, ignored: true }, { status: 200 });
     }
 
-    await prisma.message.create({
+    const message = await prisma.message.create({
       data: {
         leadId: resolvedLead.id,
         subject: String(subject),
@@ -72,6 +73,17 @@ export async function POST(request) {
         direction: "INBOUND",
       },
     });
+
+    if (resolvedLead.ownerId) {
+      await createNotification({
+        userId: resolvedLead.ownerId,
+        type: NOTIFICATION_TYPES.MESSAGE_RECEIVED,
+        title: "Nowa wiadomość",
+        body: String(subject),
+        url: `/dashboard/skrzynka?leadId=${encodeURIComponent(resolvedLead.id)}`,
+        entityId: message.id,
+      }).catch(() => null);
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (e) {

@@ -5,6 +5,7 @@ import React from "react";
 
 import { prisma } from "@/lib/prisma";
 import { transporter, mailOptions } from "@/lib/nodemailer";
+import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 import CourseEnrollmentConfirmation, {
   getSubject as getCourseEnrollmentConfirmationSubject,
 } from "@/emails/templates/CourseEnrollmentConfirmation";
@@ -30,7 +31,7 @@ export async function provisionPaidCheckout(params: {
   const result = await prisma.$transaction(async (tx) => {
     const course = await tx.course.findUnique({
       where: { id: courseId },
-      select: { id: true, title: true },
+      select: { id: true, title: true, authorId: true },
     });
     if (!course) {
       throw new Error(`Course not found: ${courseId}`);
@@ -104,6 +105,7 @@ export async function provisionPaidCheckout(params: {
       toEmail: customerEmail,
       userName: (user.name || customerName || temporaryNickname) ?? undefined,
       courseTitle: course.title,
+      courseAuthorId: course.authorId ?? null,
       loginEmail: customerEmail,
       temporaryPassword,
       temporaryNickname,
@@ -111,6 +113,34 @@ export async function provisionPaidCheckout(params: {
       enrollmentCreated: !existingEnrollment,
     };
   });
+
+  // In-app notifications (best-effort): notify admins + course author about a new paid order.
+  try {
+    const recipients = new Set<string>();
+    const admins = await prisma.user.findMany({
+      where: { role: "ADMIN" },
+      select: { id: true },
+    });
+    admins.forEach((u) => recipients.add(u.id));
+    if (result.courseAuthorId) {
+      recipients.add(result.courseAuthorId);
+    }
+
+    await Promise.allSettled(
+      Array.from(recipients).map((userId) =>
+        createNotification({
+          userId,
+          type: NOTIFICATION_TYPES.ORDER_CREATED,
+          title: `Nowe zamówienie: ${result.courseTitle}`,
+          body: `Klient: ${result.loginEmail}`,
+          url: `/dashboard/kursy/${courseId}`,
+          entityId: stripeSessionId,
+        })
+      )
+    );
+  } catch (notifyError) {
+    console.error("provisionPaidCheckout: notification failed", notifyError);
+  }
 
   try {
     const props = {

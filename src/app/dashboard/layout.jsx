@@ -1,4 +1,5 @@
 import Sidebar from "@/components/layout/Sidebar";
+import DashboardTopbar from "@/components/layout/DashboardTopbar";
 
 /**
  * Layout dashboardu: sidebar 1/5, treść 4/5 (grid-template-columns: 1fr 4fr).
@@ -12,6 +13,7 @@ export default function DashboardLayout({ children }) {
         <Sidebar />
       </div>
       <main className="flex min-h-0 min-w-0 flex-col bg-background px-6 pt-6 md:h-full md:overflow-y-auto">
+        <DashboardTopbar />
         {children}
       </main>
     </div>

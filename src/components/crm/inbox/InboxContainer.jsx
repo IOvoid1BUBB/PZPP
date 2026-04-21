@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { getLeadMessages } from "@/app/actions/messageActions";
 import InboxSidebar from "./InboxSidebar";
 import ChatWindow from "./ChatWindow";
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
  * }} props
  */
 export default function InboxContainer({ leads = [], isStudentView = false }) {
+  const searchParams = useSearchParams();
   const [activeLeadId, setActiveLeadId] = useState(null);
 
   const safeLeads = useMemo(() => leads.filter(Boolean), [leads]);
@@ -30,6 +32,14 @@ export default function InboxContainer({ leads = [], isStudentView = false }) {
       return safeLeads[0].id;
     });
   }, [safeLeads]);
+
+  // Deep-link support: /dashboard/skrzynka?leadId=...
+  useEffect(() => {
+    const leadId = searchParams?.get("leadId");
+    if (!leadId) return;
+    if (!safeLeads.some((l) => l.id === leadId)) return;
+    setActiveLeadId(leadId);
+  }, [searchParams, safeLeads]);
 
   const activeLead = useMemo(
     () => safeLeads.find((l) => l.id === activeLeadId) ?? null,

@@ -6,6 +6,7 @@ import { addLeadActivity } from "@/app/actions/scoringActions";
 import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
 import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
 import { fetchGoogleCalendarEvents as fetchGoogleCalendarEventsByUser } from "@/lib/integrations/googleClient";
+import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 function toDate(value, fieldName) {
   if (value instanceof Date) return value;
@@ -84,6 +85,7 @@ function toUnifiedEvent(item) {
     end,
     source: item.source,
     externalUrl: item.externalUrl || null,
+    createdAt: item.createdAt || null,
   };
 }
 
@@ -126,6 +128,7 @@ async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
           end: event?.end?.dateTime,
           source: "outlook",
           externalUrl: event?.webLink || null,
+          createdAt: event?.createdDateTime || null,
         })
       )
       .filter(Boolean);
@@ -191,6 +194,42 @@ export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
         return [];
       })
       .filter(Boolean);
+
+    // Asynchronously create notifications for recently created external events
+    // to ensure users are notified even if they don't have the calendar open.
+    if (resolvedUserId) {
+      Promise.resolve().then(async () => {
+        try {
+          const recentEvents = externalEvents.filter((ev) => {
+            if (!ev.createdAt) return false;
+            return Date.now() - new Date(ev.createdAt).getTime() < 10 * 1000;
+          });
+
+          for (const ev of recentEvents) {
+            const exists = await prisma.notification.findFirst({
+              where: {
+                userId: resolvedUserId,
+                type: NOTIFICATION_TYPES.CALENDAR_EVENT_CREATED,
+                entityId: ev.id,
+              },
+              select: { id: true },
+            });
+            if (!exists) {
+              await createNotification({
+                userId: resolvedUserId,
+                type: NOTIFICATION_TYPES.CALENDAR_EVENT_CREATED,
+                title: ev.source ? `Nowe wydarzenie (${ev.source})` : "Nowe wydarzenie",
+                body: ev.title,
+                url: `/dashboard/calendar?eventId=${encodeURIComponent(ev.id)}`,
+                entityId: ev.id,
+              });
+            }
+          }
+        } catch (e) {
+          console.error("Background notification creation failed:", e);
+        }
+      });
+    }
 
     const localEvents = localMeetings
       .map((meeting) =>
@@ -272,6 +311,15 @@ export async function createMeeting(data) {
       },
     });
 
+    await createNotification({
+      userId: organizerId,
+      type: NOTIFICATION_TYPES.MEETING_CREATED,
+      title: "Nowe spotkanie",
+      body: meeting.title,
+      url: `/dashboard/calendar?eventId=${encodeURIComponent(meeting.id)}`,
+      entityId: meeting.id,
+    }).catch(() => null);
+
     if (meeting.leadId) {
       // Importuj addLeadActivity na górze pliku meetingActions.js
       await addLeadActivity(meeting.leadId, 'MEETING_SCHEDULED');
@@ -348,4 +396,5 @@ export async function deleteMeeting(meetingId) {
     return { success: false, error: "Wystąpił błąd podczas usuwania." };
   }
 }
+
 

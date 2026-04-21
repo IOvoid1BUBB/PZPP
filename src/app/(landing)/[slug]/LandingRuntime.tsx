@@ -48,7 +48,7 @@ export default function LandingRuntime(props: { htmlData: string; cssData: strin
   return (
     <div style={{ width: "100vw", minHeight: "100vh", margin: 0, padding: 0 }}>
       <style
-        // eslint-disable-next-line react/no-danger
+         
         dangerouslySetInnerHTML={{
           __html: `
             html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
@@ -59,7 +59,7 @@ export default function LandingRuntime(props: { htmlData: string; cssData: strin
       />
       <main
         style={{ width: "100%", minHeight: "100vh" }}
-        // eslint-disable-next-line react/no-danger
+         
         dangerouslySetInnerHTML={{ __html: htmlData }}
       />
     </div>
