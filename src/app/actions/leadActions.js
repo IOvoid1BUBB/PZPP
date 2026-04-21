@@ -38,16 +38,21 @@ export async function createLead(formData) {
     });
 
     // Odświeżenie danych w cache, aby tabela CRM zaktualizowała się automatycznie
-    revalidatePath("/crm"); 
+    revalidatePath("/crm");
     return { success: true, lead: newLead };
-    
   } catch (error) {
     // Prisma zwraca błąd P2002 przy naruszeniu unikalności (np. powtórzony e-mail)
-    if (error.code === 'P2002') {
-      return { success: false, error: "Lead z tym adresem e-mail już istnieje w naszej bazie." };
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: "Lead z tym adresem e-mail już istnieje w naszej bazie.",
+      };
     }
     console.error(error);
-    return { success: false, error: "Wystąpił błąd serwera. Spróbuj ponownie." };
+    return {
+      success: false,
+      error: "Wystąpił błąd serwera. Spróbuj ponownie.",
+    };
   }
 }
 
@@ -69,7 +74,9 @@ export async function getDashboardStats() {
       await Promise.all([
         prisma.lead.count({ where: leadWhere }),
         prisma.lead.count({
-          where: isAdminRole(auth.role) ? { status: "WON" } : { ...leadWhere, status: "WON" },
+          where: isAdminRole(auth.role)
+            ? { status: "WON" }
+            : { ...leadWhere, status: "WON" },
         }),
         prisma.course.count({
           where: isAdminRole(auth.role)
@@ -111,7 +118,7 @@ export async function getLeads() {
 
     return await prisma.lead.findMany({
       where: isAdminRole(auth.role) ? {} : { ownerId: auth.userId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   } catch (error) {
     return [];
@@ -170,7 +177,10 @@ export async function updateLeadStatus(leadId, newStatus) {
         data: { status: newStatus },
       });
       if (updated.count === 0) {
-        return { success: false, error: "Lead nie istnieje lub nie masz do niego dostępu." };
+        return {
+          success: false,
+          error: "Lead nie istnieje lub nie masz do niego dostępu.",
+        };
       }
     } else {
       await prisma.lead.update({
@@ -201,7 +211,10 @@ export async function updateLeadStatus(leadId, newStatus) {
     return { success: true, lead: updatedLead };
   } catch (error) {
     console.error(error);
-    return { success: false, error: "Nie udało się zaktualizować statusu leada." };
+    return {
+      success: false,
+      error: "Nie udało się zaktualizować statusu leada.",
+    };
   }
 }
 
@@ -221,10 +234,15 @@ export async function deleteLead(leadId) {
 
     const result = isAdminRole(auth.role)
       ? await prisma.lead.deleteMany({ where: { id: leadId } })
-      : await prisma.lead.deleteMany({ where: { id: leadId, ownerId: auth.userId } });
+      : await prisma.lead.deleteMany({
+          where: { id: leadId, ownerId: auth.userId },
+        });
 
     if (!result?.count) {
-      return { success: false, error: "Lead nie istnieje lub nie masz do niego dostępu." };
+      return {
+        success: false,
+        error: "Lead nie istnieje lub nie masz do niego dostępu.",
+      };
     }
 
     revalidatePath("/crm");
@@ -262,11 +280,13 @@ export async function createOrUpdateLead(data) {
       where: { id: existingLead.id },
       data: {
         ...otherData,
-        score: { increment: 10 } // Bonus za powracający kontakt
-      }
+        score: { increment: 10 }, // Bonus za powracający kontakt
+      },
     });
   }
-
+revalidatePath("/crm");
+revalidatePath("/dashboard");
+revalidatePath("/dashboard/kanban");
   // 3. Jeśli nie istnieje, tworzymy nowy rekord z bazowym scoringiem
   return await prisma.lead.create({
     data: {
@@ -275,7 +295,50 @@ export async function createOrUpdateLead(data) {
       lastName,
       score: 20, // Punkty startowe za zapis
       ownerId: auth.userId,
-      ...otherData
-    }
+      ...otherData,
+    },
   });
+}
+
+export async function updateLead(leadId, data) {
+  try {
+    const auth = await requireCreatorOrAdmin();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    if (!leadId || typeof leadId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID leada." };
+    }
+
+    const result = await prisma.lead.updateMany({
+      where: {
+        id: leadId,
+        ...(isAdminRole(auth.role) ? {} : { ownerId: auth.userId }),
+      },
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email ? String(data.email).toLowerCase() : undefined,
+        phone: data.phone,
+        source: data.source,
+      },
+    });
+
+    if (result.count === 0) {
+      return { success: false, error: "Lead nie istnieje lub brak dostępu." };
+    }
+
+    revalidatePath("/crm");
+revalidatePath("/dashboard");
+revalidatePath("/dashboard/kanban");
+    return { success: true };
+  } catch (error) {
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: "Ten e-mail jest już przypisany do innego klienta.",
+      };
+    }
+    console.error("updateLead error:", error);
+    return { success: false, error: "Nie udało się zaktualizować leada." };
+  }
 }
