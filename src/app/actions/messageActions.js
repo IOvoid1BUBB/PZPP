@@ -5,7 +5,7 @@ import { transporter, mailOptions } from "@/lib/nodemailer";
 import { revalidatePath } from "next/cache";
 import { render } from "@react-email/render";
 import React from "react";
-import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireAuth, requireLeadOwnership, Roles } from "@/lib/rbac";
 import { addLeadActivity } from "@/app/actions/scoringActions";
 import CrmWelcomeLead, {
   getSubject as getCrmWelcomeLeadSubject,
@@ -33,6 +33,8 @@ import CrmCustomMessage, {
 
 /**
  * Pobiera leada i wiadomości (rosnąco po dacie utworzenia).
+ * Sesja jest weryfikowana PRZED jakimkolwiek zapytaniem do bazy.
+ * Kreator widzi tylko swoje leady; admin — wszystkie; uczestnik — po emailu.
  * @param {string} leadId
  */
 export async function getLeadMessages(leadId) {
@@ -41,8 +43,22 @@ export async function getLeadMessages(leadId) {
       return null;
     }
 
-    const lead = await prisma.lead.findUnique({
-      where: { id: leadId },
+    const auth = await requireAuth();
+    if (!auth.ok) return null;
+
+    let whereClause = { id: leadId };
+
+    if (auth.role === Roles.KREATOR) {
+      whereClause = { id: leadId, ownerId: auth.userId };
+    } else if (auth.role === Roles.UCZESTNIK) {
+      const email = auth.session?.user?.email ?? null;
+      if (!email) return null;
+      whereClause = { id: leadId, email };
+    }
+    // ADMIN — brak dodatkowych filtrów
+
+    const lead = await prisma.lead.findFirst({
+      where: whereClause,
       include: {
         messages: {
           orderBy: { createdAt: "asc" },
@@ -50,8 +66,7 @@ export async function getLeadMessages(leadId) {
       },
     });
 
-    const access = await canAccessLead(lead);
-    if (!access.ok) return null;
+    if (!lead) return null;
 
     return lead;
   } catch (error) {
@@ -65,29 +80,20 @@ export async function getLeadMessages(leadId) {
  */
 export async function sendEmailToLead(leadId, toEmail, subject, body) {
   try {
-    const auth = await requireCreatorOrAdmin();
-    if (!auth.ok) return { success: false, error: auth.error };
-
     if (!leadId || !toEmail || !body) {
       return { success: false, error: "Brakuje wymaganych danych do wysyłki." };
     }
 
-    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
-    if (!lead) return { success: false, error: "Lead nie istnieje." };
-    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
-      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
-    }
+    const ownership = await requireLeadOwnership(prisma, leadId);
+    if (!ownership.ok) return { success: false, error: ownership.error };
 
-    // 1. Fizyczna wysyłka maila przez Nodemailer
     await transporter.sendMail({
       from: mailOptions.from,
       to: toEmail,
       subject: subject || "Wiadomość z systemu CRM",
       text: body,
-      // html: `<p>${body}</p>` // Jeśli wolisz wysyłać HTML, odkomentuj to
     });
 
-    // 2. Zapis w bazie danych (tabela Message)
     const savedMessage = await prisma.message.create({
       data: {
         leadId,
@@ -100,7 +106,6 @@ export async function sendEmailToLead(leadId, toEmail, subject, body) {
 
     await addLeadActivity(leadId, 'EMAIL_OPEN');
 
-    // 3. Odświeżenie widoku profilu leada
     revalidatePath(`/crm/lead/${leadId}`);
     revalidatePath("/dashboard/skrzynka");
     revalidatePath("/student/skrzynka");
@@ -160,18 +165,12 @@ const TEMPLATE_REGISTRY = {
  */
 export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
   try {
-    const auth = await requireCreatorOrAdmin();
-    if (!auth.ok) return { success: false, error: auth.error };
-
     if (!leadId || !toEmail || !templateName) {
       return { success: false, error: "Brakuje wymaganych danych do wysyłki." };
     }
 
-    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
-    if (!lead) return { success: false, error: "Lead nie istnieje." };
-    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
-      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
-    }
+    const ownership = await requireLeadOwnership(prisma, leadId);
+    if (!ownership.ok) return { success: false, error: ownership.error };
 
     const entry = TEMPLATE_REGISTRY[templateName];
     if (!entry) {
@@ -237,26 +236,17 @@ export async function sendTemplatedEmail(leadId, toEmail, templateName, props) {
  */
 export async function simulateSMSToLead(leadId, phone, body) {
   try {
-    const auth = await requireCreatorOrAdmin();
-    if (!auth.ok) return { success: false, error: auth.error };
-
     if (!leadId || !body) {
       return { success: false, error: "Brakuje wymaganych danych dla SMS." };
     }
 
-    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true, ownerId: true } });
-    if (!lead) return { success: false, error: "Lead nie istnieje." };
-    if (!isAdminRole(auth.role) && lead.ownerId !== auth.userId) {
-      return { success: false, error: "Brak uprawnień do wysyłki do tego leada." };
-    }
-
-    // Tu w przyszłości można podpiąć bramkę SMS (np. Twilio, SMSAPI).
-    // Na ten moment zadanie wymaga tylko "symulacji", więc od razu zapisujemy do bazy.
+    const ownership = await requireLeadOwnership(prisma, leadId);
+    if (!ownership.ok) return { success: false, error: ownership.error };
 
     const savedSMS = await prisma.message.create({
       data: {
         leadId,
-        subject: "Wiadomość SMS", // Opcjonalnie, SMSy rzadko mają temat
+        subject: "Wiadomość SMS",
         body,
         type: "SMS",
         direction: "OUTBOUND",
