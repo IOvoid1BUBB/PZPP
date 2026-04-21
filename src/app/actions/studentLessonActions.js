@@ -5,4 +5,4 @@
  * Zachowane dla kompatybilności ze starymi importami.
  */
 export { addLessonNote, getLessonNotes, deleteLessonNote } from "@/actions/studentLessonNotes";
-export { addLessonNote as upsertStudentLessonNote } from "@/actions/studentLessonNotes";
+

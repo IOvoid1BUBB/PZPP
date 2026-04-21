@@ -4,22 +4,6 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireStudentOrAdmin } from "@/lib/rbac";
 
-/**
- * Jednorazowo usuwa stary UNIQUE (userId, lessonId) z bazy z wczesnych migracji,
- * jeśli migracja nie została jeszcze zastosowana na tym środowisku.
- */
-async function ensureStudentLessonNoteAllowsMultipleRows() {
-  await prisma.$executeRawUnsafe(
-    `ALTER TABLE "StudentLessonNote" DROP CONSTRAINT IF EXISTS "StudentLessonNote_userId_lessonId_key";`,
-  );
-  await prisma.$executeRawUnsafe(
-    `DROP INDEX IF EXISTS "StudentLessonNote_userId_lessonId_key";`,
-  );
-  await prisma.$executeRawUnsafe(
-    `CREATE INDEX IF NOT EXISTS "StudentLessonNote_userId_lessonId_idx" ON "StudentLessonNote"("userId", "lessonId");`,
-  );
-}
-
 async function getEnrollmentForLesson(userId, lessonId) {
   return prisma.enrollment.findFirst({
     where: {
@@ -91,35 +75,15 @@ export async function addLessonNote({ lessonId, content }) {
       return { success: false, error: "Brak dostępu do tej lekcji." };
     }
 
-    let note;
-    try {
-      note = await prisma.studentLessonNote.create({
-        data: { userId: auth.userId, lessonId, content: normalized },
-        select: { id: true, content: true, createdAt: true },
-      });
-    } catch (firstError) {
-      if (firstError?.code !== "P2002") throw firstError;
-      console.warn(
-        "[addLessonNote] P2002 — usuwam stary UNIQUE index i ponawiam zapis (migracja nie była na tej bazie).",
-      );
-      await ensureStudentLessonNoteAllowsMultipleRows();
-      note = await prisma.studentLessonNote.create({
-        data: { userId: auth.userId, lessonId, content: normalized },
-        select: { id: true, content: true, createdAt: true },
-      });
-    }
+    const note = await prisma.studentLessonNote.create({
+      data: { userId: auth.userId, lessonId, content: normalized },
+      select: { id: true, content: true, createdAt: true },
+    });
 
     revalidatePath(`/student/kurs/${enrollment.courseId}`);
     return { success: true, note };
   } catch (error) {
     console.error("addLessonNote:", error);
-    if (error?.code === "P2002") {
-      return {
-        success: false,
-        error:
-          "Nadal unikalność (userId + lessonId). Sprawdź uprawnienia DB do DROP INDEX lub uruchom: npx prisma migrate deploy",
-      };
-    }
     return {
       success: false,
       error:
@@ -141,8 +105,9 @@ export async function deleteLessonNote(noteId) {
       return { success: false, error: "Nieprawidłowe ID notatki." };
     }
 
-    const existing = await prisma.studentLessonNote.findUnique({
+    const existing = await prisma.studentLessonNote.findFirst({
       where: { id: noteId },
+      orderBy: { createdAt: "desc" },
       select: {
         userId: true,
         lesson: {
