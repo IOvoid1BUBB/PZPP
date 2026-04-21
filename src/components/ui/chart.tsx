@@ -126,7 +126,7 @@ function ChartTooltipContent({
     nameKey?: string
     labelKey?: string
     /** Recharts — props custom content; typ bazowy nie zawiera payload */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     payload?: any
     label?: any
   }) {

@@ -303,7 +303,7 @@ export default async function StudentCoursePage({ params, searchParams }) {
               <div className="mt-3 rounded-lg border border-[#e5e7eb] bg-[#fafafa] p-4">
                 <div
                   className="prose prose-sm max-w-none text-[#0f172a]"
-                  // eslint-disable-next-line react/no-danger
+                   
                   dangerouslySetInnerHTML={{ __html: activeLesson.content }}
                 />
               </div>
