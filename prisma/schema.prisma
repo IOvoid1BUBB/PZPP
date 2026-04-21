@@ -62,22 +62,22 @@ model User {
   oauthIntegrations  OAuthIntegration[]
 
   // Relacje biznesowe
-  organizedMeetings Meeting[]     @relation("MeetingOrganizer")
-  tasks             Task[]
-  enrollments       Enrollment[]
-  certificates      Certificate[]
-  lessonNotes       StudentLessonNote[]
-  lessonQuestionsAuthored LessonQuestion[] @relation("LessonQuestionAuthor")
-  landingPages      LandingPage[]
-  ownedLeads        Lead[]             @relation("LeadOwner")
-  tags              Tag[]              @relation("TagOwner")
-  courses           Course[]
-  funnels           Funnel[]           @relation("FunnelOwner")
-  orders            Order[]
-  ownedDeals        Deal[]             @relation("DealOwner")
-  automationRules   AutomationRule[]   @relation("AutomationOwner")
+  organizedMeetings       Meeting[]           @relation("MeetingOrganizer")
+  tasks                   Task[]
+  enrollments             Enrollment[]
+  certificates            Certificate[]
+  lessonNotes             StudentLessonNote[]
+  lessonQuestionsAuthored LessonQuestion[]    @relation("LessonQuestionAuthor")
+  landingPages            LandingPage[]
+  ownedLeads              Lead[]              @relation("LeadOwner")
+  tags                    Tag[]               @relation("TagOwner")
+  courses                 Course[]
+  funnels                 Funnel[]            @relation("FunnelOwner")
+  orders                  Order[]
+  ownedDeals              Deal[]              @relation("DealOwner")
+  automationRules         AutomationRule[]    @relation("AutomationOwner")
 
-  notifications     Notification[]
+  notifications Notification[]
 }
 
 model Account {
@@ -97,6 +97,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model ApiKeyIntegration {
@@ -118,17 +119,19 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model OAuthState {
-  id        String        @id @default(cuid())
-  userId    String
-  provider  OAuthProvider
-  stateHash String
-  nonceHash String?
-  expiresAt DateTime
+  id         String        @id @default(cuid())
+  userId     String
+  provider   OAuthProvider
+  stateHash  String
+  nonceHash  String?
+  expiresAt  DateTime
   consumedAt DateTime?
-  createdAt DateTime      @default(now())
+  createdAt  DateTime      @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -175,7 +178,7 @@ model Notification {
   createdAt DateTime         @default(now())
   readAt    DateTime?
 
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([userId, readAt])
@@ -256,7 +259,7 @@ model Lead {
   updatedAt DateTime   @updatedAt
 
   ownerId String?
-  owner   User?  @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  owner   User?   @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   //Relacje
   tags         Tag[]         @relation("LeadTags")
@@ -267,19 +270,20 @@ model Lead {
   messages     Message[]
   tasks        Task[]
   deals        Deal[]
-  @@index([ownerId])
+
   @@unique([ownerId, email])
+  @@index([ownerId])
 }
 
 model Tag {
-  id    String @id @default(cuid())
-  name  String
+  id      String  @id @default(cuid())
+  name    String
   ownerId String?
-  owner   User?  @relation("TagOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  leads Lead[] @relation("LeadTags")
+  owner   User?   @relation("TagOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  leads   Lead[]  @relation("LeadTags")
 
-  @@index([ownerId])
   @@unique([ownerId, name])
+  @@index([ownerId])
 }
 
 model Note {
@@ -288,6 +292,8 @@ model Note {
   leadId    String
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([leadId])
 }
 
 model LandingPage {
@@ -303,8 +309,8 @@ model LandingPage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  variants  ABVariant[]
-  steps     FunnelStep[]
+  variants ABVariant[]
+  steps    FunnelStep[]
 
   @@index([authorId])
 }
@@ -319,8 +325,8 @@ model Funnel {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  owner       User?        @relation("FunnelOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  steps       FunnelStep[]
+  owner User?        @relation("FunnelOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  steps FunnelStep[]
 
   @@index([ownerId])
   @@index([status])
@@ -328,19 +334,19 @@ model Funnel {
 
 model FunnelStep {
   id            String         @id @default(cuid())
-  funnelId       String
-  name           String
-  slug           String
-  order          Int
-  stepType       FunnelStepType @default(LANDING)
-  isRequired     Boolean        @default(true)
-  landingPageId  String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  funnelId      String
+  name          String
+  slug          String
+  order         Int
+  stepType      FunnelStepType @default(LANDING)
+  isRequired    Boolean        @default(true)
+  landingPageId String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
-  funnel         Funnel         @relation(fields: [funnelId], references: [id], onDelete: Cascade)
-  landingPage    LandingPage?   @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
-  abTests        ABTest[]
+  funnel      Funnel       @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+  landingPage LandingPage? @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
+  abTests     ABTest[]
 
   @@unique([funnelId, slug])
   @@unique([funnelId, order])
@@ -349,39 +355,39 @@ model FunnelStep {
 }
 
 model ABTest {
-  id            String       @id @default(cuid())
-  funnelStepId  String
-  name          String
-  status        ABTestStatus @default(DRAFT)
-  startsAt      DateTime?
-  endsAt        DateTime?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id           String       @id @default(cuid())
+  funnelStepId String
+  name         String
+  status       ABTestStatus @default(DRAFT)
+  startsAt     DateTime?
+  endsAt       DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
-  funnelStep    FunnelStep   @relation(fields: [funnelStepId], references: [id], onDelete: Cascade)
-  variants      ABVariant[]
+  funnelStep FunnelStep  @relation(fields: [funnelStepId], references: [id], onDelete: Cascade)
+  variants   ABVariant[]
 
   @@index([funnelStepId])
   @@index([status])
 }
 
 model ABVariant {
-  id            String      @id @default(cuid())
+  id            String   @id @default(cuid())
   abTestId      String
   landingPageId String
   name          String
-  trafficWeight Int         @default(50)
-  views         Int         @default(0)
-  conversions   Int         @default(0)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  trafficWeight Int      @default(50)
+  views         Int      @default(0)
+  conversions   Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  abTest        ABTest      @relation(fields: [abTestId], references: [id], onDelete: Cascade)
-  landingPage   LandingPage @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
+  abTest      ABTest      @relation(fields: [abTestId], references: [id], onDelete: Cascade)
+  landingPage LandingPage @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
 
+  @@unique([abTestId, name])
   @@index([abTestId])
   @@index([landingPageId])
-  @@unique([abTestId, name])
 }
 
 //MODUŁ C: KOMUNIKACJA (Email, SMS)
@@ -395,6 +401,8 @@ model Message {
   leadId    String
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([leadId])
 }
 
 model Task {
@@ -431,11 +439,11 @@ model Deal {
   stage             DealStage @default(DISCOVERY)
   notes             String?   @db.Text
 
-  leadId  String
-  lead    Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   ownerId String
-  owner   User @relation("DealOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  owner   User   @relation("DealOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   tasks Task[]
 
@@ -457,7 +465,7 @@ model AutomationRule {
   actionConfig  Json
 
   ownerId String
-  owner   User @relation("AutomationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  owner   User   @relation("AutomationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   logs AutomationLog[]
 
@@ -479,6 +487,8 @@ model AutomationLog {
   executedAt   DateTime       @default(now())
 
   @@index([automationId])
+  @@index([leadId])
+  @@index([dealId])
 }
 
 //MODUŁ D: KURSY I PORTAL CZŁONKOWSKI
@@ -493,7 +503,7 @@ model Course {
   updatedAt   DateTime @updatedAt
 
   authorId String?
-  author   User?  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   modules     Module[]
   enrollments Enrollment[]
@@ -511,7 +521,7 @@ model Order {
   userId   String?
   user     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course   Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -528,6 +538,8 @@ model Module {
   courseId String
   course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons  Lesson[]
+
+  @@index([courseId])
 }
 
 model Lesson {
@@ -544,6 +556,8 @@ model Lesson {
   completions LessonCompletion[]
   notes       StudentLessonNote[]
   questions   LessonQuestion[]
+
+  @@index([moduleId])
 }
 
 model StudentLessonNote {
@@ -566,23 +580,24 @@ enum LessonQuestionType {
 }
 
 model LessonQuestion {
-  id          String   @id @default(cuid())
-  lessonId    String
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  question    String   @db.Text
-  type        LessonQuestionType @default(OPEN_TEXT)
-  answer      String?  @db.Text
-  optionA     String?  @db.Text
-  optionB     String?  @db.Text
-  optionC     String?  @db.Text
+  id            String             @id @default(cuid())
+  lessonId      String
+  lesson        Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question      String             @db.Text
+  type          LessonQuestionType @default(OPEN_TEXT)
+  answer        String?            @db.Text
+  optionA       String?            @db.Text
+  optionB       String?            @db.Text
+  optionC       String?            @db.Text
   correctOption String?
-  order       Int      @default(1)
-  createdById String?
-  createdBy   User?    @relation("LessonQuestionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order         Int                @default(1)
+  createdById   String?
+  createdBy     User?              @relation("LessonQuestionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
 
   @@index([lessonId, order])
+  @@index([createdById])
 }
 
 enum LessonResourceType {
@@ -615,6 +630,7 @@ model Enrollment {
   lessonCompletions LessonCompletion[]
 
   @@unique([userId, courseId])
+  @@index([courseId])
 }
 
 model Certificate {
@@ -623,6 +639,8 @@ model Certificate {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title    String
   issuedAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model LessonCompletion {
@@ -675,6 +693,7 @@ model Meeting {
   createdAt DateTime @default(now())
 
   @@unique([organizerId, startTime])
+  @@index([leadId])
 }
 
 model CustomField {
@@ -691,4 +710,5 @@ model CustomField {
 
   // Zabezpieczenie: Dany Lead nie może mieć dwóch Custom Fieldów o takiej samej nazwie
   @@unique([leadId, name])
+  @@index([leadId])
 }
