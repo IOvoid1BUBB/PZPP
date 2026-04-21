@@ -62,6 +62,92 @@ function toIsoDateOrNull(value) {
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
+function buildRescheduleLink(meetingId) {
+  const appUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "";
+  const relativePath = `/dashboard/calendar/reschedule?meetingId=${encodeURIComponent(meetingId)}`;
+  return appUrl ? `${appUrl}${relativePath}` : relativePath;
+}
+
+function toReminderSchedule(startTime, offsetHours) {
+  const startMs = new Date(startTime).getTime();
+  if (Number.isNaN(startMs)) return null;
+  return new Date(startMs - offsetHours * 60 * 60 * 1000);
+}
+
+export async function buildMeetingReminderJobs({
+  meetingId,
+  title,
+  startTime,
+  participantUserIds = [],
+}) {
+  if (!meetingId || !startTime) return [];
+
+  const uniqueParticipants = [...new Set((participantUserIds || []).filter(Boolean))];
+  const rescheduleLink = buildRescheduleLink(meetingId);
+
+  return [24, 1]
+    .map((hoursBefore) => {
+      const scheduledFor = toReminderSchedule(startTime, hoursBefore);
+      if (!scheduledFor) return null;
+
+      return {
+        type: "MEETING_REMINDER",
+        channels: ["EMAIL", "SMS"],
+        meetingId,
+        meetingTitle: title || "Spotkanie",
+        hoursBefore,
+        scheduledFor: scheduledFor.toISOString(),
+        participantUserIds: uniqueParticipants,
+        payload: {
+          rescheduleLink,
+          reminderLabel: `${hoursBefore}h`,
+        },
+      };
+    })
+    .filter(Boolean);
+}
+
+/**
+ * Szkielet dispatcher'a przypomnień.
+ * Docelowo funkcja może być uruchamiana przez CRON/queue worker.
+ */
+export async function sendMeetingReminders(meetingId, participantUserIds = []) {
+  try {
+    if (!meetingId || typeof meetingId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID spotkania." };
+    }
+
+    const meeting = await prisma.meeting.findUnique({
+      where: { id: meetingId },
+      select: {
+        id: true,
+        title: true,
+        startTime: true,
+      },
+    });
+
+    if (!meeting) return { success: false, error: "Spotkanie nie istnieje." };
+
+    const jobs = buildMeetingReminderJobs({
+      meetingId: meeting.id,
+      title: meeting.title,
+      startTime: meeting.startTime,
+      participantUserIds,
+    });
+
+    // TODO: Podłączyć realny provider e-mail/SMS i kolejkę zadań.
+    // Na ten etap zwracamy gotowy plan wysyłki (24h i 1h) wraz z linkiem do przełożenia.
+    return {
+      success: true,
+      remindersPlanned: jobs.length,
+      jobs,
+    };
+  } catch (error) {
+    console.error("sendMeetingReminders:", error);
+    return { success: false, error: "Nie udało się przygotować przypomnień." };
+  }
+}
+
 function toUnifiedEvent(item) {
   const start = toIsoDateOrNull(item?.start);
   const end = toIsoDateOrNull(item?.end);
