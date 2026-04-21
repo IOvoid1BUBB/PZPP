@@ -29,40 +29,29 @@ export async function getMeetings(startDate, endDate) {
     const auth = await requireCreatorOrAdmin();
     if (!auth.ok) return [];
 
-    const start = toDate(startDate, "startDate");
-    const end = toDate(endDate, "endDate");
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    if (end <= start) return [];
+    if (isNaN(start) || isNaN(end) || end <= start) return [];
 
     const meetings = await prisma.meeting.findMany({
       where: {
         startTime: { lt: end },
         endTime: { gt: start },
-        ...(isAdminRole(auth.role) ? {} : { organizerId: auth.userId }),
+        ...(auth.role === "ADMIN" ? {} : { organizerId: auth.userId }),
       },
       orderBy: { startTime: "asc" },
-      select: {
-        id: true,
-        title: true,
-        startTime: true,
-        endTime: true,
-        meetLink: true,
-        organizerId: true,
-        leadId: true,
-      },
     });
 
+    revalidatePath("/dashboard/calendar");
+
     return meetings.map((m) => ({
-      id: m.id,
-      title: m.title,
+      ...m,
       startTime: m.startTime.toISOString(),
       endTime: m.endTime.toISOString(),
-      meetLink: m.meetLink,
-      organizerId: m.organizerId,
-      leadId: m.leadId,
     }));
   } catch (error) {
-    console.error("getMeetings:", error);
+    console.error("getMeetings error:", error);
     return [];
   }
 }
@@ -146,7 +135,11 @@ async function fetchOutlookCalendarEvents(account, rangeStart, rangeEnd) {
  * @param {string|Date} startDate
  * @param {string|Date} endDate
  */
-export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
+export async function getUnifiedCalendarEvents(
+  userId,
+  startDate,
+  endDate
+) {
   try {
     const auth = await requireCreatorOrAdmin();
     if (!auth.ok) return [];
@@ -190,7 +183,10 @@ export async function getUnifiedCalendarEvents(userId, startDate, endDate) {
     const externalEvents = externalResults
       .flatMap((result) => {
         if (result.status === "fulfilled") return result.value || [];
-        console.error("getUnifiedCalendarEvents external provider error:", result.reason);
+        console.error(
+          "getUnifiedCalendarEvents external provider error:",
+          result.reason
+        );
         return [];
       })
       .filter(Boolean);
@@ -271,7 +267,8 @@ export async function createMeeting(data) {
     const title = typeof data?.title === "string" ? data.title.trim() : "";
     const meetLinkRaw = data?.meetLink;
 
-    if (!title) return { success: false, error: "Tytuł spotkania jest wymagany." };
+    if (!title)
+      return { success: false, error: "Tytuł spotkania jest wymagany." };
 
     const organizerId = auth.userId;
 
@@ -284,14 +281,14 @@ export async function createMeeting(data) {
         error: "Czas zakończenia musi być późniejszy niż czas rozpoczęcia.",
       };
     }
-
     const meetLink =
       typeof meetLinkRaw === "string"
         ? meetLinkRaw.trim() || null
-        : meetLinkRaw ?? null;
+        : (meetLinkRaw ?? null);
 
     // TODO: Dla synchronizacji 2-way po utworzeniu lokalnego spotkania
     // należy wykonać mutację do Google/Outlook i zapisać external event id.
+
     const meeting = await prisma.meeting.create({
       data: {
         title,
@@ -299,6 +296,7 @@ export async function createMeeting(data) {
         endTime,
         meetLink,
         organizerId,
+        leadId: data?.leadId || null,
       },
       select: {
         id: true,
@@ -322,7 +320,7 @@ export async function createMeeting(data) {
 
     if (meeting.leadId) {
       // Importuj addLeadActivity na górze pliku meetingActions.js
-      await addLeadActivity(meeting.leadId, 'MEETING_SCHEDULED');
+      await addLeadActivity(meeting.leadId, "MEETING_SCHEDULED");
     }
 
     revalidatePath("/dashboard/calendar");
@@ -345,19 +343,18 @@ export async function createMeeting(data) {
     if (error.code === "P2002") {
       return {
         success: false,
-        error: "Ten termin jest już zajęty! Ktoś inny zdążył zarezerwować tę samą godzinę.",
+        error:
+          "Ten termin jest już zajęty! Ktoś inny zdążył zarezerwować tę samą godzinę.",
       };
     }
 
     // Standardowe łapanie pozostałych błędów
-    console.error("createMeeting:", error);
     return {
       success: false,
       error: "Wystąpił błąd serwera podczas tworzenia spotkania.",
     };
   }
 }
-
 
 /**
  * Usuwa spotkanie po id (tylko jeśli należy do zalogowanego organizatora).
@@ -382,8 +379,7 @@ export async function deleteMeeting(meetingId) {
     if (!result || result.count < 1) {
       return {
         success: false,
-        error:
-          "Nie znaleziono spotkania albo brak uprawnień do usunięcia.",
+        error: "Nie znaleziono spotkania albo brak uprawnień do usunięcia.",
       };
     }
 
@@ -396,5 +392,3 @@ export async function deleteMeeting(meetingId) {
     return { success: false, error: "Wystąpił błąd podczas usuwania." };
   }
 }
-
-
