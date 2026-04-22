@@ -2,12 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { requireCreator, getUserContext, isAdminRole } from "@/lib/rbac";
 
 async function requireCreatorOrDevFallback() {
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) return auth;
   return { ok: true, session: auth.session, userId: auth.userId, role: auth.role };
 }
@@ -333,9 +331,7 @@ export async function getLandingPageBySlug(slug) {
     if (page.isActive && page.isPublic) return page;
 
     // Prywatny widok: owner lub ADMIN (w tym podgląd draftów)
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id ?? null;
-    const role = session?.user?.role ?? null;
+    const { userId, role } = await getUserContext();
 
     if (role === "ADMIN") return page;
     if (userId && page.authorId && page.authorId === userId) return page;

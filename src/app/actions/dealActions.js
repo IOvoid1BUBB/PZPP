@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 const ALLOWED_DEAL_STAGES = [
   "DISCOVERY",
@@ -14,7 +14,7 @@ const ALLOWED_DEAL_STAGES = [
 
 export async function createDeal(data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const { name, value, currency, probability, expectedCloseDate, stage, notes, leadId } = data;
@@ -58,7 +58,7 @@ export async function createDeal(data) {
 
 export async function getDeals() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     return await prisma.deal.findMany({
@@ -76,7 +76,7 @@ export async function getDeals() {
 
 export async function updateDeal(dealId, data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!dealId) return { success: false, error: "Brak ID deala." };
@@ -116,7 +116,7 @@ export async function updateDeal(dealId, data) {
 
 export async function updateDealStage(dealId, newStage) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!dealId) return { success: false, error: "Brak ID deala." };
@@ -165,7 +165,7 @@ export async function updateDealStage(dealId, newStage) {
 
 export async function getDealStats() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) {
       return { totalDeals: 0, totalValue: 0, weightedPipeline: 0, wonDeals: 0 };
     }
@@ -189,7 +189,7 @@ export async function getDealStats() {
 
 export async function deleteDeal(dealId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!dealId) return { success: false, error: "Brak ID deala." };

@@ -5,7 +5,7 @@ import { transporter, mailOptions } from "@/lib/nodemailer";
 import { revalidatePath } from "next/cache";
 import { render } from "@react-email/render";
 import React from "react";
-import { requireAuth, requireLeadOwnership, Roles } from "@/lib/rbac";
+import { requireUser, requireLeadOwnership, Roles } from "@/lib/rbac";
 import { addLeadActivity } from "@/app/actions/scoringActions";
 import CrmWelcomeLead, {
   getSubject as getCrmWelcomeLeadSubject,
@@ -43,7 +43,7 @@ export async function getLeadMessages(leadId, filters = {}) {
       return null;
     }
 
-    const auth = await requireAuth();
+    const auth = await requireUser();
     if (!auth.ok) return null;
 
     let whereClause = { id: leadId };

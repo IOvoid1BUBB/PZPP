@@ -12,8 +12,8 @@ import { getServerSession } from "next-auth/next";
 import {
   requireLeadOwnership,
   canAccessLead,
-  requireAuth,
-  requireCreatorOrAdmin,
+  requireUser,
+  requireCreator,
   Roles,
 } from "./rbac";
 
@@ -26,41 +26,41 @@ const KREATOR_B = { id: "kreator-b-id", role: Roles.KREATOR, email: "b@test.pl" 
 const ADMIN = { id: "admin-id", role: Roles.ADMIN, email: "admin@test.pl" };
 const UCZESTNIK = { id: "ucz-id", role: Roles.UCZESTNIK, email: "student@test.pl" };
 
-describe("requireAuth", () => {
+describe("requireUser", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("zwraca ok:false gdy brak sesji", async () => {
     mockSession(null);
-    const result = await requireAuth();
+    const result = await requireUser();
     expect(result.ok).toBe(false);
   });
 
   it("zwraca ok:true dla zalogowanego użytkownika", async () => {
     mockSession(KREATOR_A);
-    const result = await requireAuth();
+    const result = await requireUser();
     expect(result.ok).toBe(true);
     expect(result.userId).toBe(KREATOR_A.id);
   });
 });
 
-describe("requireCreatorOrAdmin", () => {
+describe("requireCreator", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("odrzuca UCZESTNIK", async () => {
     mockSession(UCZESTNIK);
-    const result = await requireCreatorOrAdmin();
+    const result = await requireCreator();
     expect(result.ok).toBe(false);
   });
 
   it("akceptuje KREATOR", async () => {
     mockSession(KREATOR_A);
-    const result = await requireCreatorOrAdmin();
+    const result = await requireCreator();
     expect(result.ok).toBe(true);
   });
 
   it("akceptuje ADMIN", async () => {
     mockSession(ADMIN);
-    const result = await requireCreatorOrAdmin();
+    const result = await requireCreator();
     expect(result.ok).toBe(true);
   });
 });

@@ -3,10 +3,13 @@
 import { prisma } from "@/lib/prisma";
 import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
 import { fetchJiraIssuesForUser } from "@/lib/integrations/jiraClient";
+import { requireUser } from "@/lib/rbac";
 
 export async function fetchGoogleCalendar(userId) {
   try {
-    const account = await getOAuthAccountOrThrow(userId, "google");
+    const auth = await requireUser();
+    if (!auth.ok || !auth.userId) throw new Error(auth.error || "Brak autoryzacji.");
+    const account = await getOAuthAccountOrThrow(auth.userId, "google");
 
     const response = await fetch(
       "https://www.googleapis.com/calendar/v3/calendars/primary/events",
@@ -39,7 +42,9 @@ export async function fetchGoogleCalendar(userId) {
 
 export async function fetchOutlookMails(userId) {
   try {
-    const account = await getOAuthAccountOrThrow(userId, "azure-ad");
+    const auth = await requireUser();
+    if (!auth.ok || !auth.userId) throw new Error(auth.error || "Brak autoryzacji.");
+    const account = await getOAuthAccountOrThrow(auth.userId, "azure-ad");
 
     const response = await fetch("https://graph.microsoft.com/v1.0/me/messages", {
       method: "GET",
@@ -69,8 +74,10 @@ export async function fetchOutlookMails(userId) {
 
 export async function fetchJiraIssues(userId) {
   try {
+    const auth = await requireUser();
+    if (!auth.ok || !auth.userId) return [];
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: auth.userId },
       select: {
         jiraSelectedProjectKey: true,
       },
@@ -80,7 +87,7 @@ export async function fetchJiraIssues(userId) {
       ? `project = ${user.jiraSelectedProjectKey} ORDER BY updated DESC`
       : "assignee = currentUser() ORDER BY updated DESC";
     return await fetchJiraIssuesForUser({
-      userId,
+      userId: auth.userId,
       jql,
       maxResults: 25,
     });

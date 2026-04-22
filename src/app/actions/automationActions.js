@@ -2,14 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 const VALID_TRIGGERS = ["LEAD_STATUS_CHANGE", "DEAL_STAGE_CHANGE"];
 const VALID_ACTIONS = ["SEND_EMAIL_TEMPLATE", "CREATE_TASK"];
 
 export async function getAutomationRules() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     return await prisma.automationRule.findMany({
@@ -25,7 +25,7 @@ export async function getAutomationRules() {
 
 export async function createAutomationRule(data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const { name, triggerType, triggerConfig, actionType, actionConfig } = data;
@@ -61,7 +61,7 @@ export async function createAutomationRule(data) {
 
 export async function updateAutomationRule(ruleId, data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!ruleId) return { success: false, error: "Brak ID reguly." };
@@ -107,7 +107,7 @@ export async function updateAutomationRule(ruleId, data) {
 
 export async function toggleAutomationRule(ruleId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!ruleId) return { success: false, error: "Brak ID reguly." };
@@ -136,7 +136,7 @@ export async function toggleAutomationRule(ruleId) {
 
 export async function deleteAutomationRule(ruleId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!ruleId) return { success: false, error: "Brak ID reguly." };
@@ -162,7 +162,7 @@ export async function deleteAutomationRule(ruleId) {
 
 export async function getAutomationLogs(ruleId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     const where = {};

@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 export async function listDocuments() {
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) return [];
 
   return prisma.document.findMany({
@@ -34,7 +34,7 @@ export async function listDocuments() {
 
 export async function uploadDocument(formData) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const title = String(formData.get("title") || "").trim();

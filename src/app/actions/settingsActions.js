@@ -1,17 +1,16 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { getServerSession } from "next-auth/next";
 import { revalidatePath } from "next/cache";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/rbac";
 
 async function getCurrentUserOrError() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
+  const auth = await requireUser();
+  const userId = auth.userId;
 
-  if (!userId) {
-    return { error: { success: false, message: "Brak autoryzacji. Zaloguj się ponownie." } };
+  if (!auth.ok || !userId) {
+    return { error: { success: false, message: auth.error || "Brak autoryzacji. Zaloguj się ponownie." } };
   }
 
   const user = await prisma.user.findUnique({

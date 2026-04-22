@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { SCORING_RULES, getLeadTemperature } from "@/lib/scoring";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 /**
  * Dodaje (lub odejmuje) punkty za konkretną aktywność leada.
@@ -11,7 +11,7 @@ import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
  */
 export async function addLeadActivity(leadId, activityType) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) {
       return { success: false, error: auth.error };
     }

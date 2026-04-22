@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin } from "@/lib/rbac";
+import { requireCreator } from "@/lib/rbac";
 
 function hasFunnelModels() {
   return Boolean(
@@ -68,7 +68,7 @@ function normalizeVariantWeights(variants) {
 
 export async function getFunnelsWithDetails() {
   if (!hasFunnelModels()) return [];
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) return [];
 
   return prisma.funnel.findMany({
@@ -81,7 +81,7 @@ export async function getFunnelsWithDetails() {
 export async function getFunnelById(funnelId) {
   if (!funnelId) return null;
   if (!hasFunnelModels()) return null;
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) return null;
 
   return prisma.funnel.findFirst({
@@ -100,7 +100,7 @@ export async function getLandingPagesForVariants() {
 
 export async function createFunnel(formData) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const name = String(formData.get("name") || "").trim();
@@ -120,7 +120,7 @@ export async function createFunnel(formData) {
 
 export async function updateFunnel(formData) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const id = String(formData.get("id") || "");
@@ -147,7 +147,7 @@ export async function updateFunnel(formData) {
 
 export async function deleteFunnel(formData) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const id = String(formData.get("id") || "");
@@ -164,7 +164,7 @@ export async function deleteFunnel(formData) {
 
 export async function addFunnelStep(formData) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const funnelId = String(formData.get("funnelId") || "");
@@ -219,7 +219,7 @@ export async function addFunnelStep(formData) {
 
 export async function reorderFunnelSteps(funnelId, orderedStepIds) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   if (!funnelId || !Array.isArray(orderedStepIds) || orderedStepIds.length === 0) {
@@ -248,7 +248,7 @@ export async function reorderFunnelSteps(funnelId, orderedStepIds) {
 
 async function moveFunnelStep(formData, direction) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const funnelId = String(formData.get("funnelId") || "");
@@ -310,7 +310,7 @@ export async function moveFunnelStepDown(formData) {
 
 export async function createABTestForStep(formData) {
   assertFunnelModelsAvailable();
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error);
 
   const funnelId = String(formData.get("funnelId") || "");

@@ -27,18 +27,16 @@ async function getEnrollmentForLesson(userId, lessonId) {
  */
 export async function getLessonNotes(lessonId, userId) {
   try {
-    if (!lessonId || typeof lessonId !== "string" || !userId) {
+    if (!lessonId || typeof lessonId !== "string") {
       return { success: false, error: "Brak wymaganych danych.", notes: [] };
     }
 
     const auth = await requireStudentOrAdmin();
     if (!auth.ok) return { success: false, error: auth.error, notes: [] };
-    if (auth.userId !== userId) {
-      return { success: false, error: "Brak uprawnień do tych notatek.", notes: [] };
-    }
+    const resolvedUserId = auth.userId;
 
     const notes = await prisma.studentLessonNote.findMany({
-      where: { lessonId, userId },
+      where: { lessonId, userId: resolvedUserId },
       orderBy: { createdAt: "desc" },
       select: { id: true, content: true, createdAt: true },
     });

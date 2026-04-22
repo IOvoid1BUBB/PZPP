@@ -2,14 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 const ALLOWED_KANBAN_STATUSES = ["NEW", "CONTACTED", "WON"];
 
 // Bezpieczna funkcja serwerowa do zapisu leada
 export async function createLead(formData) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const firstName = formData.get("firstName");
@@ -59,7 +59,7 @@ export async function createLead(formData) {
 // Statystyki dashboardu (łącznie leadów, konwersja, kursy, dokumenty)
 export async function getDashboardStats() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) {
       return {
         totalLeads: 0,
@@ -113,7 +113,7 @@ export async function getDashboardStats() {
 // Pobieranie danych dla tabeli
 export async function getLeads() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     return await prisma.lead.findMany({
@@ -127,7 +127,7 @@ export async function getLeads() {
 
 export async function getLeadsForSelect() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     return await prisma.lead.findMany({
@@ -154,7 +154,7 @@ export async function getLeadsForSelect() {
  */
 export async function updateLeadStatus(leadId, newStatus) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!leadId || typeof leadId !== "string") {
@@ -225,7 +225,7 @@ export async function updateLeadStatus(leadId, newStatus) {
  */
 export async function deleteLead(leadId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!leadId || typeof leadId !== "string") {
@@ -257,7 +257,7 @@ export async function deleteLead(leadId) {
 }
 
 export async function createOrUpdateLead(data) {
-  const auth = await requireCreatorOrAdmin();
+  const auth = await requireCreator();
   if (!auth.ok) throw new Error(auth.error || "Unauthorized");
 
   const { email, firstName, lastName, ...otherData } = data;
@@ -302,7 +302,7 @@ revalidatePath("/dashboard/kanban");
 
 export async function updateLead(leadId, data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!leadId || typeof leadId !== "string") {

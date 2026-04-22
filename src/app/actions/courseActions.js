@@ -2,18 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, requireUser, isAdminRole } from "@/lib/rbac";
 import { calculateCourseProgress } from "@/lib/course-progress";
 import { findNextLessonId, getOrderedCourseLessons } from "@/lib/course-navigation";
 import { upsertLessonCompletionCompat } from "@/lib/lesson-completion-compat";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
-
-async function requireCreator() {
-  const auth = await requireCreatorOrAdmin();
-  if (!auth.ok) return auth;
-  return auth;
-}
 
 async function requireCourseOwner(courseId, auth) {
   if (isAdminRole(auth.role)) return { ok: true };
@@ -24,6 +16,34 @@ async function requireCourseOwner(courseId, auth) {
   if (!course) return { ok: false, error: "Nie znaleziono kursu." };
   if (course.authorId !== auth.userId) return { ok: false, error: "Brak uprawnień do tego kursu." };
   return { ok: true };
+}
+
+async function requireModuleOwner(moduleId, auth) {
+  const moduleRecord = await prisma.module.findUnique({
+    where: { id: moduleId },
+    select: { id: true, courseId: true, course: { select: { authorId: true } } },
+  });
+  if (!moduleRecord) return { ok: false, error: "Nie znaleziono modułu." };
+  if (!isAdminRole(auth.role) && moduleRecord.course?.authorId !== auth.userId) {
+    return { ok: false, error: "Brak uprawnień do tego modułu." };
+  }
+  return { ok: true, moduleRecord };
+}
+
+async function requireLessonOwner(lessonId, auth) {
+  const lesson = await prisma.lesson.findUnique({
+    where: { id: lessonId },
+    select: {
+      id: true,
+      moduleId: true,
+      module: { select: { courseId: true, course: { select: { authorId: true } } } },
+    },
+  });
+  if (!lesson) return { ok: false, error: "Nie znaleziono lekcji." };
+  if (!isAdminRole(auth.role) && lesson.module?.course?.authorId !== auth.userId) {
+    return { ok: false, error: "Brak uprawnień do tej lekcji." };
+  }
+  return { ok: true, lesson };
 }
 
 function normalizeString(value) {
@@ -168,6 +188,8 @@ export async function getModulesByCourse(courseId) {
     const auth = await requireCreator();
     if (!auth.ok) return [];
     if (!courseId || typeof courseId !== "string") return [];
+    const own = await requireCourseOwner(courseId, auth);
+    if (!own.ok) return [];
     return await prisma.module.findMany({
       where: { courseId },
       orderBy: { order: "asc" },
@@ -186,6 +208,8 @@ export async function createModule(courseId, input) {
     if (!courseId || typeof courseId !== "string") {
       return { success: false, error: "Nieprawidłowe ID kursu." };
     }
+    const own = await requireCourseOwner(courseId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
@@ -219,6 +243,8 @@ export async function updateModule(moduleId, input) {
     if (!moduleId || typeof moduleId !== "string") {
       return { success: false, error: "Nieprawidłowe ID modułu." };
     }
+    const own = await requireModuleOwner(moduleId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
@@ -250,15 +276,13 @@ export async function deleteModule(moduleId) {
       return { success: false, error: "Nieprawidłowe ID modułu." };
     }
 
-    const existing = await prisma.module.findUnique({
-      where: { id: moduleId },
-      select: { courseId: true },
-    });
+    const own = await requireModuleOwner(moduleId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     await prisma.module.delete({ where: { id: moduleId } });
 
-    if (existing?.courseId) {
-      revalidatePath(`/dashboard/kursy/${existing.courseId}`);
+    if (own.moduleRecord?.courseId) {
+      revalidatePath(`/dashboard/kursy/${own.moduleRecord.courseId}`);
     }
     return { success: true };
   } catch (error) {
@@ -276,6 +300,8 @@ export async function getLessonsByModule(moduleId) {
     const auth = await requireCreator();
     if (!auth.ok) return [];
     if (!moduleId || typeof moduleId !== "string") return [];
+    const own = await requireModuleOwner(moduleId, auth);
+    if (!own.ok) return [];
     return await prisma.lesson.findMany({
       where: { moduleId },
       orderBy: { order: "asc" },
@@ -297,6 +323,8 @@ export async function createLesson(moduleId, input) {
     if (!moduleId || typeof moduleId !== "string") {
       return { success: false, error: "Nieprawidłowe ID modułu." };
     }
+    const own = await requireModuleOwner(moduleId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
@@ -375,6 +403,8 @@ export async function updateLesson(lessonId, input) {
     if (!lessonId || typeof lessonId !== "string") {
       return { success: false, error: "Nieprawidłowe ID lekcji." };
     }
+    const own = await requireLessonOwner(lessonId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const title = normalizeString(input?.title);
     const order = normalizeInt(input?.order, 1);
@@ -463,6 +493,8 @@ export async function deleteLesson(lessonId) {
     if (!lessonId || typeof lessonId !== "string") {
       return { success: false, error: "Nieprawidłowe ID lekcji." };
     }
+    const own = await requireLessonOwner(lessonId, auth);
+    if (!own.ok) return { success: false, error: own.error };
 
     const existing = await prisma.lesson.findUnique({
       where: { id: lessonId },
@@ -487,31 +519,19 @@ export async function deleteLesson(lessonId) {
   }
 }
 
-async function getCurrentUserId() {
-  const session = await getServerSession(authOptions);
-  return session?.user?.id ?? null;
-}
-
-async function getCurrentSessionUser() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id ?? null;
-  const role = session?.user?.role ?? null;
-  return { userId, role };
-}
-
 export async function getStudentCertificateProgress(courseId) {
   try {
     if (!courseId || typeof courseId !== "string") {
       return { success: true, shouldRender: false };
     }
 
-    const { userId } = await getCurrentSessionUser();
-    if (!userId) {
+    const auth = await requireUser();
+    if (!auth.ok || !auth.userId) {
       return { success: true, shouldRender: false };
     }
 
     const enrollment = await prisma.enrollment.findUnique({
-      where: { userId_courseId: { userId, courseId } },
+      where: { userId_courseId: { userId: auth.userId, courseId } },
       select: { id: true },
     });
 
@@ -570,10 +590,9 @@ export async function getStudentCertificateProgress(courseId) {
 
 export async function completeLessonAndProceed({ courseId, lessonId }) {
   try {
-    const userId = await getCurrentUserId();
-    if (!userId) {
-      return { success: false, error: "Brak autoryzacji. Zaloguj się ponownie." };
-    }
+    const auth = await requireUser();
+    if (!auth.ok || !auth.userId) return { success: false, error: auth.error };
+    const userId = auth.userId;
     if (!courseId || !lessonId) {
       return { success: false, error: "Brak wymaganych danych lekcji lub kursu." };
     }

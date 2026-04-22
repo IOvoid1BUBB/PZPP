@@ -1,20 +1,14 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
 import { revalidatePath } from "next/cache";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { fetchJiraIssuesForUser, getValidJiraAccessToken } from "@/lib/integrations/jiraClient";
+import { requireUser } from "@/lib/rbac";
 
 async function getCurrentUserIdOrThrow() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-
-  if (!userId) {
-    throw new Error("Brak autoryzacji. Zaloguj się ponownie.");
-  }
-
-  return userId;
+  const auth = await requireUser();
+  if (!auth.ok || !auth.userId) throw new Error(auth.error || "Brak autoryzacji. Zaloguj się ponownie.");
+  return auth.userId;
 }
 
 export async function getJiraProjects() {

@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { addLeadActivity } from "@/app/actions/scoringActions";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
 import { fetchGoogleCalendarEvents as fetchGoogleCalendarEventsByUser } from "@/lib/integrations/googleClient";
 import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
@@ -26,7 +26,7 @@ function toDate(value, fieldName) {
  */
 export async function getMeetings(startDate, endDate) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     const start = new Date(startDate);
@@ -227,7 +227,7 @@ export async function getUnifiedCalendarEvents(
   endDate
 ) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     const start = toDate(startDate, "startDate");
@@ -347,7 +347,7 @@ export async function getUnifiedCalendarEvents(
  */
 export async function createMeeting(data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const title = typeof data?.title === "string" ? data.title.trim() : "";
@@ -448,7 +448,7 @@ export async function createMeeting(data) {
  */
 export async function deleteMeeting(meetingId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!meetingId || typeof meetingId !== "string") {

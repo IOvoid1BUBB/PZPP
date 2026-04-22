@@ -126,7 +126,8 @@ export async function checkCourseAccess(courseId, userId) {
 
     const auth = await requireStudentOrAdmin();
     if (!auth.ok) return { hasAccess: false, reason: auth.error };
-    const targetUserId = userId || auth.userId;
+    const requestedUserId = typeof userId === "string" && userId.trim() ? userId : null;
+    const targetUserId = isAdminRole(auth.role) && requestedUserId ? requestedUserId : auth.userId;
     if (isAdminRole(auth.role)) {
       return { hasAccess: true, isAdmin: true, viewerUserId: auth.userId ?? targetUserId ?? null };
     }

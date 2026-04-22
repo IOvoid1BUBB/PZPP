@@ -2,13 +2,13 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireAuth, requireCreatorOrAdmin, isAdminRole, Roles } from "@/lib/rbac";
+import { requireUser, requireCreator, isAdminRole, Roles } from "@/lib/rbac";
 import { createMeeting, buildMeetingReminderJobs } from "@/app/actions/meetingActions";
 import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 export async function createTeam(name, memberIds = []) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     const normalizedName = typeof name === "string" ? name.trim() : "";
@@ -44,7 +44,7 @@ export async function createTeam(name, memberIds = []) {
 
 export async function getTeams() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     const where = isAdminRole(auth.role)
@@ -75,7 +75,7 @@ export async function getTeams() {
 
 export async function getUserTeams(userId) {
   try {
-    const auth = await requireAuth();
+    const auth = await requireUser();
     if (!auth.ok) return [];
 
     const targetUserId = typeof userId === "string" && userId.trim() ? userId : auth.userId;
@@ -118,7 +118,7 @@ function truncateForPreview(text, maxLen = 90) {
  */
 export async function getUserTeamsInboxSummary(userId) {
   try {
-    const auth = await requireAuth();
+    const auth = await requireUser();
     if (!auth.ok) return [];
 
     const targetUserId = typeof userId === "string" && userId.trim() ? userId : auth.userId;
@@ -194,7 +194,7 @@ export async function getUserTeamsInboxSummary(userId) {
  */
 export async function getUsersForTeamCreation() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     return await prisma.user.findMany({
@@ -215,7 +215,7 @@ export async function getUsersForTeamCreation() {
 
 export async function scheduleTeamMeeting(teamId, meetingInput) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
     if (!teamId || typeof teamId !== "string") {
       return { success: false, error: "Nieprawidłowe ID zespołu." };

@@ -26,6 +26,10 @@ export async function requireAuth() {
   return { ...ctx, ok: true };
 }
 
+export async function requireUser() {
+  return requireAuth();
+}
+
 export async function requireRole(allowedRoles) {
   const auth = await requireAuth();
   if (!auth.ok) return auth;
@@ -38,6 +42,10 @@ export async function requireRole(allowedRoles) {
 
 export async function requireCreatorOrAdmin() {
   return requireRole([Roles.KREATOR, Roles.ADMIN]);
+}
+
+export async function requireCreator() {
+  return requireCreatorOrAdmin();
 }
 
 export async function requireStudentOrAdmin() {

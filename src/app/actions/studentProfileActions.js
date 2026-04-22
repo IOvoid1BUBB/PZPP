@@ -1,14 +1,13 @@
 'use server'
 
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { requireUser } from '@/lib/rbac'
 
 export async function updateStudentProfile(_prevState, formData) {
-  const session = await getServerSession(authOptions)
-  if (!session?.user?.id) {
-    return { success: false, error: 'Brak sesji. Zaloguj się ponownie.' }
+  const auth = await requireUser()
+  if (!auth.ok || !auth.userId) {
+    return { success: false, error: auth.error || 'Brak sesji. Zaloguj się ponownie.' }
   }
 
   const firstName = formData.get('firstName')?.toString().trim() ?? ''
@@ -21,7 +20,7 @@ export async function updateStudentProfile(_prevState, formData) {
 
   try {
     await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: auth.userId },
       data: { name },
     })
     revalidatePath('/student/profil')

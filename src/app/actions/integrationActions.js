@@ -1,9 +1,7 @@
 "use server";
 
 import { createCipheriv, randomBytes } from "node:crypto";
-import { getServerSession } from "next-auth/next";
 import { revalidatePath } from "next/cache";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getApiKeyProviderConfig } from "@/lib/integrations/apiKeyProviders";
 import { getOAuthAccountOrThrow } from "@/lib/integrations/oauthAccounts";
@@ -18,7 +16,7 @@ import {
   discoverJiraResource,
   getJiraIntegrationForUser,
 } from "@/lib/integrations/jiraClient";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, requireUser, isAdminRole } from "@/lib/rbac";
 
 async function fetchJiraProjects(userId) {
   let accessToken;
@@ -167,14 +165,9 @@ function encryptApiKey(plainTextKey) {
 }
 
 async function getCurrentUserIdOrThrow() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-
-  if (!userId) {
-    throw new Error("Brak autoryzacji. Zaloguj się ponownie.");
-  }
-
-  return userId;
+  const auth = await requireUser();
+  if (!auth.ok || !auth.userId) throw new Error(auth.error || "Brak autoryzacji. Zaloguj się ponownie.");
+  return auth.userId;
 }
 
 export async function getIntegrationsData() {
@@ -316,7 +309,7 @@ export async function getGoogleContactsPreview() {
 
 export async function syncGoogleContactsNow() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, message: auth.error, contacts: [] };
     const contacts = await fetchGoogleContacts(auth.userId);
 

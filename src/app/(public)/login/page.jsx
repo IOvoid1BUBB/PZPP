@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
+import { validateLoginAction } from "./actions";
 
 // Importujemy gotowe klocki z Waszego repozytorium (shadcn/ui)
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,16 @@ const LineChartBackground = () => (
   </div>
 );
 
+const initialLoginState = {
+  success: false,
+  fieldErrors: {},
+  formError: null,
+  values: {
+    email: "",
+    password: "",
+  },
+};
+
 // ------------------------------------------------------------------
 // Główny Komponent Strony
 // ------------------------------------------------------------------
@@ -67,7 +78,10 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loginState, runLoginValidation, isPending] = useActionState(
+    validateLoginAction,
+    initialLoginState
+  );
 
   const resolveRedirectPath = (role) => {
     if (role === "UCZESTNIK") return "/student";
@@ -76,43 +90,70 @@ export default function LoginPage() {
     return "/dashboard";
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  useEffect(() => {
+    if (!loginState?.success) return;
 
-    try {
-      const response = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+    const signInAfterValidation = async () => {
+      const validatedEmail = loginState.values?.email ?? "";
+      const validatedPassword = loginState.values?.password ?? "";
 
-      if (response?.error) {
+      if (!validatedEmail || !validatedPassword) return;
+
+      try {
+        const response = await signIn("credentials", {
+          email: validatedEmail,
+          password: validatedPassword,
+          redirect: false,
+        });
+
+        if (response?.error) {
+          toast({
+            variant: "destructive",
+            title: "Błąd logowania",
+            description: "Nieprawidłowy adres email lub hasło.",
+          });
+          return;
+        }
+
+        if (response?.ok) {
+          toast({
+            title: "Sukces",
+            description: "Zalogowano pomyślnie. Trwa przekierowanie...",
+          });
+          const session = await getSession();
+          const role = session?.user?.role;
+          router.replace(resolveRedirectPath(role));
+          router.refresh();
+        }
+      } catch (_error) {
         toast({
           variant: "destructive",
-          title: "Błąd logowania",
-          description: "Nieprawidłowy adres email lub hasło.",
+          title: "Wystąpił błąd",
+          description: "Brak odpowiedzi od serwera.",
         });
-      } else if (response?.ok) {
-        toast({
-          title: "Sukces",
-          description: "Zalogowano pomyślnie. Trwa przekierowanie...",
-        });
-        const session = await getSession();
-        const role = session?.user?.role;
-        router.replace(resolveRedirectPath(role));
-        router.refresh();
       }
-    } catch (error) {
+    };
+
+    signInAfterValidation();
+  }, [loginState, router, toast]);
+
+  const handleFormAction = async (formData) => {
+    setEmail(String(formData.get("email") ?? ""));
+    setPassword(String(formData.get("password") ?? ""));
+    try {
+      await runLoginValidation(formData);
+    } catch (_error) {
       toast({
         variant: "destructive",
         title: "Wystąpił błąd",
         description: "Brak odpowiedzi od serwera.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  const emailError = loginState?.fieldErrors?.email ?? null;
+  const passwordError = loginState?.fieldErrors?.password ?? null;
+  const formError = loginState?.formError ?? null;
 
   return (
     <section className="relative flex-grow flex items-center justify-center py-20 px-4 w-full overflow-hidden">
@@ -133,7 +174,15 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent className="space-y-8 pt-6">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <form action={handleFormAction} className="flex flex-col gap-6" noValidate>
+            {formError ? (
+              <div
+                role="alert"
+                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+              >
+                {formError}
+              </div>
+            ) : null}
             <div className="flex flex-col gap-4">
               {/* Grupa Email */}
               <div className="space-y-2.5">
@@ -145,14 +194,21 @@ export default function LoginPage() {
                 </Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="twoj@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={isLoading}
+                  aria-invalid={Boolean(emailError)}
+                  aria-errormessage={emailError ? "login-email-error" : undefined}
+                  disabled={isPending}
                   className="font-medium px-4 py-3"
                 />
+                {emailError ? (
+                  <p id="login-email-error" className="text-red-500 text-sm mt-1">
+                    {emailError}
+                  </p>
+                ) : null}
               </div>
 
               {/* Grupa Hasło */}
@@ -173,24 +229,31 @@ export default function LoginPage() {
                 </div>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Poprawiono błąd z setEmail na setPassword
-                  required
-                  disabled={isLoading}
+                  onChange={(e) => setPassword(e.target.value)}
+                  aria-invalid={Boolean(passwordError)}
+                  aria-errormessage={passwordError ? "login-password-error" : undefined}
+                  disabled={isPending}
                   className="font-medium px-4 py-3"
                 />
+                {passwordError ? (
+                  <p id="login-password-error" className="text-red-500 text-sm mt-1">
+                    {passwordError}
+                  </p>
+                ) : null}
               </div>
             </div>
 
             {/* Przycisk logowania - powiększony do 12px paddingu i font-semibold */}
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="w-full h-14 mt-4 text-base font-semibold"
             >
-              {isLoading ? "Logowanie..." : "Zaloguj się"}
+              {isPending ? "Logowanie..." : "Zaloguj się"}
             </Button>
           </form>
         </CardContent>

@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { canAccessLead, requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { canAccessLead, requireCreator, isAdminRole } from "@/lib/rbac";
 import { createNotification, NOTIFICATION_TYPES } from "@/lib/notifications";
 
 function toDateSafe(value) {
@@ -126,7 +126,7 @@ export async function addNoteToLead(leadId, content) {
   }
 
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
     const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { ownerId: true } });
     if (!lead) return { success: false, error: "Lead nie istnieje." };
@@ -178,7 +178,7 @@ export async function addTaskToLead(leadId, taskData) {
   }
 
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
     const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { ownerId: true } });
     if (!lead) return { success: false, error: "Lead nie istnieje." };

@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { requireCreatorOrAdmin, isAdminRole } from "@/lib/rbac";
+import { requireCreator, isAdminRole } from "@/lib/rbac";
 
 function startOfDay(date) {
   const d = new Date(date);
@@ -18,7 +18,7 @@ function endOfDay(date) {
 
 export async function getTasks(filter = "all") {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return [];
 
     const baseWhere = isAdminRole(auth.role) ? {} : { userId: auth.userId };
@@ -62,7 +62,7 @@ export async function getTasks(filter = "all") {
 
 export async function getTasksDashboard() {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) {
       return { todayTasks: 0, overdueTasks: 0, upcomingTasks: 0, completedToday: 0 };
     }
@@ -96,7 +96,7 @@ export async function getTasksDashboard() {
 
 export async function toggleTaskComplete(taskId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!taskId) return { success: false, error: "Brak ID zadania." };
@@ -126,7 +126,7 @@ export async function toggleTaskComplete(taskId) {
 
 export async function updateTask(taskId, data) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!taskId) return { success: false, error: "Brak ID zadania." };
@@ -163,7 +163,7 @@ export async function updateTask(taskId, data) {
 
 export async function deleteTask(taskId) {
   try {
-    const auth = await requireCreatorOrAdmin();
+    const auth = await requireCreator();
     if (!auth.ok) return { success: false, error: auth.error };
 
     if (!taskId) return { success: false, error: "Brak ID zadania." };
