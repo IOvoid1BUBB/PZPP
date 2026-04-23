@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CheckCircle2, Lock, PlayCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Lock, PlayCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 export default function CourseSidebar({
@@ -15,6 +16,13 @@ export default function CourseSidebar({
 
   return (
     <aside className="space-y-4 rounded-xl border bg-card p-4">
+      <Button asChild variant="outline" size="sm" className="w-full justify-start">
+        <Link href="/student">
+          <ArrowLeft className="mr-1 size-4" />
+          Powrót do kursów
+        </Link>
+      </Button>
+
       <div>
         <p className="text-sm text-muted-foreground">Postęp kursu</p>
         <p className="text-xl font-semibold">{progress}%</p>
