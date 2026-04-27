@@ -42,3 +42,9 @@ yarn-error.log*
 next-env.d.ts
 
 /prisma/generated/prisma
+
+# private file storage (documents)
+/storage/
+
+# local uploaded artifacts (legacy)
+/public/uploads/documents/
