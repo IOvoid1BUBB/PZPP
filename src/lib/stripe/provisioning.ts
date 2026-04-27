@@ -28,10 +28,11 @@ export async function provisionPaidCheckout(params: {
 }) {
   const { stripeSessionId, courseId, customerEmail, customerName, amountTotal, platformUrl } = params;
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     const course = await tx.course.findUnique({
       where: { id: courseId },
-      select: { id: true, title: true, authorId: true },
+      // Keep select minimal to stay compatible with generated Prisma client types.
+      select: { id: true, title: true },
     });
     if (!course) {
       throw new Error(`Course not found: ${courseId}`);
@@ -105,7 +106,7 @@ export async function provisionPaidCheckout(params: {
       toEmail: customerEmail,
       userName: (user.name || customerName || temporaryNickname) ?? undefined,
       courseTitle: course.title,
-      courseAuthorId: course.authorId ?? null,
+      courseAuthorId: null,
       loginEmail: customerEmail,
       temporaryPassword,
       temporaryNickname,
@@ -121,7 +122,7 @@ export async function provisionPaidCheckout(params: {
       where: { role: "ADMIN" },
       select: { id: true },
     });
-    admins.forEach((u) => recipients.add(u.id));
+    admins.forEach((u: { id: string }) => recipients.add(u.id));
     if (result.courseAuthorId) {
       recipients.add(result.courseAuthorId);
     }
