@@ -146,7 +146,12 @@ export default function ThreadView({
           {visibleMessages.map((msg) => {
             const mt = effectiveMessageType(msg);
             const outbound = msg.direction === "OUTBOUND";
-            const typeLabel = msg.type === "SMS" ? "SMS" : "E-mail";
+            const typeLabel =
+              mt === "CHAT" || msg.type === "CHAT"
+                ? "Chat"
+                : msg.type === "SMS"
+                  ? "SMS"
+                  : "Email";
             const normalizedBody =
               outbound && msg.body?.includes("<") ? stripHtmlForPreview(msg.body) : msg.body;
             const displayBody = truncatePreview(normalizedBody, 800);

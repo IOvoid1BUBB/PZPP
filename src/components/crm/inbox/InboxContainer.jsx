@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getLeadMessages } from "@/app/actions/messageActions";
-import { getUserTeamsInboxSummary, scheduleTeamMeeting } from "@/app/actions/teamActions";
+import { createMeeting } from "@/app/actions/meetingActions";
+import { deleteTeam, getUserTeamsInboxSummary } from "@/app/actions/teamActions";
 import InboxSidebar from "./InboxSidebar";
 import ThreadView from "@/components/crm/ThreadView";
 import MessageInput from "./MessageInput";
@@ -13,6 +14,18 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { CalendarDays } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 /**
  * @param {{
@@ -22,10 +35,16 @@ import { CalendarDays } from "lucide-react";
  */
 export default function InboxContainer({ leads = [], isStudentView = false }) {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const [activeLeadId, setActiveLeadId] = useState(null);
   const [activeChannel, setActiveChannel] = useState("PRIVATE");
   const [sidebarTab, setSidebarTab] = useState(/** @type {"private" | "teams"} */ ("private"));
+  const [meetingOpen, setMeetingOpen] = useState(false);
+  const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingStart, setMeetingStart] = useState("");
+  const [meetingEnd, setMeetingEnd] = useState("");
+  const [meetingMeetLink, setMeetingMeetLink] = useState("");
 
   const safeLeads = useMemo(() => leads.filter(Boolean), [leads]);
 
@@ -101,28 +120,70 @@ export default function InboxContainer({ leads = [], isStudentView = false }) {
       .filter((user) => user?.id);
   }, [activeTeam]);
 
-  const handleCreateTeamMeeting = async () => {
-    if (!activeTeam?.id) return;
-    const start = new Date(Date.now() + 60 * 60 * 1000);
-    const end = new Date(start.getTime() + 30 * 60 * 1000);
-    const result = await scheduleTeamMeeting(activeTeam.id, {
-      title: `Sync: ${activeTeam.name}`,
-      startTime: start.toISOString(),
-      endTime: end.toISOString(),
+  const openMeetingModal = () => {
+    const now = new Date(Date.now() + 60 * 60 * 1000);
+    const end = new Date(now.getTime() + 30 * 60 * 1000);
+    const pad = (n) => String(n).padStart(2, "0");
+    const toLocalInput = (d) =>
+      `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+    setMeetingTitle(activeTeam ? `Spotkanie: ${activeTeam.name}` : "Spotkanie");
+    setMeetingStart(toLocalInput(now));
+    setMeetingEnd(toLocalInput(end));
+    setMeetingMeetLink("");
+    setMeetingOpen(true);
+  };
+
+  const handleCreateMeeting = async () => {
+    if (!meetingTitle.trim()) {
+      toast({ variant: "destructive", title: "Uzupełnij tytuł spotkania." });
+      return;
+    }
+    if (!meetingStart || !meetingEnd) {
+      toast({ variant: "destructive", title: "Uzupełnij daty spotkania." });
+      return;
+    }
+
+    const startIso = new Date(meetingStart).toISOString();
+    const endIso = new Date(meetingEnd).toISOString();
+
+    const result = await createMeeting({
+      title: meetingTitle.trim(),
+      startTime: startIso,
+      endTime: endIso,
+      meetLink: meetingMeetLink.trim() || null,
+      leadId: activeLead?.id || null,
+      teamId: activeTeam?.id || null,
     });
 
     if (result?.success) {
-      toast({
-        title: "Utworzono spotkanie",
-        description: "Spotkanie zespołowe zostało zaplanowane.",
-      });
+      setMeetingOpen(false);
+      toast({ title: "Utworzono spotkanie", description: "Spotkanie zostało zapisane." });
       return;
     }
 
     toast({
       variant: "destructive",
       title: "Błąd",
-      description: result?.error || "Nie udało się utworzyć spotkania zespołu.",
+      description: result?.error || "Nie udało się utworzyć spotkania.",
+    });
+  };
+
+  const handleDeleteTeam = async () => {
+    if (!activeTeam?.id) return;
+    const res = await deleteTeam(activeTeam.id);
+    if (res?.success) {
+      toast({ title: "Usunięto zespół", description: "Zespół został usunięty." });
+      // Force refresh of cached teams list (query has staleTime).
+      queryClient.invalidateQueries({ queryKey: ["user-teams-inbox"] });
+      setActiveChannel("PRIVATE");
+      setSidebarTab("private");
+      return;
+    }
+    toast({
+      variant: "destructive",
+      title: "Błąd",
+      description: res?.error || "Nie udało się usunąć zespołu.",
     });
   };
 
@@ -181,29 +242,109 @@ export default function InboxContainer({ leads = [], isStudentView = false }) {
                   {!isStudentView ? (
                     <div className="flex flex-wrap items-center gap-2">
                       {activeTeam ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="size-8 shrink-0 text-muted-foreground hover:text-foreground"
-                          title="Utwórz spotkanie dla zespołu"
-                          aria-label="Utwórz spotkanie dla zespołu"
-                          onClick={handleCreateTeamMeeting}
-                        >
-                          <CalendarDays className="size-4" />
-                        </Button>
+                        <>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="size-8 shrink-0 text-muted-foreground hover:text-foreground"
+                            title="Utwórz spotkanie"
+                            aria-label="Utwórz spotkanie"
+                            onClick={openMeetingModal}
+                          >
+                            <CalendarDays className="size-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button type="button" variant="destructive" size="sm">
+                                Usuń zespół
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Usunąć zespół?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  To działanie usunie zespół oraz członkostwa. Historia wiadomości zostanie zachowana
+                                  (wiadomości w bazie pozostaną z pustym teamId).
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleDeleteTeam}>
+                                  Usuń
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
                       ) : null}
                     </div>
                   ) : null}
                 </div>
               </div>
+              <Dialog open={meetingOpen} onOpenChange={setMeetingOpen}>
+                <DialogContent className="sm:max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Utwórz spotkanie</DialogTitle>
+                    <DialogDescription>
+                      Spotkanie zostanie zapisane w kalendarzu i dodane do historii rozmowy leada.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="meeting-title">Tytuł</Label>
+                      <Input
+                        id="meeting-title"
+                        value={meetingTitle}
+                        onChange={(e) => setMeetingTitle(e.target.value)}
+                        placeholder="Tytuł spotkania"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="meeting-start">Start</Label>
+                      <Input
+                        id="meeting-start"
+                        type="datetime-local"
+                        value={meetingStart}
+                        onChange={(e) => setMeetingStart(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="meeting-end">Koniec</Label>
+                      <Input
+                        id="meeting-end"
+                        type="datetime-local"
+                        value={meetingEnd}
+                        onChange={(e) => setMeetingEnd(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="meeting-link">Link (opcjonalnie)</Label>
+                      <Input
+                        id="meeting-link"
+                        value={meetingMeetLink}
+                        onChange={(e) => setMeetingMeetLink(e.target.value)}
+                        placeholder="np. https://meet.google.com/..."
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="button" variant="secondary" onClick={() => setMeetingOpen(false)}>
+                      Anuluj
+                    </Button>
+                    <Button type="button" onClick={handleCreateMeeting}>
+                      Utwórz
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <ThreadView
                 messages={messages}
                 leadId={activeLead.id}
                 role={isStudentView ? "STUDENT" : "STAFF"}
                 teamId={activeChannel === "PRIVATE" ? null : activeChannel}
                 ownerOptions={ownerOptions}
-                canManageTicket={!isStudentView}
+                canManageTicket={!isStudentView && Boolean(activeTeam?.id)}
               />
               <MessageInput
                 leadId={activeLead.id}
