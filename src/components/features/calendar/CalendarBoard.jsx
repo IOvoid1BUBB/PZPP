@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
@@ -139,6 +139,7 @@ function CalendarToolbar(toolbarProps) {
 
 export default function CalendarBoard({ className }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { toast } = useToast();
   const initialDate = useMemo(() => new Date(), []);
 
@@ -335,6 +336,22 @@ export default function CalendarBoard({ className }) {
     setSelectedEvent(match);
     setDetailsDialogOpen(true);
   }, [searchParams, events]);
+
+  const handleDetailsDialogOpenChange = useCallback(
+    (open) => {
+      setDetailsDialogOpen(open);
+      if (open) return;
+
+      // On close: clear selection and remove eventId from URL
+      // so refetch/listeners can't re-open the popup automatically.
+      setSelectedEvent(null);
+      const currentEventId = searchParams?.get("eventId");
+      if (currentEventId) {
+        router.replace("/dashboard/calendar");
+      }
+    },
+    [router, searchParams]
+  );
 
   const refresh = useCallback(() => {
     setRangeVersion((v) => v + 1);
@@ -754,7 +771,7 @@ export default function CalendarBoard({ className }) {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+      <Dialog open={detailsDialogOpen} onOpenChange={handleDetailsDialogOpenChange}>
         <DialogContent className="max-w-[560px] rounded-2xl border-primary/20 bg-background dark:bg-zinc-950 p-6 z-60">
           <DialogHeader>
             <DialogTitle className="text-xl">Szczegóły spotkania</DialogTitle>
@@ -873,7 +890,7 @@ export default function CalendarBoard({ className }) {
               type="button"
               variant="outline"
               className="rounded-xl border-primary/30"
-              onClick={() => setDetailsDialogOpen(false)}
+              onClick={() => handleDetailsDialogOpenChange(false)}
             >
               Zamknij
             </Button>
