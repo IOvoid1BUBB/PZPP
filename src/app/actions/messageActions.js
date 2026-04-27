@@ -364,23 +364,112 @@ export async function addInternalNote(leadId, body, options = {}) {
 }
 
 /**
+ * Wysyła wiadomość wewnętrzną (chat) w ramach zespołu.
+ * Nie używa SMTP — zapisuje wyłącznie rekord Message.
+ */
+export async function sendInternalChatMessage(leadId, body, options = {}) {
+  try {
+    if (!leadId || !body) {
+      return { success: false, error: "Brakuje danych dla wiadomości." };
+    }
+
+    const auth = await requireUser();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    const ownership = await requireLeadOwnership(prisma, leadId);
+    if (!ownership.ok) return { success: false, error: ownership.error };
+
+    const teamIdRaw = typeof options?.teamId === "string" ? options.teamId.trim() : "";
+
+    // Jeśli wiadomość idzie w kontekście zespołu, wymagamy członkostwa (lub ADMIN).
+    if (teamIdRaw) {
+      const team = await prisma.team.findUnique({
+        where: { id: teamIdRaw },
+        select: {
+          id: true,
+          members: { select: { userId: true } },
+        },
+      });
+      if (!team) return { success: false, error: "Zespół nie istnieje." };
+
+      const isMember = team.members.some((m) => m.userId === auth.userId);
+      if (auth.role !== Roles.ADMIN && !isMember) {
+        return {
+          success: false,
+          error: "Brak uprawnień do wysyłania wiadomości w tym zespole.",
+        };
+      }
+    }
+
+    const saved = await prisma.message.create({
+      data: {
+        leadId,
+        subject: null,
+        body,
+        type: "CHAT",
+        direction: "INTERNAL",
+        messageType: "CHAT",
+        teamId: teamIdRaw || null,
+        assignedToId:
+          typeof options?.assignedToId === "string" ? options.assignedToId : null,
+        ticketStatus:
+          typeof options?.ticketStatus === "string" ? options.ticketStatus : null,
+      },
+      include: {
+        team: { select: { id: true, name: true } },
+        assignedTo: { select: { id: true, name: true, email: true } },
+      },
+    });
+
+    revalidatePath(`/crm/lead/${leadId}`);
+    revalidatePath("/dashboard/skrzynka");
+    revalidatePath("/student/skrzynka");
+    return { success: true, data: saved };
+  } catch (error) {
+    console.error("sendInternalChatMessage:", error);
+    return { success: false, error: "Nie udało się wysłać wiadomości czatu." };
+  }
+}
+
+/**
  * Przypisuje ownera konwersacji (globalnie lub w obrębie kanału zespołu).
  */
 export async function assignConversationOwner(leadId, assignedToId, options = {}) {
   try {
     if (!leadId) return { success: false, error: "Brakuje leadId." };
 
+    const auth = await requireUser();
+    if (!auth.ok) return { success: false, error: auth.error };
+
     const ownership = await requireLeadOwnership(prisma, leadId);
     if (!ownership.ok) return { success: false, error: ownership.error };
 
-    const teamId = typeof options?.teamId === "string" ? options.teamId : null;
+    const teamIdRaw = typeof options?.teamId === "string" ? options.teamId.trim() : "";
+    if (!teamIdRaw) {
+      return { success: false, error: "Owner konwersacji działa tylko w kontekście zespołu." };
+    }
+
+    const team = await prisma.team.findUnique({
+      where: { id: teamIdRaw },
+      select: {
+        id: true,
+        members: { select: { userId: true } },
+      },
+    });
+    if (!team) return { success: false, error: "Zespół nie istnieje." };
+
+    const isMember = team.members.some((m) => m.userId === auth.userId);
+    if (auth.role !== Roles.ADMIN && !isMember) {
+      return { success: false, error: "Brak uprawnień do zarządzania ownerem w tym zespole." };
+    }
+
     const ownerValue =
       typeof assignedToId === "string" && assignedToId.trim() ? assignedToId : null;
 
     await prisma.message.updateMany({
       where: {
         leadId,
-        ...(teamId ? { teamId } : {}),
+        teamId: teamIdRaw,
       },
       data: {
         assignedToId: ownerValue,
@@ -390,7 +479,7 @@ export async function assignConversationOwner(leadId, assignedToId, options = {}
     await prisma.message.create({
       data: {
         leadId,
-        teamId,
+        teamId: teamIdRaw,
         type: "SYSTEM",
         direction: "INTERNAL",
         subject: "Zmiana ownera",

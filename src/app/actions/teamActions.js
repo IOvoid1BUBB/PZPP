@@ -273,3 +273,35 @@ export async function scheduleTeamMeeting(teamId, meetingInput) {
     return { success: false, error: "Nie udało się zaplanować spotkania zespołowego." };
   }
 }
+
+export async function deleteTeam(teamId) {
+  try {
+    const auth = await requireCreator();
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    if (!teamId || typeof teamId !== "string") {
+      return { success: false, error: "Nieprawidłowe ID zespołu." };
+    }
+
+    const team = await prisma.team.findUnique({
+      where: { id: teamId },
+      select: { id: true, members: { select: { userId: true } } },
+    });
+    if (!team) return { success: false, error: "Zespół nie istnieje." };
+
+    const isMember = team.members.some((m) => m.userId === auth.userId);
+    // RBAC: ADMIN zawsze może; KREATOR może jeśli jest członkiem zespołu.
+    if (!isAdminRole(auth.role) && !isMember) {
+      return { success: false, error: "Brak uprawnień do usunięcia zespołu." };
+    }
+
+    await prisma.team.delete({ where: { id: teamId } });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/skrzynka");
+    return { success: true };
+  } catch (error) {
+    console.error("deleteTeam:", error);
+    return { success: false, error: "Nie udało się usunąć zespołu." };
+  }
+}

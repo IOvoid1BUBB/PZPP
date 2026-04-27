@@ -395,6 +395,22 @@ export async function createMeeting(data) {
       },
     });
 
+    if (meeting.leadId) {
+      await prisma.message
+        .create({
+          data: {
+            leadId: meeting.leadId,
+            teamId: typeof data?.teamId === "string" ? data.teamId : null,
+            type: "SYSTEM",
+            direction: "INTERNAL",
+            subject: "Utworzono spotkanie",
+            body: `${meeting.title} (${meeting.startTime.toISOString()} – ${meeting.endTime.toISOString()})`,
+            messageType: "SYSTEM",
+          },
+        })
+        .catch(() => null);
+    }
+
     await createNotification({
       userId: organizerId,
       type: NOTIFICATION_TYPES.MEETING_CREATED,
