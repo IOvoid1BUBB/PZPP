@@ -530,22 +530,71 @@ export async function deleteLesson(lessonId) {
 
 export async function getStudentCertificateProgress(courseId) {
   try {
-    if (!courseId || typeof courseId !== "string") {
-      return { success: true, shouldRender: false };
-    }
-
     const auth = await requireUser();
     if (!auth.ok || !auth.userId) {
       return { success: true, shouldRender: false };
     }
 
-    const enrollment = await prisma.enrollment.findUnique({
-      where: { userId_courseId: { userId: auth.userId, courseId } },
-      select: { id: true, progress: true },
-    });
     const user = await prisma.user.findUnique({
       where: { id: auth.userId },
       select: { name: true, email: true },
+    });
+
+    if (!courseId || typeof courseId !== "string") {
+      const latestCertificate = await prisma.certificate.findFirst({
+        where: { userId: auth.userId },
+        orderBy: { issueDate: "desc" },
+        select: {
+          id: true,
+          certificateNumber: true,
+          issueDate: true,
+          course: { select: { title: true } },
+        },
+      });
+
+      if (latestCertificate) {
+        return {
+          success: true,
+          shouldRender: true,
+          progress: 100,
+          completedLessons: 0,
+          totalLessons: 0,
+          isCompleted: true,
+          certificate: {
+            id: latestCertificate.id,
+            certificateNumber: latestCertificate.certificateNumber,
+            issueDate: latestCertificate.issueDate,
+          },
+          courseTitle: latestCertificate.course?.title || "Kurs",
+          studentName: user?.name || user?.email || "Uczestnik kursu",
+        };
+      }
+
+      const mostAdvancedEnrollment = await prisma.enrollment.findFirst({
+        where: { userId: auth.userId },
+        orderBy: { progress: "desc" },
+        select: {
+          progress: true,
+          course: { select: { title: true } },
+        },
+      });
+
+      return {
+        success: true,
+        shouldRender: true,
+        progress: mostAdvancedEnrollment?.progress ?? 0,
+        completedLessons: 0,
+        totalLessons: 0,
+        isCompleted: false,
+        certificate: null,
+        courseTitle: mostAdvancedEnrollment?.course?.title || "",
+        studentName: user?.name || user?.email || "Uczestnik kursu",
+      };
+    }
+
+    const enrollment = await prisma.enrollment.findUnique({
+      where: { userId_courseId: { userId: auth.userId, courseId } },
+      select: { id: true, progress: true },
     });
 
     if (!enrollment) {
