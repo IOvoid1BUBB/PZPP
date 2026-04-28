@@ -10,6 +10,7 @@ import CourseSidebar from "@/components/course-player/CourseSidebar";
 import LessonQuiz from "@/components/course-player/LessonQuiz";
 import NextLessonButton from "@/components/features/courses/NextLessonButton";
 import StudentLessonNotesEditor from "@/components/features/courses/StudentLessonNotesEditor";
+import StudentCertificateWidget from "@/components/features/courses/StudentCertificateWidget";
 
 function normalizeId(value) {
   return Array.isArray(value) ? value[0] : value;
@@ -55,6 +56,8 @@ export default async function StudentCoursePage({ params, searchParams }) {
       <header>
         <h1 className="text-2xl font-semibold">{data.course.title}</h1>
       </header>
+
+      <StudentCertificateWidget courseId={courseId} />
 
       <main className="grid gap-6 lg:grid-cols-[320px_1fr]">
         <CourseSidebar
