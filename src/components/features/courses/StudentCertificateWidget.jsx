@@ -15,20 +15,11 @@ export default function StudentCertificateWidget({ courseId }) {
   });
 
   useEffect(() => {
-    if (!courseId) {
-      setState((prev) => ({
-        ...prev,
-        isLoading: false,
-        shouldRender: false,
-      }));
-      return;
-    }
-
     let isActive = true;
 
     const fetchProgress = async () => {
       setState((prev) => ({ ...prev, isLoading: true }));
-      const result = await getStudentCertificateProgress(courseId);
+      const result = await getStudentCertificateProgress(courseId ?? null);
       if (!isActive) return;
 
       if (!result?.success || !result?.shouldRender) {
@@ -57,7 +48,7 @@ export default function StudentCertificateWidget({ courseId }) {
     };
   }, [courseId]);
 
-  if (!courseId || state.isLoading || !state.shouldRender) return null;
+  if (state.isLoading || !state.shouldRender) return null;
 
   return <StudentCertificateCard data={state} />;
 }
