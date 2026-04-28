@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
@@ -152,10 +152,12 @@ export default function Sidebar({ isStudentLayout = false }) {
   const session = sessionState?.data
   const pathname = usePathname()
   const params = useParams()
-  const panelId = useId()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const isStudentRoute = isStudentLayout || pathname.startsWith('/student')
+  const panelId = isStudentRoute
+    ? 'student-mobile-sidebar-panel'
+    : 'dashboard-mobile-sidebar-panel'
   const logoHref = isStudentRoute ? '/student' : '/dashboard'
   const displayName =
     (typeof session?.user?.name === 'string' && session.user.name.trim().length
@@ -169,10 +171,6 @@ export default function Sidebar({ isStudentLayout = false }) {
     : null
 
   const closeMobile = () => setMobileOpen(false)
-
-  useEffect(() => {
-    closeMobile()
-  }, [pathname])
 
   useEffect(() => {
     if (!mobileOpen) return

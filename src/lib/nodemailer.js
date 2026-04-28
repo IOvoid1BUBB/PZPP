@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
 
+const smtpPort = Number(process.env.SMTP_PORT ?? 1025);
+
 export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_PORT == 465, // true dla portu 465, false dla innych
+  host: process.env.SMTP_HOST || "127.0.0.1",
+  port: Number.isNaN(smtpPort) ? 1025 : smtpPort,
+  secure: smtpPort === 465, // true dla portu 465, false dla innych
   ...(process.env.SMTP_USER
     ? {
         auth: {
