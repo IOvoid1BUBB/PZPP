@@ -555,6 +555,7 @@ model Course {
   modules     Module[]
   enrollments Enrollment[]
   orders      Order[]
+  certificates Certificate[]
 
   @@index([authorId])
 }
@@ -701,13 +702,17 @@ model Enrollment {
 }
 
 model Certificate {
-  id       String   @id @default(cuid())
-  userId   String
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title    String
-  issuedAt DateTime @default(now())
+  id                String   @id @default(cuid())
+  issueDate         DateTime @default(now())
+  certificateNumber String   @unique
+  userId            String
+  courseId          String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course            Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, courseId])
   @@index([userId])
+  @@index([courseId])
 }
 
 model LessonCompletion {
