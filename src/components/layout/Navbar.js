@@ -3,8 +3,15 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Bell, TrendingUp, User } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 export default function Navbar({ variant = "public" }) {
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === "authenticated"
+  const userRole = session?.user?.role
+  const userDisplayName = session?.user?.name || "Konto"
+  const accountHref = userRole === "UCZESTNIK" ? "/student" : "/dashboard"
+
   if (variant === "student") {
     return (
       <header className="w-full border-b border-primary/60 bg-white">
@@ -74,14 +81,25 @@ export default function Navbar({ variant = "public" }) {
 
         
         <div className="flex items-center gap-3 z-10">
-          <Link href="/login">
-            <Button size="sm">Zaloguj się</Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="outline" size="sm" className="bg-transparent">
-              Zarejestruj się
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href={accountHref}>
+              <Button variant="ghost" size="sm" className="gap-2">
+                <User className="size-4" />
+                {userDisplayName}
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button size="sm">Zaloguj się</Button>
+              </Link>
+              <Link href="/register">
+                <Button variant="outline" size="sm" className="bg-transparent">
+                  Zarejestruj się
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>
