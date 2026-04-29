@@ -2,11 +2,15 @@
   "name": "pzpp_projekt_1",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "email": "email dev -d src/emails -p 3001",
     "build": "next build",
     "start": "next start",
+    "start:railway": "sh -c \"npx prisma migrate deploy && next start -p ${PORT:-3000} -H 0.0.0.0\"",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
